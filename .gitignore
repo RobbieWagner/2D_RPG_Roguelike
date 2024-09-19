@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+2D_RPG_Roguelike/[Ll]ibrary/
+2D_RPG_Roguelike/[Tt]emp/
+2D_RPG_Roguelike/[Oo]bj/
+2D_RPG_Roguelike/[Bb]uild/
+2D_RPG_Roguelike/[Bb]uilds/
+2D_RPG_Roguelike/[Ll]ogs/
+2D_RPG_Roguelike/[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
