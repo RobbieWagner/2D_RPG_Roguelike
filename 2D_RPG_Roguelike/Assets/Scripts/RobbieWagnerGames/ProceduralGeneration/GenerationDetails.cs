@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace RobbieWagnerGames.ProcGen
 {
@@ -14,5 +15,8 @@ namespace RobbieWagnerGames.ProcGen
         public Dictionary<int, List<int>> belowAllowList;
         public Dictionary<int, List<int>> leftAllowList;
         public Dictionary<int, List<int>> rightAllowList;
+
+        // key = possibility, value = weight (default 1 spawn chance)
+        public Dictionary<int, int> weights;
     }
 }
