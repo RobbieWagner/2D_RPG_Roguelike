@@ -12,7 +12,7 @@ public class CharacterMovement2D : MonoBehaviour
     public bool canMove = true;
     [HideInInspector] public bool moving = false;
     private UnitAnimationState currentAnimationState;
-    private PlayerInputActions inputActions;
+    private PlayerMovementActions inputActions;
     private Vector2 movementVector = Vector2.zero;
     [SerializeField] private float currentWalkSpeed;
 
@@ -25,7 +25,10 @@ public class CharacterMovement2D : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
+        inputActions = new PlayerMovementActions();
+        inputActions.Enable();
+        inputActions.Movement.Move.performed += OnMove;
+        inputActions.Movement.Move.canceled += StopPlayer;
         colliders = new HashSet<Collider2D>();
     }
 
@@ -47,11 +50,11 @@ public class CharacterMovement2D : MonoBehaviour
         }
     }
 
-    private void OnMove(InputValue inputValue)
+    private void OnMove(InputAction.CallbackContext context)
     {
         if(canMove)
         {
-            Vector2 input = inputValue.Get<Vector2>();
+            Vector2 input = context.ReadValue<Vector2>();
 
             if(movementVector.x != input.x && input.x != 0f)
             {
@@ -94,6 +97,11 @@ public class CharacterMovement2D : MonoBehaviour
         movementVector = Vector3.zero;
         moving = false;
         if(footstepAudioSource != null) StopMovementSounds();
+    }
+
+    public void StopPlayer(InputAction.CallbackContext context)
+    {
+        StopPlayer();
     }
 
     public void CeasePlayerMovement()
