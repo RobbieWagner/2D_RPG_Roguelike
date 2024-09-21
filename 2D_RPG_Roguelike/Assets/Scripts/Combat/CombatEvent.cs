@@ -31,7 +31,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 CombatManagerBase.Instance.UnsubscribeEventFromCombatEventHandler(this, eventTrigger);
         }
 
-        public IEnumerator InvokeCombatEvent()
+        public virtual IEnumerator InvokeCombatEvent()
         {
             yield return StartCoroutine(InvokeEvent());
         }

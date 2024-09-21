@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -18,8 +19,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
     public partial class CombatManagerBase : MonoBehaviour
     {
-        public static Action OnCombatPhaseChange;
+        [SerializeField] private DebugLogSequenceEvent debugSequenceEventPrefab;
 
+        public static Action<CombatPhase> OnCombatPhaseChange = (CombatPhase phase) => { };
+        private Coroutine phaseChangeCoroutine;
         private CombatPhase currentCombatPhase = CombatPhase.NONE;
         public CombatPhase CurrentCombatPhase
         {
@@ -29,12 +32,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
             set 
             {
-                if(currentCombatPhase == value)
+                if(currentCombatPhase == value || phaseChangeCoroutine != null)
                     return;
-                currentCombatPhase = value;
 
+                phaseChangeCoroutine = StartCoroutine(SetCombatPhaseCo(value));
             }
         }
+
+        [HideInInspector] public CombatConfiguration currentCombat = null;
 
         public static CombatManagerBase Instance { get; private set; }
         private void Awake()
@@ -43,7 +48,131 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 Destroy(gameObject);
             else
                 Instance = this;
+
+            SetupCombatEventHandlers();
+
+            foreach (CombatEventTriggerType eventType in Enum.GetValues(typeof(CombatEventTriggerType)))
+            {
+                SubscribeEventToCombatEventHandler(Instantiate(debugSequenceEventPrefab, transform), eventType);
+                debugSequenceEventPrefab.message = eventType.ToString();
+            }
+
+            StartCombat(null);
         }
 
+        public virtual bool StartCombat(CombatConfiguration combatConfiguration)
+        {
+            currentCombat = combatConfiguration;
+            OnCombatPhaseChange += StartCombatPhase;
+            CurrentCombatPhase = CombatPhase.SETUP;
+            return true;
+        }
+
+        public virtual bool EndCombat()
+        {
+            currentCombat = null;
+            OnCombatPhaseChange -= StartCombatPhase;
+            CurrentCombatPhase = CombatPhase.NONE;
+            return true;
+        }
+
+        protected virtual void StartCombatPhase(CombatPhase phase)
+        {
+            Debug.Log($"to {phase}");
+            switch (phase)
+            {
+                case CombatPhase.SETUP:
+                    StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.SETUP_STARTED, () => { StartCoroutine(SetupCombat()); }));
+                    break;
+                case CombatPhase.ACTION_SELECTION:
+                    StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.SELECTION_PHASE_STARTED, () => { StartCoroutine(HandleSelectionPhase()); }));
+                    break;
+                case CombatPhase.ACTION_EXECUTION:
+                    StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.EXECUTION_PHASE_STARTED, () => { StartCoroutine(HandleExecutionPhase()); }));
+                    break;
+                case CombatPhase.WIN:
+                    StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.COMBAT_WON, () => { StartCoroutine(HandleWinState()); }));
+                    break;
+                case CombatPhase.LOSE:
+                    StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.COMBAT_LOST, () => { StartCoroutine(HandleLoseState()); }));
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid combat phase used {phase}");
+            }
+        }
+
+        protected virtual IEnumerator SetupCombat()
+        {
+            //Debug.Log("Setting up Combat");
+            yield return new WaitForSeconds(2f);
+            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
+        }
+
+        protected virtual IEnumerator HandleSelectionPhase()
+        {
+            //Debug.Log("Handle selection state");
+            yield return new WaitForSeconds(2f);
+            CurrentCombatPhase = CombatPhase.ACTION_EXECUTION;
+        }
+
+        protected virtual IEnumerator HandleExecutionPhase()
+        {
+            //Debug.Log("Handle execution state");
+            yield return new WaitForSeconds(2f);
+            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
+        }
+
+        protected virtual IEnumerator HandleWinState()
+        {
+            //Debug.Log("Handle Win State");
+            yield return new WaitForSeconds(2f);
+        }
+
+        protected virtual IEnumerator HandleLoseState()
+        {
+            //Debug.Log("Handle Lose State");
+            yield return new WaitForSeconds(2f);
+        }
+
+        public IEnumerator SetCombatPhaseCo(CombatPhase phase)
+        {
+            // First, end the current phase of combat (Check for events that trigger)
+            yield return StartCoroutine(EndCurrentPhase());
+
+            // switch the phases
+            currentCombatPhase = phase;
+            OnCombatPhaseChange?.Invoke(currentCombatPhase);
+
+            Debug.Log($"complete change {phase}");
+            phaseChangeCoroutine = null;
+        }
+
+        protected virtual IEnumerator EndCurrentPhase()
+        {
+            Debug.Log($"from {currentCombatPhase}");
+            switch (currentCombatPhase)
+            {
+                case CombatPhase.SETUP:
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.COMBAT_STARTED));
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.SETUP_COMPLETE));
+                    break;
+                case CombatPhase.ACTION_SELECTION:
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.SELECTION_PHASE_ENDED));
+                    break;
+                case CombatPhase.ACTION_EXECUTION:
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.EXECUTION_PHASE_ENDED));
+                    break;
+                case CombatPhase.WIN:
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.COMBAT_TERMINATED));
+                    break;
+                case CombatPhase.LOSE:
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.COMBAT_TERMINATED));
+                    break;
+                case CombatPhase.NONE:
+                    break;
+                default:
+                    throw new NotImplementedException($"Functionality for combat phase {currentCombatPhase} is not implemented for the current kind of combat!!");
+            }
+        }
     }
 }

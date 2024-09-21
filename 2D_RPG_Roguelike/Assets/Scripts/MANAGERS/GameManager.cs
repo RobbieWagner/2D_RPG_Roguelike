@@ -14,7 +14,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
     }
     public class GameManager : MonoBehaviour
     {
-        public static Action OnGameModeChanged = () => { };
+        public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
         private GameMode currentGameMode = GameMode.NONE;
         public GameMode CurrentGameMode
         {
@@ -27,7 +27,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 if (value == currentGameMode)
                     return;
                 currentGameMode = value;
-
+                OnGameModeChanged?.Invoke(currentGameMode);
             }
         }
 

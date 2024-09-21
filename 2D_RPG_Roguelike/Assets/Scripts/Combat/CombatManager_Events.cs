@@ -9,19 +9,22 @@ namespace RobbieWagnerGames.TurnBasedCombat
 {
     public enum CombatEventTriggerType
     {
-        None = -1,
-        SetupComplete = 0,
-        CombatStarted = 1,
-        TurnStarted = 2,
-        SelectionPhaseStarted = 3,
-        SelectionPhaseEnded = 4,
-        ExecutionPhaseStarted = 5,
-        ExecutionPhaseEnded = 6,
-        TurnEnded = 7,
-        CombatResolved = 8,
-        CombatWon = 9, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
-        CombatLost = 10, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
-        CombatTerminated = 11,
+        NONE = -1,
+
+        SETUP_STARTED = 1,
+        SETUP_COMPLETE = 2,
+
+        COMBAT_STARTED = 3,
+
+        SELECTION_PHASE_STARTED = 4,
+        SELECTION_PHASE_ENDED = 5,
+
+        EXECUTION_PHASE_STARTED = 6,
+        EXECUTION_PHASE_ENDED = 7,
+
+        COMBAT_WON = 9, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
+        COMBAT_LOST = 10, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
+        COMBAT_TERMINATED = 11,
     }
 
     /// <summary>
@@ -31,16 +34,24 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         [Space(10)]
         [Header("Combat Events")]
-        [SerializeField][SerializedDictionary("Trigger", "Handler")] private SerializedDictionary<CombatEventTriggerType, CombatEventHandler> combatEventHandlers;
+        private Dictionary<CombatEventTriggerType, CombatEventHandler> combatEventHandlers = new Dictionary<CombatEventTriggerType, CombatEventHandler>();
+        [SerializeField] private CombatEventHandler combatEventHandlerPrefab;
+        [SerializeField] private Transform eventHandlerParent;
         [Space(10)]
 
         //private bool isInterrupted = false;
         private Coroutine currentInterruptionCoroutine;
         public delegate IEnumerator CombatCoroutineEventHandler();
 
+        private void SetupCombatEventHandlers()
+        {
+            foreach (CombatEventTriggerType eventType in Enum.GetValues(typeof(CombatEventTriggerType)))
+                combatEventHandlers.Add(eventType, Instantiate(combatEventHandlerPrefab, eventHandlerParent));
+        }
+
         public void SubscribeEventToCombatEventHandler(CombatEvent combatEvent, CombatEventTriggerType triggerType)
         {
-            Debug.Log("attempt to subscribe");
+           // Debug.Log("attempt to subscribe");
             if (combatEventHandlers.Keys.Contains(triggerType))
                 combatEventHandlers[triggerType].Subscribe(combatEvent, combatEvent.priority);
             else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combat event");
@@ -53,11 +64,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combat event");
         }
 
-        public IEnumerator InvokeCombatEventHandler(CombatEventTriggerType triggerType)
+        public IEnumerator WaitForCombatEvents(CombatEventTriggerType triggerType, Action callback)
+        {
+            yield return StartCoroutine(RunCombatEvents(triggerType));
+            callback?.Invoke();
+        }
+
+        public IEnumerator RunCombatEvents(CombatEventTriggerType triggerType)
         {
             if (combatEventHandlers.Keys.Contains(triggerType))
                 yield return StartCoroutine(combatEventHandlers[triggerType].Invoke());
-            else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combat event");
+            
         }
 
         protected virtual IEnumerator InvokeCombatEvent(CombatCoroutineEventHandler handler, bool yield = true)

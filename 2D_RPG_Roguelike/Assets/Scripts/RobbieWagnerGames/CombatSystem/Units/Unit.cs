@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RobbieWagnerGames;
 
 namespace RobbieWagnerGames.StrategyCombat
 {
@@ -16,12 +15,11 @@ namespace RobbieWagnerGames.StrategyCombat
     [Serializable]
     public enum UnitStat
     {
-        Strength = 0,
-        Defense = 1,
-        Agility = 2,
-        Brain = 3,
-        Care = 4,
-        Magic = 5,
+        BRAWN = 0,
+        AGILITY = 1,
+        LORE = 2,
+        HEART = 3,
+        OCCULT = 4,
     }
 
     public class Unit : MonoBehaviour
@@ -151,12 +149,11 @@ namespace RobbieWagnerGames.StrategyCombat
 
         public void ChangeStatValue(UnitStat stat, int amount)
         {
-            if(stat == UnitStat.Strength) strength.StatValue += amount;
-            else if(stat == UnitStat.Defense) defense.StatValue += amount;
-            else if(stat == UnitStat.Agility) agility.StatValue += amount;
-            else if(stat == UnitStat.Brain) brain.StatValue += amount;
-            else if(stat == UnitStat.Care) care.StatValue += amount;
-            else if(stat == UnitStat.Magic) magic.StatValue += amount;
+            if(stat == UnitStat.BRAWN) strength.StatValue += amount;
+            else if(stat == UnitStat.AGILITY) agility.StatValue += amount;
+            else if(stat == UnitStat.LORE) brain.StatValue += amount;
+            else if(stat == UnitStat.HEART) care.StatValue += amount;
+            else if(stat == UnitStat.OCCULT) magic.StatValue += amount;
         }
 
         public virtual IEnumerator DownUnit()
