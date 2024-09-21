@@ -12,6 +12,7 @@ namespace RobbieWagnerGames.ProcGen
         ROAD
     }
 
+    [System.Serializable]
     public class ProcGenCell
     {
         public int value = -1;

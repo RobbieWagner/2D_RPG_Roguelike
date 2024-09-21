@@ -43,12 +43,12 @@ namespace RobbieWagnerGames.ProcGen
             ProcGenCell firstCell = grid[firstY][firstX];
 
 
-            SetCell(ref grid, details, firstCell, rand);
+            CollapseCell(ref grid, details, firstCell, rand);
 
             // fill out the rest of the grid
             while (CountUnsetCells(grid) > 0 && !grid.SelectMany(x => x).Where(x => x.options.Count <= 0).Any())
             {
-                SetNextCell(ref grid, details, rand);
+                CollapseNextCell(ref grid, details, rand);
             }
 
             if (grid.SelectMany(x => x).Where(x => x.options.Count <= 0).Any())
@@ -125,7 +125,7 @@ namespace RobbieWagnerGames.ProcGen
 
             while (CountUnsetCells(grid) > 0 && !grid.SelectMany(x => x).Where(x => x.options.Count <= 0).Any())
             {
-                SetNextCell(ref grid, details, rand);
+                CollapseNextCell(ref grid, details, rand);
             }
 
             if (grid.SelectMany(x => x).Where(x => x.options.Count <= 0).Any())
@@ -147,34 +147,41 @@ namespace RobbieWagnerGames.ProcGen
         }
 
         #region Generation
-        private static void SetNextCell(ref List<List<ProcGenCell>> grid, GenerationDetails details, System.Random rand)
+        private static void CollapseNextCell(ref List<List<ProcGenCell>> grid, GenerationDetails details, System.Random rand)
         {
             ProcGenCell nextCell = grid.SelectMany(x => x)
                             .Where(cell => cell.value == -1)
                             .OrderBy(x => x.options.Count).FirstOrDefault();
 
-            SetCell(ref grid, details, nextCell, rand);
+            CollapseCell(ref grid, details, nextCell, rand);
         }
 
-        public static void SetCell(ref List<List<ProcGenCell>> grid, GenerationDetails details, ProcGenCell cell, System.Random rand)
+        public static void CollapseCell(ref List<List<ProcGenCell>> grid, GenerationDetails details, ProcGenCell cell, System.Random rand)
         {
             int cellValue = cell.options[rand.Next(0, cell.options.Count)];
+
+            CollapseCell(ref grid, details, cell, rand, cellValue);
+        }
+
+        public static void CollapseCell(ref List<List<ProcGenCell>> grid, GenerationDetails details, ProcGenCell cell, System.Random rand, int cellValue)
+        {
             cell.value = cellValue;
 
             //Update adjacent tiles            
-            ProcGenCell? above = cell.y < grid.Count-1 ? grid[cell.y+1][cell.x] : null;
-            ProcGenCell? below = cell.y > 0 ? grid[cell.y-1][cell.x] : null;
-            ProcGenCell? left = cell.x > 0 ? grid[cell.y][cell.x-1] : null;
-            ProcGenCell? right = cell.x < grid[0].Count-1 ? grid[cell.y][cell.x+1] : null;
+            ProcGenCell? above = cell.y < grid.Count - 1 ? grid[cell.y + 1][cell.x] : null;
+            ProcGenCell? below = cell.y > 0 ? grid[cell.y - 1][cell.x] : null;
+            ProcGenCell? left = cell.x > 0 ? grid[cell.y][cell.x - 1] : null;
+            ProcGenCell? right = cell.x < grid[0].Count - 1 ? grid[cell.y][cell.x + 1] : null;
 
             if (above != null)
-                above.options = details.aboveAllowList[cellValue].Where(x => above.options.Contains(x)).ToList();
+                above.options = above.options.Where(x => details.aboveAllowList[cellValue].Contains(x)).ToList();
+                //details.aboveAllowList[cellValue].Where(x => above.options.Contains(x)).ToList();
             if (below != null)
-                below.options = details.belowAllowList[cellValue].Where(x => below.options.Contains(x)).ToList();
+                below.options = below.options.Where(x => details.belowAllowList[cellValue].Contains(x)).ToList();
             if (left != null)
-                left.options = details.leftAllowList[cellValue].Where(x => left.options.Contains(x)).ToList();
+                left.options = left.options.Where(x => details.leftAllowList[cellValue].Contains(x)).ToList();
             if (right != null)
-                right.options = details.rightAllowList[cellValue].Where(x => right.options.Contains(x)).ToList();
+                right.options = right.options.Where(x => details.rightAllowList[cellValue].Contains(x)).ToList();
         }
         #endregion
     }
