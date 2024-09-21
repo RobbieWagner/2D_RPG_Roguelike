@@ -715,7 +715,7 @@ MonoBehaviour:
   seed: 4
   columns: 10
   rows: 12
-  cellSize: {x: 1, y: 1}
+  cellSize: {x: 5, y: 5}
   gridParent: {fileID: 760808458}
   aboveAllowList:
     _serializedList:
