@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PsychOutDestined
+namespace RobbieWagnerGames
 {
     public enum GroundType
     {
