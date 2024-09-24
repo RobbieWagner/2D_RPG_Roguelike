@@ -17,7 +17,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public void Subscribe(CombatEvent combatEvent, int priority = -1)
         {
             bool succeeded = combatEvents.TryAdd(combatEvent, priority);
-            if (!succeeded) Debug.LogWarning($"Could not add event: {combatEvent.gameObject.name}");
+            if (!succeeded && !combatEvents.ContainsKey(combatEvent)) 
+                Debug.LogWarning($"Could not add event: {combatEvent.gameObject.name}");
         }
 
         public void Unsubscribe(CombatEvent combatEvent)

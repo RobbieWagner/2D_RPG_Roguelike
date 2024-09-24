@@ -78,7 +78,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void StartCombatPhase(CombatPhase phase)
         {
-            Debug.Log($"to {phase}");
             switch (phase)
             {
                 case CombatPhase.SETUP:
@@ -143,18 +142,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
             currentCombatPhase = phase;
             OnCombatPhaseChange?.Invoke(currentCombatPhase);
 
-            Debug.Log($"complete change {phase}");
             phaseChangeCoroutine = null;
         }
 
         protected virtual IEnumerator EndCurrentPhase()
         {
-            Debug.Log($"from {currentCombatPhase}");
             switch (currentCombatPhase)
             {
                 case CombatPhase.SETUP:
-                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.COMBAT_STARTED));
                     yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.SETUP_COMPLETE));
+                    yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.COMBAT_STARTED));
                     break;
                 case CombatPhase.ACTION_SELECTION:
                     yield return StartCoroutine(RunCombatEvents(CombatEventTriggerType.SELECTION_PHASE_ENDED));

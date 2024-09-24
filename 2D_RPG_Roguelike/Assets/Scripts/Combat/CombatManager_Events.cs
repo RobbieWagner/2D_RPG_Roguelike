@@ -11,20 +11,20 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         NONE = -1,
 
-        SETUP_STARTED = 1,
-        SETUP_COMPLETE = 2,
+        SETUP_STARTED = 0,
+        SETUP_COMPLETE = 1,
 
-        COMBAT_STARTED = 3,
+        COMBAT_STARTED = 2,
 
-        SELECTION_PHASE_STARTED = 4,
-        SELECTION_PHASE_ENDED = 5,
+        SELECTION_PHASE_STARTED = 3,
+        SELECTION_PHASE_ENDED = 4,
 
-        EXECUTION_PHASE_STARTED = 6,
-        EXECUTION_PHASE_ENDED = 7,
+        EXECUTION_PHASE_STARTED = 5,
+        EXECUTION_PHASE_ENDED = 6,
 
-        COMBAT_WON = 9, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
-        COMBAT_LOST = 10, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
-        COMBAT_TERMINATED = 11,
+        COMBAT_WON = 7, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
+        COMBAT_LOST = 8, // IF EVENT NEEDS TO TRIGGER NO MATTER HOW COMBAT ENDS, USE COMBAT TERMINATED/RESOLVED INSTEAD
+        COMBAT_TERMINATED = 9,
     }
 
     /// <summary>
@@ -72,8 +72,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public IEnumerator RunCombatEvents(CombatEventTriggerType triggerType)
         {
-            if (combatEventHandlers.Keys.Contains(triggerType))
-                yield return StartCoroutine(combatEventHandlers[triggerType].Invoke());
+            // NOTE: FOR SOME REASON, ENUM IS OFF. ADDING 1 TO FIX THIS STRANGE ERROR, MAY NEED TO BE REVISITED
+            if (combatEventHandlers.Keys.Contains(triggerType + 1))
+                yield return StartCoroutine(combatEventHandlers[triggerType + 1].Invoke());
             
         }
 
