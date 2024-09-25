@@ -32,10 +32,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             InstantiateEnemies(currentCombat.enemyPrefabs);
 
-            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
+            CompleteSetup();
         }
 
-        private List<Ally> InstantiateAlliesFromSave()
+        protected List<Ally> InstantiateAlliesFromSave()
         {
             List<SerializableAlly> savedAllies = JsonDataService.Instance.LoadData<List<SerializableAlly>>(StaticGameStats.partySavePath , null);
             if (savedAllies != null)
@@ -54,7 +54,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 throw new NullReferenceException("Error starting combat: could not find party data!!");
         }
 
-        private List<Ally> InstantiateAllies(List<Ally> allyPrefabs)
+        protected List<Ally> InstantiateAllies(List<Ally> allyPrefabs)
         {
             List<Ally> newAllies = new List<Ally>();
             for(int i = 0; i < allyPrefabs.Count; i++)
@@ -66,7 +66,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             return newAllies;
         }
 
-        private List<Enemy> InstantiateEnemies(List<Enemy> enemyPrefabs)
+        protected List<Enemy> InstantiateEnemies(List<Enemy> enemyPrefabs)
         {
             List<Enemy> newAllies = new List<Enemy>();
             for (int i = 0; i < enemyPrefabs.Count; i++)
@@ -76,6 +76,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 newAllies.Add(enemyInstance);
             }
             return newAllies;
+        }
+
+        protected virtual void CompleteSetup()
+        {
+            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
         }
     }
 }

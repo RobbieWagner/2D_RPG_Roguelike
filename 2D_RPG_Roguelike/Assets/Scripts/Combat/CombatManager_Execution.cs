@@ -15,6 +15,30 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         [Space(10)]
         [Header("Action Execution")]
+        [SerializeField] protected CombatExecutionUI executionUI;
+        protected Unit executingUnit;
         protected CombatAction currentExecutingAction;
+
+        protected virtual IEnumerator HandleExecutionPhase()
+        {
+            executingUnit = selectingUnit;
+            currentExecutingAction = currentSelectedAction;
+
+            yield return StartCoroutine(ExecuteCombatAction(currentExecutingAction, executingUnit, targets));
+
+            yield return new WaitForSeconds(2f);
+
+            EndExecutionPhase();
+        }
+
+        protected virtual IEnumerator ExecuteCombatAction(CombatAction currentExecutingAction, Unit executingUnit, List<Unit> targets)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void EndExecutionPhase()
+        {
+            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
+        }
     }
 }

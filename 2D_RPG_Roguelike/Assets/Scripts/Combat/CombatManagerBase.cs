@@ -111,20 +111,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
         }
 
-        protected virtual IEnumerator HandleSelectionPhase()
-        {
-            //Debug.Log("Handle selection state");
-            yield return new WaitForSeconds(2f);
-            CurrentCombatPhase = CombatPhase.ACTION_EXECUTION;
-        }
-
-        protected virtual IEnumerator HandleExecutionPhase()
-        {
-            //Debug.Log("Handle execution state");
-            yield return new WaitForSeconds(2f);
-            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
-        }
-
         protected virtual IEnumerator HandleWinState()
         {
             //Debug.Log("Handle Win State");

@@ -28,7 +28,7 @@ namespace RobbieWagnerGames
        
         public static string GetCombatActionResourcePath(CombatAction action)
         {
-            return action.actionType == ActionType.NONE ? $"{action.name}" : $"{action.actionType}/{action.name}";
+            return "Actions/" + (action.actionType == ActionType.NONE ? $"{action.name}" : $"{action.actionType}/{action.name}");
         }
         #endregion
 
