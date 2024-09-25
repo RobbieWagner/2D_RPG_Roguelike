@@ -10,7 +10,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public override IEnumerator InvokeCombatEvent()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.25f);
             Debug.Log(message);
         }
     }

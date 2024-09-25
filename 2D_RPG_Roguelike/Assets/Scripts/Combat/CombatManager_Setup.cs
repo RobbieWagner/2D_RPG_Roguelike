@@ -30,7 +30,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else
                 allyInstances = InstantiateAllies(currentCombat.allyPrefabs);
 
-            InstantiateEnemies(currentCombat.enemyPrefabs);
+            enemyInstances = InstantiateEnemies(currentCombat.enemyPrefabs);
 
             CompleteSetup();
         }
@@ -68,14 +68,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected List<Enemy> InstantiateEnemies(List<Enemy> enemyPrefabs)
         {
-            List<Enemy> newAllies = new List<Enemy>();
+            List<Enemy> newEnemies = new List<Enemy>();
             for (int i = 0; i < enemyPrefabs.Count; i++)
             {
                 Enemy enemyInstance = Instantiate(enemyPrefabs[i], transform);
                 enemyInstance.transform.position = enemyPositionOffsets[i];
-                newAllies.Add(enemyInstance);
+                newEnemies.Add(enemyInstance);
             }
-            return newAllies;
+            return newEnemies;
         }
 
         protected virtual void CompleteSetup()

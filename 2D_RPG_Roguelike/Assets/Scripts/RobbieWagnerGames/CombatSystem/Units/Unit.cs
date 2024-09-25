@@ -28,6 +28,7 @@ namespace RobbieWagnerGames.StrategyCombat
         [HideInInspector] public bool isUnitFighting = true;
 
         [SerializeField] public List<CombatAction> unitActions;
+        public bool hasActedThisTurn = false;
         [HideInInspector] public CombatAction currentAction;
         [HideInInspector] public List<Unit> selectedTargets;
 

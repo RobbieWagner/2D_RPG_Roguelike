@@ -1,7 +1,9 @@
+using RobbieWagnerGames.StrategyCombat;
 using RobbieWagnerGames.StrategyCombat.Units;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,6 +27,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected List<Ally> allyInstances = new List<Ally>();
         protected List<Enemy> enemyInstances = new List<Enemy>();
+        protected bool IsUnitInCombatAlly(Unit unit) => unit.GetType() == typeof(Ally);
+        protected bool IsUnitInCombatEnemy(Unit unit) => unit.GetType() == typeof(Enemy);
 
         public static Action<CombatPhase> OnCombatPhaseChange = (CombatPhase phase) => { };
         private Coroutine phaseChangeCoroutine;
@@ -160,6 +164,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 default:
                     throw new NotImplementedException($"Functionality for combat phase {currentCombatPhase} is not implemented for the current kind of combat!!");
             }
+        }
+
+        protected List<Unit> GetUnitsByInitiative()
+        {
+            List<Unit> result = new List<Unit>();
+            result.AddRange(enemyInstances);
+            result.AddRange(allyInstances);
+            return result.OrderBy(x => x.GetInitiativeBoost()).ToList();
         }
     }
 }

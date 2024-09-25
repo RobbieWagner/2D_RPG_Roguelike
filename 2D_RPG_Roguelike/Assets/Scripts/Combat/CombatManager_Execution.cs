@@ -1,10 +1,8 @@
+using RobbieWagnerGames.StrategyCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using AYellowpaper.SerializedCollections;
-using RobbieWagnerGames.StrategyCombat;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -26,14 +24,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             yield return StartCoroutine(ExecuteCombatAction(currentExecutingAction, executingUnit, targets));
 
-            yield return new WaitForSeconds(2f);
+            executingUnit.hasActedThisTurn = true;
+            executingUnit.GetComponentInChildren<SpriteRenderer>().color = Color.green;
 
             EndExecutionPhase();
         }
 
         protected virtual IEnumerator ExecuteCombatAction(CombatAction currentExecutingAction, Unit executingUnit, List<Unit> targets)
         {
-            throw new NotImplementedException();
+            Debug.Log(currentExecutingAction.actionName);
+            yield return null;
         }
 
         protected virtual void EndExecutionPhase()
