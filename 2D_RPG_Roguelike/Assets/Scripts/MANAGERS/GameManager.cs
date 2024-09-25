@@ -1,6 +1,5 @@
+using RobbieWagnerGames.Utilities.SaveData;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -38,6 +37,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 Destroy(gameObject);
             else
                 Instance = this;
+
+            StaticGameStats.persistentDataPath = Application.persistentDataPath;
+            new JsonDataService();
         }
     }
 }

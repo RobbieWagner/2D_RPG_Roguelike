@@ -36,7 +36,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
         public SerializableAlly() {}
 
-        public void SetAllyStats(ref Ally allyInstance)
+        public void InitializeAlly(ref Ally allyInstance)
         {
             allyInstance.InitializeStats(stats);
             allyInstance.unitName = UnitName;

@@ -19,7 +19,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
     public partial class CombatManagerBase : MonoBehaviour
     {
+        [SerializeField] private bool debugEnabled = false;
         [SerializeField] private DebugLogSequenceEvent debugSequenceEventPrefab;
+        [SerializeField] private CombatConfiguration debugCombatConfiguration;
 
         protected List<Ally> allyInstances = new List<Ally>();
         protected List<Enemy> enemyInstances = new List<Enemy>();
@@ -54,13 +56,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             SetupCombatEventHandlers();
 
+            if (debugEnabled)
+                StartDebugCombat();
+        }
+
+        private void StartDebugCombat()
+        {
             foreach (CombatEventTriggerType eventType in Enum.GetValues(typeof(CombatEventTriggerType)))
             {
                 SubscribeEventToCombatEventHandler(Instantiate(debugSequenceEventPrefab, transform), eventType);
                 debugSequenceEventPrefab.message = eventType.ToString();
             }
 
-            StartCombat(null);
+            StartCombat(debugCombatConfiguration);
         }
 
         public virtual bool StartCombat(CombatConfiguration combatConfiguration)

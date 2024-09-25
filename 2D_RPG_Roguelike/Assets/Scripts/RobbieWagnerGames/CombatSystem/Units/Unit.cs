@@ -74,27 +74,6 @@ namespace RobbieWagnerGames.StrategyCombat
         public delegate void OnHPLoweredDelegate(int hpDifference, Unit unit, Color color);
         public event OnHPLoweredDelegate OnHPLowered;
 
-        //[SerializeField] protected int baseMP = 10;
-        //protected int maxMP;
-
-        //protected int mp;
-        //public int MP
-        //{
-        //    get {return mp;}
-        //    set 
-        //    {
-        //        if(value == mp) return;    
-        //        mp = value;
-        //        if(mp > maxMP) mp = maxMP;
-        //        if(mp < 0) mp = 0;
-
-        //        OnMPChanged?.Invoke(mp);
-        //    }
-        //}
-
-        //public delegate void OnMPChangedDelegate(int mp);
-        //public event OnMPChangedDelegate OnMPChanged;
-
         protected virtual void Awake()
         {
             if(spriteRenderer == null)
@@ -110,7 +89,6 @@ namespace RobbieWagnerGames.StrategyCombat
             InitializeStats();
 
             InitializeMaxHP();
-            //InitializeMaxMP();
         }
 
         public virtual void InitializeStats()
@@ -175,7 +153,6 @@ namespace RobbieWagnerGames.StrategyCombat
         public void UnselectAction()
         {
             currentAction = null;
-            //CombatManager.Instance.SelectingAlly--;
         }
 
         public void SelectTargets(List<Unit> targets)
@@ -212,12 +189,6 @@ namespace RobbieWagnerGames.StrategyCombat
         public int GetInitiativeBoost() {return stats[StatType.AGILITY].CurrentValue;}
         public int GetAccuracyBoost() { return stats[StatType.LORE].CurrentValue; }
         public int GetBoonBoost() { return stats[StatType.HEART].CurrentValue; }
-        //public int InitializeMaxMP() 
-        //{
-        //    maxMP = baseMP + magic.StatValue;
-        //    return care.StatValue;
-        //}
-        //public int GetMaxMP() {return maxMP;}
 
         #region derived stat getters;
         public int GetCritChance() { return (stats[StatType.BRAWN].CurrentValue + stats[StatType.OCCULT].CurrentValue / 2);}
@@ -236,7 +207,7 @@ namespace RobbieWagnerGames.StrategyCombat
                 bool nameAllowed = true;
                 foreach(char c in name)
                 {
-                    if(!Char.IsLetterOrDigit(c) && !allowList.Contains(c))
+                    if(!char.IsLetterOrDigit(c) && !allowList.Contains(c))
                     {
                         nameAllowed = false;
                         break;

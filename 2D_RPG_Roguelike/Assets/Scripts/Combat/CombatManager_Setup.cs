@@ -1,7 +1,9 @@
 using RobbieWagnerGames.StrategyCombat.Units;
+using RobbieWagnerGames.Utilities.SaveData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -15,6 +17,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [Header("Combat Setup")]
         public List<Vector2> allyPositionOffsets;
         public List<Vector2> enemyPositionOffsets;
+        public Ally baseAllyPrefab;
 
         // NOTE: ASSUMES ALLIES NEED TO BE INSTANTIATED
         protected virtual IEnumerator SetupCombat()
@@ -23,31 +26,56 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return null;
 
             if (currentCombat.pullAlliesFromSave)
-                InstantiateAllies(PullAlliesFromSave(), allyPositionOffsets);
+                allyInstances = InstantiateAlliesFromSave();
             else
-                InstantiateAllies(currentCombat.allyPrefabs, allyPositionOffsets);
+                allyInstances = InstantiateAllies(currentCombat.allyPrefabs);
 
-            InstantiateEnemies(currentCombat.enemyPrefabs, enemyPositionOffsets);
+            InstantiateEnemies(currentCombat.enemyPrefabs);
 
             CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
         }
 
-        private List<Ally> PullAlliesFromSave()
+        private List<Ally> InstantiateAlliesFromSave()
         {
-            throw new NotImplementedException();
+            List<SerializableAlly> savedAllies = JsonDataService.Instance.LoadData<List<SerializableAlly>>(StaticGameStats.partySavePath , null);
+            if (savedAllies != null)
+            {
+                List<Ally> result = new List<Ally>();
+                for(int i = 0; i < savedAllies.Count; i++)
+                {
+                    SerializableAlly serializableAlly = savedAllies[i];
+                    Ally newAlly = Instantiate(baseAllyPrefab, transform);
+                    serializableAlly.InitializeAlly(ref newAlly);
+                    result.Add(newAlly);
+                }
+                return result;
+            }
+            else
+                throw new NullReferenceException("Error starting combat: could not find party data!!");
         }
 
-        private void InstantiateAllies(List<Ally> allyPrefabs, List<Vector2> allyPositionOffsets)
+        private List<Ally> InstantiateAllies(List<Ally> allyPrefabs)
         {
+            List<Ally> newAllies = new List<Ally>();
             for(int i = 0; i < allyPrefabs.Count; i++)
             {
-
+                Ally allyInstance = Instantiate(allyPrefabs[i], transform);
+                allyInstance.transform.position = allyPositionOffsets[i];
+                newAllies.Add(allyInstance);
             }
+            return newAllies;
         }
 
-        private void InstantiateEnemies(List<Enemy> enemyPrefabs, List<Vector2> enemyPositionOffsets)
+        private List<Enemy> InstantiateEnemies(List<Enemy> enemyPrefabs)
         {
-            throw new NotImplementedException();
+            List<Enemy> newAllies = new List<Enemy>();
+            for (int i = 0; i < enemyPrefabs.Count; i++)
+            {
+                Enemy enemyInstance = Instantiate(enemyPrefabs[i], transform);
+                enemyInstance.transform.position = enemyPositionOffsets[i];
+                newAllies.Add(enemyInstance);
+            }
+            return newAllies;
         }
     }
 }

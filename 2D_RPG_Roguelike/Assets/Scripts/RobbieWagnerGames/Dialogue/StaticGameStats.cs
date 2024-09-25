@@ -25,12 +25,16 @@ namespace RobbieWagnerGames
         public static string combatSoundEffectsFilePath = "Sounds/Combat/SoundEffects/";
         //TODO: find way to load scene in build!!
         public static string sceneFilePath = "Assets/Scenes/Combat/";
-        public static string persistentDataPath;
-
+       
         public static string GetCombatActionResourcePath(CombatAction action)
         {
             return action.actionType == ActionType.NONE ? $"{action.name}" : $"{action.actionType}/{action.name}";
         }
+        #endregion
+
+        #region Save Data
+        public static string persistentDataPath;
+        public static string partySavePath = "player_party.json";
         #endregion
     }
 }
