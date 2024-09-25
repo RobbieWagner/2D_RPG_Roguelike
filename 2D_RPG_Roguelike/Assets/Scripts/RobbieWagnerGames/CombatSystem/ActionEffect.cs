@@ -46,7 +46,7 @@ namespace RobbieWagnerGames.StrategyCombat
     {
         [Header("Stat Raise")]
         [SerializeField] private int power = 1;
-        [SerializeField] public UnitStat stat;
+        [SerializeField] public StatType stat;
         public int CalculateStatChange(Unit user, Unit target)
         {
             int statChange = power;
@@ -60,7 +60,7 @@ namespace RobbieWagnerGames.StrategyCombat
     {
         [Header("Stat Lower")]
         [SerializeField] private int power = 1;
-        [SerializeField] public UnitStat stat;
+        [SerializeField] public StatType stat;
 
         public int CalculateStatChange(Unit user, Unit target)
         {

@@ -1,7 +1,9 @@
+using AYellowpaper.SerializedCollections;
 using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RobbieWagnerGames.StrategyCombat
@@ -12,38 +14,15 @@ namespace RobbieWagnerGames.StrategyCombat
         Classless = 0, 
     }
 
-    [Serializable]
-    public enum UnitStat
-    {
-        BRAWN = 0,
-        AGILITY = 1,
-        LORE = 2,
-        HEART = 3,
-        OCCULT = 4,
-    }
-
     public class Unit : MonoBehaviour
     {
-        [SerializeField] protected string unitName;
+        [SerializeField] public string unitName;
         [SerializeField] protected UnitClass unitClass;
         [SerializeField] public UnitAnimator unitAnimator;
 
-        [SerializeField] protected int baseHP = 35;
-        protected int maxHP;
-        
         #region Unit Stats
-        public UnitStatInfo strength;
-        [SerializeField] public int baseStrength = 10;
-        public UnitStatInfo defense;
-        [SerializeField] public int baseDefense = 10;
-        public UnitStatInfo agility;
-        [SerializeField] public int baseAgility = 10;
-        public UnitStatInfo brain;
-        [SerializeField] public int baseBrain = 10;
-        public UnitStatInfo care;
-        [SerializeField] public int baseCare = 10;
-        public UnitStatInfo magic;
-        [SerializeField] public int baseMagic = 10;
+        [SerializeField][SerializedDictionary("Stat", "Info")] SerializedDictionary<StatType, UnitStat> stats = new SerializedDictionary<StatType, UnitStat>();
+        public SerializedDictionary<StatType, UnitStat> Stats => stats;
         #endregion
 
         [HideInInspector] public bool isUnitFighting = true;
@@ -54,6 +33,8 @@ namespace RobbieWagnerGames.StrategyCombat
 
         [SerializeField] protected SpriteRenderer spriteRenderer;
 
+        [SerializeField] protected int unitBaseHP;
+        protected int maxHP;
         protected int hp;
         public int HP
         {
@@ -93,26 +74,26 @@ namespace RobbieWagnerGames.StrategyCombat
         public delegate void OnHPLoweredDelegate(int hpDifference, Unit unit, Color color);
         public event OnHPLoweredDelegate OnHPLowered;
 
-        [SerializeField] protected int baseMP = 10;
-        protected int maxMP;
+        //[SerializeField] protected int baseMP = 10;
+        //protected int maxMP;
 
-        protected int mp;
-        public int MP
-        {
-            get {return mp;}
-            set 
-            {
-                if(value == mp) return;    
-                mp = value;
-                if(mp > maxMP) mp = maxMP;
-                if(mp < 0) mp = 0;
+        //protected int mp;
+        //public int MP
+        //{
+        //    get {return mp;}
+        //    set 
+        //    {
+        //        if(value == mp) return;    
+        //        mp = value;
+        //        if(mp > maxMP) mp = maxMP;
+        //        if(mp < 0) mp = 0;
 
-                OnMPChanged?.Invoke(mp);
-            }
-        }
+        //        OnMPChanged?.Invoke(mp);
+        //    }
+        //}
 
-        public delegate void OnMPChangedDelegate(int hp);
-        public event OnMPChangedDelegate OnMPChanged;
+        //public delegate void OnMPChangedDelegate(int mp);
+        //public event OnMPChangedDelegate OnMPChanged;
 
         protected virtual void Awake()
         {
@@ -126,15 +107,31 @@ namespace RobbieWagnerGames.StrategyCombat
 
         public virtual void SetupUnit()
         {
-            strength.init(this, baseStrength);
-            agility.init(this, baseAgility);
-            defense.init(this, baseDefense);
-            brain.init(this, baseBrain);
-            care.init(this, baseCare);
-            magic.init(this, baseMagic);
+            InitializeStats();
 
             InitializeMaxHP();
-            InitializeMaxMP();
+            //InitializeMaxMP();
+        }
+
+        public virtual void InitializeStats()
+        {
+            foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+            {
+                if (!stats.ContainsKey(statType))
+                    stats.Add(statType, new UnitStat(statType));
+                stats[statType].OnStatSet += (UnitStat stat) => { Debug.Log($"{stat.UnitStatType}: {stat.CurrentValue}/{stat.BaseValue}"); };
+            }
+        }
+
+        public virtual void InitializeStats(List<UnitStat> newStats)
+        {
+            foreach(UnitStat stat in newStats)
+            {
+                if (stats.ContainsKey(stat.UnitStatType))
+                    stats[stat.UnitStatType] = stat;
+                else
+                    stats.Add(stat.UnitStatType, stat);
+            }
         }
 
         public void DealDamage(int amount)
@@ -147,13 +144,9 @@ namespace RobbieWagnerGames.StrategyCombat
             HP += amount;
         }
 
-        public void ChangeStatValue(UnitStat stat, int amount)
+        public void ChangeStatValue(StatType stat, int amount)
         {
-            if(stat == UnitStat.BRAWN) strength.StatValue += amount;
-            else if(stat == UnitStat.AGILITY) agility.StatValue += amount;
-            else if(stat == UnitStat.LORE) brain.StatValue += amount;
-            else if(stat == UnitStat.HEART) care.StatValue += amount;
-            else if(stat == UnitStat.OCCULT) magic.StatValue += amount;
+            stats[stat].CurrentValue = amount;
         }
 
         public virtual IEnumerator DownUnit()
@@ -205,27 +198,30 @@ namespace RobbieWagnerGames.StrategyCombat
 
         #region statGetters
         #region base stat getters
-        public int GetDamageBoost() {return strength.StatValue;}
+        public int GetDamageBoost() {return stats[StatType.BRAWN].CurrentValue;}
         public int InitializeMaxHP()
         {
-            maxHP = baseHP + defense.StatValue;
+            maxHP = unitBaseHP + stats[StatType.HEART].BaseValue;
             return maxHP;
         }
         public int GetMaxHP() {return maxHP;}
-        public int GetInitiativeBoost() {return agility.StatValue;}
-        public int GetAccuracyBoost() {return brain.StatValue;}
-        public int GetBoonBoost() {return care.StatValue;}
-        public int InitializeMaxMP() 
+        public int GetBaseStatValue(StatType stat)
         {
-            maxMP = baseMP + magic.StatValue;
-            return care.StatValue;
+            return stats[stat].BaseValue;
         }
-        public int GetMaxMP() {return maxMP;}
+        public int GetInitiativeBoost() {return stats[StatType.AGILITY].CurrentValue;}
+        public int GetAccuracyBoost() { return stats[StatType.LORE].CurrentValue; }
+        public int GetBoonBoost() { return stats[StatType.HEART].CurrentValue; }
+        //public int InitializeMaxMP() 
+        //{
+        //    maxMP = baseMP + magic.StatValue;
+        //    return care.StatValue;
+        //}
+        //public int GetMaxMP() {return maxMP;}
 
         #region derived stat getters;
-        public int GetCritChance() {return (strength.StatValue + agility.StatValue)/2;}
-        public int GetItemPotency() {return (defense.StatValue + magic.StatValue)/2;}
-        public int GetBaneBoost() {return (brain.StatValue + care.StatValue)/2;}
+        public int GetCritChance() { return (stats[StatType.BRAWN].CurrentValue + stats[StatType.OCCULT].CurrentValue / 2);}
+        public int GetBaneBoost() {return (stats[StatType.AGILITY].CurrentValue + stats[StatType.LORE].CurrentValue / 2);}
         #endregion
         #endregion
         #endregion

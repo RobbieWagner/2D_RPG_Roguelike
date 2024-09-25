@@ -15,7 +15,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         {
             base.Awake();
             HP = maxHP;
-            MP = maxMP;
+            //MP = maxMP;
 
         }
 

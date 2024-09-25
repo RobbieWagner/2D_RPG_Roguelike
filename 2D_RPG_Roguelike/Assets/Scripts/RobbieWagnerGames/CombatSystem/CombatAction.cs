@@ -3,21 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace RobbieWagnerGames.StrategyCombat
 {
+    public enum ActionType
+    {
+        NONE,
+        ATTACK,
+        HEAL
+    }
+
     [CreateAssetMenu(menuName = "Combat Action")]
     public class CombatAction : ScriptableObject
     {
-        [SerializeField] public string actionName;
-        [SerializeField] public Sprite actionIcon;
+        public string actionName;
+        public Sprite actionIcon;
+        public ActionType actionType;
 
-        [SerializeField] public bool targetsAllOpposition;
-        [SerializeField] public bool targetsAllAllies;
+        public bool targetsAllOpposition;
+        public bool targetsAllAllies;
 
-        [SerializeField] public bool canTargetSelf;
-        [SerializeField] public bool canTargetOpposition;
-        [SerializeField] public bool canTargetAllies;
+        public bool canTargetSelf;
+        public bool canTargetOpposition;
+        public bool canTargetAllies;
 
         [SerializeReference] public List<ActionEffect> effects;
 

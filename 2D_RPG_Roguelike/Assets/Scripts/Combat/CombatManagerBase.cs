@@ -1,3 +1,4 @@
+using RobbieWagnerGames.StrategyCombat.Units;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
-
     public enum CombatPhase
     {
         NONE,
@@ -20,6 +20,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public partial class CombatManagerBase : MonoBehaviour
     {
         [SerializeField] private DebugLogSequenceEvent debugSequenceEventPrefab;
+
+        protected List<Ally> allyInstances = new List<Ally>();
+        protected List<Enemy> enemyInstances = new List<Enemy>();
 
         public static Action<CombatPhase> OnCombatPhaseChange = (CombatPhase phase) => { };
         private Coroutine phaseChangeCoroutine;
@@ -98,13 +101,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 default:
                     throw new ArgumentException($"Invalid combat phase used {phase}");
             }
-        }
-
-        protected virtual IEnumerator SetupCombat()
-        {
-            //Debug.Log("Setting up Combat");
-            yield return new WaitForSeconds(2f);
-            CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
         }
 
         protected virtual IEnumerator HandleSelectionPhase()

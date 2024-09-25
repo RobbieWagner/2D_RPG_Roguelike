@@ -1,3 +1,4 @@
+using RobbieWagnerGames.StrategyCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace RobbieWagnerGames
         //TODO: find way to load scene in build!!
         public static string sceneFilePath = "Assets/Scenes/Combat/";
         public static string persistentDataPath;
+
+        public static string GetCombatActionResourcePath(CombatAction action)
+        {
+            return action.actionType == ActionType.NONE ? $"{action.name}" : $"{action.actionType}/{action.name}";
+        }
         #endregion
     }
 }
