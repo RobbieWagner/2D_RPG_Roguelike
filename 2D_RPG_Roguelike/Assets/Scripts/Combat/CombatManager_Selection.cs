@@ -23,7 +23,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual List<Unit> GetUnitsLeftToAct()
         {
-            List<Unit> unitsLeftToAct = GetUnitsByInitiative().Where(x => !x.hasActedThisTurn).ToList();
+            List<Unit> unitsLeftToAct = GetUnitsByInitiative().Where(x => !x.hasActedThisTurn && x.isUnitFighting).ToList();
             if (!unitsLeftToAct.Any())
             {
                 foreach (Unit unit in GetUnitsByInitiative())
@@ -36,6 +36,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator HandleSelectionPhase()
         {
+            if (CheckForCombatCompletion())
+                yield break;
+
             if (selectingUnit != null)
                 selectingUnit.GetComponentInChildren<SpriteRenderer>().color = Color.white;
             selectingUnit = GetUnitsLeftToAct().FirstOrDefault();
@@ -85,15 +88,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual List<Unit> GetActionTargets(CombatAction action, Unit user)
         {
-            List<Unit> unitsOnUsersSide = IsUnitInCombatAlly(user) ? allyInstances.Select(a => (Unit)a).ToList() : enemyInstances.Select(e => (Unit)e).ToList();
-            List<Unit> unitsOnUsersOpposition = IsUnitInCombatEnemy(user) ? allyInstances.Select(a => (Unit)a).ToList() : enemyInstances.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
 
             List<Unit> validTargets = new List<Unit>();
 
             if (action.targetsAllAllies || action.canTargetAllies)
-                validTargets.AddRange(unitsOnUsersSide);
+                validTargets.AddRange(activeUnitsOnUsersSide);
             if (action.targetsAllOpposition || action.canTargetOpposition)
-                validTargets.AddRange(unitsOnUsersOpposition);
+                validTargets.AddRange(activeUnitsOnOpposition);
             
             if (!action.canTargetSelf)
                 validTargets.Remove(selectingUnit);
@@ -104,21 +107,24 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private List<Unit> SelectActionTargets(CombatAction action, Unit user)
         {
-            List<Unit> unitsOnUsersSide = IsUnitInCombatAlly(user) ? allyInstances.Select(a => (Unit)a).ToList() : enemyInstances.Select(e => (Unit)e).ToList();
-            List<Unit> unitsOnUsersOpposition = IsUnitInCombatEnemy(user) ? allyInstances.Select(a => (Unit)a).ToList() : enemyInstances.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+
+            activeUnitsOnUsersSide = activeUnitsOnUsersSide.Where(u => u.isUnitFighting).ToList();
+            activeUnitsOnOpposition = activeUnitsOnOpposition.Where(u => u.isUnitFighting).ToList();
 
             List<Unit> result = new List<Unit>();
 
             if (action.targetsAllAllies)
-                result.AddRange(unitsOnUsersSide);
+                result.AddRange(activeUnitsOnUsersSide);
             if (action.targetsAllOpposition)
-                result.AddRange(unitsOnUsersOpposition);
+                result.AddRange(activeUnitsOnOpposition);
             
             List<Unit> validTargets = new List<Unit>();
             if (action.canTargetAllies)
-                validTargets.AddRange(unitsOnUsersSide);
+                validTargets.AddRange(activeUnitsOnUsersSide);
             if (action.canTargetOpposition)
-                validTargets.AddRange(unitsOnUsersOpposition);
+                validTargets.AddRange(activeUnitsOnOpposition);
             if (!action.canTargetSelf)
                 validTargets.Remove(selectingUnit);
 

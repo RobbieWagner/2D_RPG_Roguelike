@@ -20,6 +20,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator HandleExecutionPhase()
         {
+            if (CheckForCombatCompletion())
+                yield break;
+
             executingUnit = selectingUnit;
             currentExecutingAction = currentSelectedAction;
 

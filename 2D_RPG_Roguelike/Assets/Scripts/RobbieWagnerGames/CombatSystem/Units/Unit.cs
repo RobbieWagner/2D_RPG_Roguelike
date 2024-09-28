@@ -63,11 +63,20 @@ namespace RobbieWagnerGames.StrategyCombat
                 if(hp < 0) hp = 0;
 
                 OnHPChanged?.Invoke(hp);
+                if(hp == 0)
+                {
+                    isUnitFighting = false;
+                    OnUnitsHPReaches0?.Invoke(this);
+                }
+
             }
         }
 
         public delegate void OnHPChangedDelegate(int hp);
         public event OnHPChangedDelegate OnHPChanged;
+
+        public delegate void OnUnitsHPReaches0Delegate(Unit unit);
+        public event OnUnitsHPReaches0Delegate OnUnitsHPReaches0;
 
         public delegate void OnHPRaisedDelegate(int hpDifference, Unit unit, Color color);
         public event OnHPRaisedDelegate OnHPRaised;
