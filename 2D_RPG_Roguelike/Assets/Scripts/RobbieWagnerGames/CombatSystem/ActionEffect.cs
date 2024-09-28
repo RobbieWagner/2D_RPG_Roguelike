@@ -14,9 +14,9 @@ namespace RobbieWagnerGames.StrategyCombat
     }
 
     [Serializable]
-    public class Damage : ActionEffect
+    public class Attack : ActionEffect
     {
-        [Header("Damage")]
+        [Header("Attack")]
         [SerializeField] private int power = 10;
 
         public int CalculateDamage(Unit user, Unit target)
@@ -24,6 +24,18 @@ namespace RobbieWagnerGames.StrategyCombat
             int damage = power; // * user.strength - target.defense
             if(damage < 1) damage = 1; 
             return damage;
+        }
+
+        public void AttemptAttack(Unit user, Unit target)
+        {
+            bool hit = false;
+            if (accuracy > 100)
+                hit = true;
+            else
+                hit = UnityEngine.Random.Range(0, 100) < accuracy;
+
+            if (hit)
+                target.DealDamage(CalculateDamage(user, target));
         }
     }
 
@@ -39,6 +51,18 @@ namespace RobbieWagnerGames.StrategyCombat
             if(heal < 1) heal = 1; 
             return heal;
         }
+
+        public void AttemptHeal(Unit user, Unit target)
+        {
+            bool success = false;
+            if (accuracy > 100)
+                success = true;
+            else
+                success = UnityEngine.Random.Range(0, 100) < accuracy;
+
+            if (success)
+                target.Heal(CalculateHealing(user, target));
+        }
     }
 
     [Serializable]
@@ -52,6 +76,18 @@ namespace RobbieWagnerGames.StrategyCombat
             int statChange = power;
             if(power < 1) power = 1;
             return power;
+        }
+
+        public void AttemptStatRaise(Unit user, Unit target)
+        {
+            bool success = false;
+            if (accuracy > 100)
+                success = true;
+            else
+                success = UnityEngine.Random.Range(0, 100) < accuracy;
+
+            if (success)
+                target.ChangeStatValue(stat, CalculateStatChange(user, target));
         }
     }
 
@@ -67,6 +103,18 @@ namespace RobbieWagnerGames.StrategyCombat
             int statChange = power;
             if(power < 1) power = 1;
             return -power;
+        }
+
+        public void AttemptStatLower(Unit user, Unit target)
+        {
+            bool success = false;
+            if (accuracy > 100)
+                success = true;
+            else
+                success = UnityEngine.Random.Range(0, 100) < accuracy;
+
+            if (success)
+                target.ChangeStatValue(stat, CalculateStatChange(user, target));
         }
     }
 

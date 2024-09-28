@@ -60,6 +60,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
             for(int i = 0; i < allyPrefabs.Count; i++)
             {
                 Ally allyInstance = Instantiate(allyPrefabs[i], transform);
+                allyInstance.name = $"ally_{i}";
+                allyInstance.unitName += $"_{i}";
+                allyInstance.HP = allyInstance.GetMaxHP();
                 allyInstance.transform.position = allyPositionOffsets[i];
                 newAllies.Add(allyInstance);
             }
@@ -72,6 +75,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
             for (int i = 0; i < enemyPrefabs.Count; i++)
             {
                 Enemy enemyInstance = Instantiate(enemyPrefabs[i], transform);
+                enemyInstance.name = $"enemy_{i}";
+                enemyInstance.unitName += $"_{i}";
+                enemyInstance.HP = enemyInstance.GetMaxHP();
                 enemyInstance.transform.position = enemyPositionOffsets[i];
                 newEnemies.Add(enemyInstance);
             }

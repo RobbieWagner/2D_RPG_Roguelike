@@ -120,7 +120,7 @@ namespace RobbieWagnerGames.StrategyCombat
 
         public void Heal(int amount)
         {
-            HP += amount;
+            HP += Math.Clamp(amount, 0, int.MaxValue);
         }
 
         public void ChangeStatValue(StatType stat, int amount)

@@ -28,7 +28,7 @@ namespace RobbieWagnerGames.StrategyCombat
 
         [SerializeReference] public List<ActionEffect> effects;
 
-        [ContextMenu(nameof(AddDamageEffect))] void AddDamageEffect(){effects.Add(new Damage());}
+        [ContextMenu(nameof(AddAttackEffect))] void AddAttackEffect(){effects.Add(new Attack());}
         [ContextMenu(nameof(AddHealEffect))] void AddHealEffect(){effects.Add(new Heal());}
         [ContextMenu(nameof(AddStatRaiseEffect))] void AddStatRaiseEffect(){effects.Add(new StatRaise());}
         [ContextMenu(nameof(AddStatLowerEffect))] void AddStatLowerEffect(){effects.Add(new StatLower());}
