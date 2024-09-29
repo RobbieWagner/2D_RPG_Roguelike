@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace RobbieWagnerGames.TurnBasedCombat
+{
+    public class CombatMenu : MonoBehaviour
+    {
+        private List<CombatMenuButton> optionInstances = new List<CombatMenuButton>();
+        [SerializeField] private CombatMenuButton optionPrefab;
+
+        public Action<int> OnChangeMenuSelectionIndex = (int index) => { };
+        private int curIndex = 0;
+        public int CurIndex
+        {
+            get 
+            {
+                return curIndex;
+            }
+            set 
+            {
+                if(curIndex == value)
+                    return;
+                curIndex = value;
+                OnChangeMenuSelectionIndex?.Invoke(curIndex);
+            }
+        }
+
+        private void Awake()
+        {
+            
+        }
+
+        public void DisplayOptions()
+        {
+            // DISPLAY THE LIST OF OPTIONS FOR THIS MENU
+        }
+
+        public void AddButtonToList(Action<int> onSelectedAction, string selectionText)
+        {
+            CombatMenuButton newButtonInstance = Instantiate(optionPrefab, transform);
+            newButtonInstance.buttonText.text = selectionText;
+            newButtonInstance.selectionAction += onSelectedAction;
+            newButtonInstance.buttonIndex = optionInstances.Count;
+            OnChangeMenuSelectionIndex += newButtonInstance.CheckForConsideration;
+
+            optionInstances.Add(newButtonInstance);
+        }
+
+        public void NavigateMenu(InputAction.CallbackContext context)
+        {
+            float delta = context.ReadValue<float>();
+
+            if (delta > 0f)
+                CurIndex = Math.Clamp(CurIndex + 1, 0, optionInstances.Count);
+            else if(delta < 0f)
+                CurIndex = Math.Clamp(CurIndex - 1, 0, optionInstances.Count);
+        }
+
+        public void SelectCurrentButton(InputAction.CallbackContext context)
+        {
+            if (CurIndex < optionInstances.Count && CurIndex >= 0)
+                optionInstances[CurIndex].SelectButton();
+        }
+    }
+}
