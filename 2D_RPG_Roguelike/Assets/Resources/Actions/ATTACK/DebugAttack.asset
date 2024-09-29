@@ -21,13 +21,13 @@ MonoBehaviour:
   canTargetOpposition: 1
   canTargetAllies: 0
   effects:
-  - rid: 886500522659676161
+  - rid: 886500591212429312
   references:
     version: 2
     RefIds:
-    - rid: 886500522659676161
-      type: {class: Damage, ns: RobbieWagnerGames.StrategyCombat, asm: Assembly-CSharp}
+    - rid: 886500591212429312
+      type: {class: Attack, ns: RobbieWagnerGames.StrategyCombat, asm: Assembly-CSharp}
       data:
-        accuracy: 90
+        accuracy: 101
         failureStopsActionExecution: 0
         power: 10

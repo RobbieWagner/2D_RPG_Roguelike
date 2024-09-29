@@ -37,7 +37,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         protected virtual IEnumerator ExecuteCombatAction(CombatAction combatAction, Unit executingUnit, List<Unit> targets)
         {
             Debug.Log(combatAction.actionName);
-            yield return null;
+            yield return StartCoroutine(executionUI.DisplayExecutingAction(combatAction));
 
             foreach(ActionEffect effect in combatAction.effects)
             {
@@ -56,7 +56,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private IEnumerator PassTurn()
         {
-            yield return new WaitForSeconds(.25f);
+            yield return new WaitForSeconds(1.25f);
         }
 
         protected virtual IEnumerator ExecuteDamageEffect(Attack effect, Unit user, List<Unit> targets)
@@ -64,7 +64,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             foreach (Unit target in targets)
             {
                 effect.AttemptAttack(user, target);
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Attack attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
             }
         }
@@ -74,7 +74,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             foreach (Unit target in targets)
             {
                 effect.AttemptHeal(user, target);
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
             }
         }
@@ -84,7 +84,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             foreach (Unit target in targets)
             {
                 effect.AttemptStatRaise(user, target);
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Stat raise attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
             }
         }
@@ -94,7 +94,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             foreach (Unit target in targets)
             {
                 effect.AttemptStatLower(user, target);
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Stat lower attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
             }
         }
