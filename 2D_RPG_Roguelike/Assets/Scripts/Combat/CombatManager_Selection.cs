@@ -17,9 +17,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [Header("Action Selection")]
         [SerializeField] protected CombatSelectionUI selectionUI;
         protected Unit selectingUnit;
-        protected CombatAction currentSelectedAction = null;
-        protected List<Unit> targets = null;
-        protected bool isCurrentlySelecting;
+        public CombatAction currentSelectedAction = null;
+        public List<Unit> targets = null;
+        public bool isCurrentlySelecting;
 
         protected virtual List<Unit> GetUnitsLeftToAct()
         {
@@ -47,8 +47,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             isCurrentlySelecting = true;
 
             if (IsUnitInCombatAlly(selectingUnit))
-                //selectionUI.SetupUI((Ally)selectingUnit);
-                SelectActionForUnit(selectingUnit);
+                StartPlayerActionSelection(selectingUnit);
             else if (IsUnitInCombatEnemy(selectingUnit))
                 SelectActionForUnit(selectingUnit);
             else
@@ -132,6 +131,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             
 
             return result;
+        }
+
+        protected virtual void StartPlayerActionSelection(Unit unit)
+        {
+            selectionUI.SetupUI(unit);
         }
 
         protected virtual void EndSelectionPhase()
