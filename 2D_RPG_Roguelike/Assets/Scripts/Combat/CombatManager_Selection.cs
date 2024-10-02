@@ -41,7 +41,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             if (selectingUnit != null)
                 selectingUnit.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+
             selectingUnit = GetUnitsLeftToAct().FirstOrDefault();
+            
             selectingUnit.GetComponentInChildren<SpriteRenderer>().color = Color.red;
 
             isCurrentlySelecting = true;
@@ -80,7 +82,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual List<CombatAction> GetValidCombatActions(List<CombatAction> actions, Unit user)
         {
-            List<CombatAction> validActions = actions.Where(action => GetActionTargets(action, user).Any()).ToList(); //TODO: Change to check on the action itself (pass action can still execute even though it hits no targets)
+            List<CombatAction> validActions = actions.Where(action => GetActionTargets(action, user).Any() || action.effects[0].GetType() == typeof(Pass)).ToList();
             //Debug.Log($"valid actions: {validActions.Count}");
             return validActions;
         }
@@ -128,7 +130,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 validTargets.Remove(selectingUnit);
 
             result.Add(validTargets[UnityEngine.Random.Range(0, validTargets.Count)]);
-            
 
             return result;
         }

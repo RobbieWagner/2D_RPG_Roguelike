@@ -45,7 +45,7 @@ namespace RobbieWagnerGames
             }
             else if(state != currentState)
             {
-                Debug.LogWarning($"Animation Clip Not Set Up For Unit {state}");
+                //Debug.LogWarning($"Animation Clip Not Set Up For Unit {state}");
             }
         }
 

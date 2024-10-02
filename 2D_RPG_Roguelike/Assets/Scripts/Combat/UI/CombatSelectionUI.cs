@@ -21,16 +21,20 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         [SerializeField] protected Canvas canvas;
 
-        protected Dictionary<Ally, int> savedMainSelectionIndices = new Dictionary<Ally, int>();
-        protected Dictionary<Ally, int> savedActionSelectionIndices = new Dictionary<Ally, int>();
-        protected Dictionary<Ally, int> savedTargetSelectionIndices = new Dictionary<Ally, int>();
+        protected Dictionary<Unit, int> savedMainSelectionIndices = new Dictionary<Unit, int>();
+        protected Dictionary<Unit, int> savedActionSelectionIndices = new Dictionary<Unit, int>();
+        protected bool useSavedActionIndex = false;
+        protected Dictionary<Unit, int> savedTargetSelectionIndices = new Dictionary<Unit, int>();
+        protected bool useSavedTargetIndex = false;
 
         protected CombatControls controls;
 
-        [SerializeField] CombatMenu menuPrefab;
+        [SerializeField] protected CombatMenu menuPrefab;
+        [SerializeField] protected CombatHUDMenu targetMenuPrefab;
 
         private CombatMenu mainCombatMenu = null;
         private CombatMenu actionCombatMenu = null;
+        private CombatMenu targetCombatMenu = null;
 
         protected Unit selectingUnit;
         [SerializeField] protected Vector2 menuPositionOffset;
@@ -62,6 +66,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 controls.MainSelectionMenu.Navigate.performed += mainCombatMenu.NavigateMenu;
                 controls.MainSelectionMenu.Select.performed += mainCombatMenu.SelectCurrentButton;
                 controls.MainSelectionMenu.Enable();
+
+                if(savedMainSelectionIndices.TryGetValue(selectingUnit, out int index) && index < 3)
+                    mainCombatMenu.CurIndex = index;
+                else
+                    mainCombatMenu.CurIndex = 0;
             }
             else
                 Debug.LogWarning("Could not display combat selection UI: unit found null!!");
@@ -92,9 +101,18 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 return;
             }
 
-            // Update the index in the dictionary
+            if (savedMainSelectionIndices.TryGetValue(selectingUnit, out int value))
+            {
+                savedMainSelectionIndices[selectingUnit] = index;
+                useSavedActionIndex = true;
+            }
+            else
+            {
+                savedMainSelectionIndices.Add(selectingUnit, index);
+                useSavedActionIndex = false;
+            }
 
-            Destroy(mainCombatMenu);
+            Destroy(mainCombatMenu.gameObject);
             mainCombatMenu = null;
             controls.MainSelectionMenu.Disable();
         }
@@ -113,6 +131,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 controls.ActionSelectionMenu.Navigate.performed += actionCombatMenu.NavigateMenu;
                 controls.ActionSelectionMenu.Select.performed += actionCombatMenu.SelectCurrentButton;
                 controls.ActionSelectionMenu.Enable();
+
+                if (useSavedActionIndex && savedActionSelectionIndices.TryGetValue(selectingUnit, out int index) && index < selectingUnit.unitActions.Count)
+                    mainCombatMenu.CurIndex = index;
+                else
+                    mainCombatMenu.CurIndex = 0;
             }
             else
                 Debug.LogWarning("Could not display combat selection UI: unit or their actions found null!!");
@@ -120,19 +143,31 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void HandleActionCombatMenuOptionSelection(int index)
         {
-            CombatManagerBase.Instance.currentSelectedAction = selectingUnit.unitActions[index];
+            CombatAction action = selectingUnit.unitActions[index];
+            CombatManagerBase.Instance.currentSelectedAction = action;
 
-            // Update the index in the dictionary
+            if (savedActionSelectionIndices.TryGetValue(selectingUnit, out int value))
+            {
+                savedActionSelectionIndices[selectingUnit] = index;
+                useSavedTargetIndex = true;
+            }
+            else
+            {
+                savedActionSelectionIndices.Add(selectingUnit, index);
+                useSavedTargetIndex = false;
+            }
 
-            Destroy(actionCombatMenu);
+            Destroy(actionCombatMenu.gameObject);
             actionCombatMenu = null;
             controls.ActionSelectionMenu.Disable();
+
+            DisplayTargetSelectionUI();
         }
 
         #region target selection
         public virtual void DisplayTargetSelectionUI()
         {
-            // Have a HUD UI for each target
+            // Have a HUD UI for the targets
             // When navigating, enable the HUD over the considered target
         }
 
@@ -144,6 +179,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
 
             }
+        }
+
+        public virtual void HandleTargetSelectionUI(int index)
+        {
+            if(savedTargetSelectionIndices.TryGetValue(selectingUnit, out int value))
+                savedTargetSelectionIndices[selectingUnit] = index;
+            else
+                savedTargetSelectionIndices.Add(selectingUnit, index);
         }
         #endregion
     }

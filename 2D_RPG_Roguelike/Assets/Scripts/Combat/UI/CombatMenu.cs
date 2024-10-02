@@ -7,11 +7,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
 {
     public class CombatMenu : MonoBehaviour
     {
-        private List<CombatMenuButton> optionInstances = new List<CombatMenuButton>();
-        [SerializeField] private CombatMenuButton optionPrefab;
+        protected List<CombatMenuButton> optionInstances = new List<CombatMenuButton>();
+        [SerializeField] protected CombatMenuButton optionPrefab;
 
         public Action<int> OnChangeMenuSelectionIndex = (int index) => { };
-        private int curIndex = 0;
+        protected int curIndex = -1;
         public int CurIndex
         {
             get 
@@ -32,20 +32,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
             
         }
 
-        public void DisplayOptions()
-        {
-            // DISPLAY THE LIST OF OPTIONS FOR THIS MENU
-        }
-
-        public void AddButtonToList(Action<int> onSelectedAction, string selectionText)
+        public CombatMenuButton AddButtonToList(Action<int> onSelectedAction, string selectionText = null)
         {
             CombatMenuButton newButtonInstance = Instantiate(optionPrefab, transform);
-            newButtonInstance.buttonText.text = selectionText;
+            if(newButtonInstance.buttonText != null)
+                newButtonInstance.buttonText.text = selectionText;
             newButtonInstance.selectionAction += onSelectedAction;
             newButtonInstance.buttonIndex = optionInstances.Count;
             OnChangeMenuSelectionIndex += newButtonInstance.CheckForConsideration;
 
             optionInstances.Add(newButtonInstance);
+            return newButtonInstance;
         }
 
         public void NavigateMenu(InputAction.CallbackContext context)

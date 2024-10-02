@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -17,21 +18,21 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private Button button;
         public TextMeshProUGUI buttonText;
 
+        private void Awake()
+        {
+            button.onClick.AddListener(() => SelectButton());
+        }
+
         public void CheckForConsideration(int curIndex)
         {
             if(curIndex == buttonIndex)
-            {
-                // highlight this button
-            }
-            else
-            {
-                // Don't highlight this button
-            }
+                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(gameObject);
         }
 
         public void StopConsideringButton()
         {
-
+            if(EventSystemManager.Instance.eventSystem.currentSelectedGameObject == gameObject)
+                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
         }
 
         public void SelectButton(bool stopConsidering = true)
