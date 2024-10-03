@@ -34,7 +34,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private CombatMenu mainCombatMenu = null;
         private CombatMenu actionCombatMenu = null;
-        private CombatMenu targetCombatMenu = null;
+        private CombatHUDMenu targetCombatMenu = null;
 
         protected Unit selectingUnit;
         [SerializeField] protected Vector2 menuPositionOffset;
@@ -133,9 +133,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 controls.ActionSelectionMenu.Enable();
 
                 if (useSavedActionIndex && savedActionSelectionIndices.TryGetValue(selectingUnit, out int index) && index < selectingUnit.unitActions.Count)
-                    mainCombatMenu.CurIndex = index;
+                    actionCombatMenu.CurIndex = index;
                 else
-                    mainCombatMenu.CurIndex = 0;
+                    actionCombatMenu.CurIndex = 0;
             }
             else
                 Debug.LogWarning("Could not display combat selection UI: unit or their actions found null!!");
@@ -167,26 +167,42 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #region target selection
         public virtual void DisplayTargetSelectionUI()
         {
-            // Have a HUD UI for the targets
-            // When navigating, enable the HUD over the considered target
-        }
-
-        public void NavigateTargets(InputAction.CallbackContext context)
-        {
-            float inputValue = context.ReadValue<float>();
-
-            if (inputValue < 0)
+            if (CombatManagerBase.Instance.currentSelectedAction != null)
             {
+                targetCombatMenu = Instantiate(targetMenuPrefab, transform);
+                List<Unit> targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
+                foreach (Unit target in targets)
+                    targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.zero);
 
+                controls.TargetSelectionMenu.Navigate.Reset();
+                controls.TargetSelectionMenu.Select.Reset();
+
+                controls.TargetSelectionMenu.Navigate.performed += targetCombatMenu.NavigateMenu;
+                controls.TargetSelectionMenu.Select.performed += targetCombatMenu.SelectCurrentButton;
+                controls.TargetSelectionMenu.Enable();
+
+                if (useSavedTargetIndex && savedTargetSelectionIndices.TryGetValue(selectingUnit, out int index) && index < targets.Count)
+                    targetCombatMenu.CurIndex = index;
+                else
+                    targetCombatMenu.CurIndex = 0;
             }
         }
 
-        public virtual void HandleTargetSelectionUI(int index)
+        public virtual void HandleTargetSelection(int index)
         {
-            if(savedTargetSelectionIndices.TryGetValue(selectingUnit, out int value))
+            List<Unit> targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
+            CombatManagerBase.Instance.targets = new List<Unit>() { targets[index] };
+
+            if (savedTargetSelectionIndices.TryGetValue(selectingUnit, out int value))
                 savedTargetSelectionIndices[selectingUnit] = index;
             else
                 savedTargetSelectionIndices.Add(selectingUnit, index);
+
+            Destroy(targetCombatMenu.gameObject);
+            targetCombatMenu = null;
+            controls.TargetSelectionMenu.Disable();
+
+            CombatManagerBase.Instance.isCurrentlySelecting = false;
         }
         #endregion
     }

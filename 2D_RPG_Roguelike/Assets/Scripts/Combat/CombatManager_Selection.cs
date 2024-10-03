@@ -87,7 +87,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             return validActions;
         }
 
-        protected virtual List<Unit> GetActionTargets(CombatAction action, Unit user)
+        public virtual List<Unit> GetActionTargets(CombatAction action, Unit user)
         {
             List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
             List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();

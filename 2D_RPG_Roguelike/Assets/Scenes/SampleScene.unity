@@ -360,6 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 105744092}
   menuPrefab: {fileID: 344095686859660399, guid: d03d2250e0af87f4787598895830cf8f, type: 3}
+  targetMenuPrefab: {fileID: 2933422296724766782, guid: 34dad04a68ab4a047b25bc853be9b9b0, type: 3}
   menuPositionOffset: {x: 0, y: 0}
 --- !u!1 &275056996
 GameObject:
