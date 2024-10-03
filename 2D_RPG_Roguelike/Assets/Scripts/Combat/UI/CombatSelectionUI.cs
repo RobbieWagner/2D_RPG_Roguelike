@@ -60,9 +60,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ITEM.ToString());
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.FLEE.ToString());
 
-                controls.MainSelectionMenu.Navigate.Reset();
-                controls.MainSelectionMenu.Select.Reset();
-
                 controls.MainSelectionMenu.Navigate.performed += mainCombatMenu.NavigateMenu;
                 controls.MainSelectionMenu.Select.performed += mainCombatMenu.SelectCurrentButton;
                 controls.MainSelectionMenu.Enable();
@@ -112,6 +109,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 useSavedActionIndex = false;
             }
 
+            controls.MainSelectionMenu.Navigate.performed -= mainCombatMenu.NavigateMenu;
+            controls.MainSelectionMenu.Select.performed -= mainCombatMenu.SelectCurrentButton;
             Destroy(mainCombatMenu.gameObject);
             mainCombatMenu = null;
             controls.MainSelectionMenu.Disable();
@@ -157,6 +156,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 useSavedTargetIndex = false;
             }
 
+            controls.ActionSelectionMenu.Navigate.performed -= actionCombatMenu.NavigateMenu;
+            controls.ActionSelectionMenu.Select.performed -= actionCombatMenu.SelectCurrentButton;
             Destroy(actionCombatMenu.gameObject);
             actionCombatMenu = null;
             controls.ActionSelectionMenu.Disable();
@@ -198,6 +199,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else
                 savedTargetSelectionIndices.Add(selectingUnit, index);
 
+            controls.TargetSelectionMenu.Navigate.performed -= targetCombatMenu.NavigateMenu;
+            controls.TargetSelectionMenu.Select.performed -= targetCombatMenu.SelectCurrentButton;
             Destroy(targetCombatMenu.gameObject);
             targetCombatMenu = null;
             controls.TargetSelectionMenu.Disable();
