@@ -35,8 +35,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public CombatMenuButton AddButtonToList(Action<int> onSelectedAction, string selectionText = null)
         {
             CombatMenuButton newButtonInstance = Instantiate(optionPrefab, transform);
-            if(newButtonInstance.buttonText != null)
+            if (newButtonInstance.buttonText != null)
+            {
                 newButtonInstance.buttonText.text = selectionText;
+                newButtonInstance.gameObject.name = selectionText;
+            }
             newButtonInstance.selectionAction += onSelectedAction;
             newButtonInstance.buttonIndex = optionInstances.Count;
             OnChangeMenuSelectionIndex += newButtonInstance.CheckForConsideration;
@@ -52,7 +55,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             if (delta > 0f)
                 CurIndex = Math.Clamp(CurIndex + 1, 0, optionInstances.Count - 1);
-            else if(delta < 0f)
+            else if (delta < 0f)
                 CurIndex = Math.Clamp(CurIndex - 1, 0, optionInstances.Count - 1);
 
             Debug.Log($"index {CurIndex}");

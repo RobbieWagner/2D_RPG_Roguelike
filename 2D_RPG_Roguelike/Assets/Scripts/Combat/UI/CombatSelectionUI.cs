@@ -14,7 +14,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         NONE,
         ACTION,
         ITEM,
-        FLEE
+        FLEE,
     }
 
     public class CombatSelectionUI : MonoBehaviour

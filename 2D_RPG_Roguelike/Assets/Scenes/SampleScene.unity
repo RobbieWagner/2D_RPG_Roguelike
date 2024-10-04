@@ -1135,13 +1135,13 @@ MonoBehaviour:
   targets: []
   isCurrentlySelecting: 0
   allyPositionOffsets:
+  - {x: -3.5, y: 2.5}
   - {x: -4, y: -0.5}
   - {x: -4.5, y: -3.5}
-  - {x: -3.5, y: 2.5}
   enemyPositionOffsets:
+  - {x: 3.5, y: 2.5}
   - {x: 4, y: -0.5}
   - {x: 4.5, y: -3.5}
-  - {x: 3.5, y: 2.5}
   baseAllyPrefab: {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
 --- !u!1 &1315313286
 GameObject:
@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: 0}
   m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}

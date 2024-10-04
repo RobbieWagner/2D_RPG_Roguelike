@@ -29,15 +29,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (curIndex == buttonIndex)
             {
-                Debug.Log(buttonText.text);
-                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(gameObject);
+                Debug.Log(buttonText?.text);
+                EventSystemManager.Instance.SetSelectedGameObject(gameObject);
             }
         }
 
         public void StopConsideringButton()
         {
             if(EventSystemManager.Instance.eventSystem.currentSelectedGameObject == gameObject)
-                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
+                EventSystemManager.Instance.SetSelectedGameObject(null);
         }
 
         public void SelectButton(bool stopConsidering = true)
