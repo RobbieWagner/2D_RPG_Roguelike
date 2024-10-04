@@ -18,8 +18,6 @@ namespace RobbieWagnerGames
 
         public void SetSelectedGameObject(GameObject go)
         {
-            if(go != null)
-                Debug.Log($"Set event system selected game object to {go.name}");
             eventSystem.SetSelectedGameObject(go);
         }
     }

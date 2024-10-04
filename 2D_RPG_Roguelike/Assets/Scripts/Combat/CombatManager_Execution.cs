@@ -36,7 +36,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator ExecuteCombatAction(CombatAction combatAction, Unit executingUnit, List<Unit> targets)
         {
-            Debug.Log(combatAction.actionName);
+            //Debug.Log(combatAction.actionName);
             yield return StartCoroutine(executionUI.DisplayExecutingAction(combatAction));
 
             foreach(ActionEffect effect in combatAction.effects)

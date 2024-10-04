@@ -65,7 +65,7 @@ namespace RobbieWagnerGames.StrategyCombat
                 OnHPChanged?.Invoke(hp);
                 if(hp == 0)
                 {
-                    isUnitFighting = false;
+                    //isUnitFighting = false;
                     OnUnitsHPReaches0?.Invoke(this);
                 }
 
@@ -91,7 +91,14 @@ namespace RobbieWagnerGames.StrategyCombat
                 spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             }
 
+            OnUnitsHPReaches0 += DownUnit;
+
             SetupUnit();
+        }
+
+        protected virtual void DownUnit(Unit unit)
+        {
+            StartCoroutine(DownUnitCo());
         }
 
         public virtual void SetupUnit()
@@ -137,7 +144,7 @@ namespace RobbieWagnerGames.StrategyCombat
             stats[stat].CurrentValue = amount;
         }
 
-        public virtual IEnumerator DownUnit()
+        public virtual IEnumerator DownUnitCo()
         {
             isUnitFighting = false;
 
@@ -145,9 +152,10 @@ namespace RobbieWagnerGames.StrategyCombat
             if(spriteRenderer != null)
             {
                 yield return spriteRenderer.DOColor(Color.clear, .3f).SetEase(Ease.Linear).WaitForCompletion();
+                spriteRenderer.enabled = false;
             }
 
-            StopCoroutine(DownUnit());
+            StopCoroutine(DownUnitCo());
         }
 
         #region Action Selection

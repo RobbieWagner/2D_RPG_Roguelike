@@ -29,7 +29,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (curIndex == buttonIndex)
             {
-                Debug.Log(buttonText?.text);
+                //Debug.Log(buttonText?.text);
                 EventSystemManager.Instance.SetSelectedGameObject(gameObject);
             }
         }

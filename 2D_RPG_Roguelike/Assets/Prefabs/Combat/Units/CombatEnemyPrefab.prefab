@@ -175,7 +175,8 @@ MonoBehaviour:
   unitActions:
   - {fileID: 11400000, guid: c48d362c0d235d747809b545ecfdeabf, type: 2}
   - {fileID: 11400000, guid: b2dc53f8b99e91c49b88ecfff34ae572, type: 2}
+  hasActedThisTurn: 0
   currentAction: {fileID: 0}
   selectedTargets: []
   spriteRenderer: {fileID: 4794937257987412894}
-  unitBaseHP: 30
+  unitBaseHP: 0

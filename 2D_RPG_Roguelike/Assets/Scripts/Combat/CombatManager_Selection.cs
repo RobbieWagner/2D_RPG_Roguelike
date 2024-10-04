@@ -28,7 +28,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 foreach (Unit unit in GetUnitsByInitiative())
                     unit.hasActedThisTurn = false;
-                unitsLeftToAct = GetUnitsByInitiative();
+                unitsLeftToAct = GetUnitsByInitiative().Where(x => !x.hasActedThisTurn && x.isUnitFighting).ToList();
             }
 
             return unitsLeftToAct;
@@ -75,7 +75,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             targets = SelectActionTargets(currentSelectedAction, selectingUnit);
 
             string targetsString = string.Join(", ", targets.Select(t => t.GetName()));
-            Debug.Log($"ACTION IS SELECTED: {selectingUnit.GetName()} will use {currentSelectedAction.actionName} on {targetsString}");
+            //Debug.Log($"ACTION IS SELECTED: {selectingUnit.GetName()} will use {currentSelectedAction.actionName} on {targetsString}");
 
             isCurrentlySelecting = false;
         }

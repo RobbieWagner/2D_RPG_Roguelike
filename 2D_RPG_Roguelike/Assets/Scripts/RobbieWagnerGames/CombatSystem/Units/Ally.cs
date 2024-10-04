@@ -19,7 +19,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
         }
 
-        public override IEnumerator DownUnit()
+        public override IEnumerator DownUnitCo()
         {
             isUnitFighting = false;
 
@@ -27,10 +27,10 @@ namespace RobbieWagnerGames.StrategyCombat.Units
             if(spriteRenderer != null)
             {
                 Color color = spriteRenderer.color;
-                yield return spriteRenderer.DOColor(new Color(0, 0, 0, 1), .1f).SetEase(Ease.Linear).WaitForCompletion();
+                yield return spriteRenderer.DOColor(new Color(1, 1, 1, .2f), .1f).SetEase(Ease.Linear).WaitForCompletion();
             }
 
-            StopCoroutine(DownUnit());
+            StopCoroutine(DownUnitCo());
         }
     }
 }

@@ -85,14 +85,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             return true;
         }
 
-        public virtual bool EndCombat()
-        {
-            currentCombat = null;
-            OnCombatPhaseChange -= StartCombatPhase;
-            CurrentCombatPhase = CombatPhase.NONE;
-            return true;
-        }
-
         protected virtual void StartCombatPhase(CombatPhase phase)
         {
             switch (phase)
@@ -112,21 +104,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 case CombatPhase.LOSE:
                     StartCoroutine(WaitForCombatEvents(CombatEventTriggerType.COMBAT_LOST, () => { StartCoroutine(HandleLoseState()); }));
                     break;
+                case CombatPhase.NONE:
+                    break;
                 default:
                     throw new ArgumentException($"Invalid combat phase used {phase}");
             }
-        }
-
-        protected virtual IEnumerator HandleWinState()
-        {
-            Debug.Log("Handle Win State");
-            yield return new WaitForSeconds(2f);
-        }
-
-        protected virtual IEnumerator HandleLoseState()
-        {
-            Debug.Log("Handle Lose State");
-            yield return new WaitForSeconds(2f);
         }
 
         public IEnumerator SetCombatPhaseCo(CombatPhase phase)
@@ -183,32 +165,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             units.AddRange(enemyInstances);
 
             return units;
-        }
-
-        protected virtual bool CheckForCombatCompletion()
-        { 
-            foreach(Unit unit in GetAllCombatUnits())
-            {
-                if(unit.HP == 0)
-                    unit.GetComponentInChildren<SpriteRenderer>().color = Color.gray;
-                else
-                    unit.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-            }
-
-            if(!activeAllies.Any())
-            {
-                Debug.Log("combat lost, changing phase to LOSE");
-                CurrentCombatPhase = CombatPhase.LOSE;
-                return true;
-            }
-            if (!activeEnemies.Any())
-            {
-                Debug.Log("combat won, changing phase to WIN");
-                CurrentCombatPhase = CombatPhase.WIN;
-                return true;
-            }
-
-            return false;
         }
     }
 }

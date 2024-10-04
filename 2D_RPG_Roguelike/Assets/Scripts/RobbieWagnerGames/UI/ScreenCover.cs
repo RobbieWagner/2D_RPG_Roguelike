@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RobbieWagnerGames.Minijam164
+namespace RobbieWagnerGames.UI
 {
     public class ScreenCover : MonoBehaviour
     {
