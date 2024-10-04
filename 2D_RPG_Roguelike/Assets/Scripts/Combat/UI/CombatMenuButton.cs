@@ -10,13 +10,15 @@ using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
-    public class CombatMenuButton : MonoBehaviour
+    public class CombatMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public Action<int> selectionAction = (int index) => { };
         [HideInInspector] public int buttonIndex;
 
         [SerializeField] private Button button;
         public TextMeshProUGUI buttonText;
+
+        //TODO: Define requirements for switching between mouse and keyboard controls
 
         private void Awake()
         {
@@ -25,8 +27,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public void CheckForConsideration(int curIndex)
         {
-            if(curIndex == buttonIndex)
+            if (curIndex == buttonIndex)
+            {
+                Debug.Log(buttonText.text);
                 EventSystemManager.Instance.eventSystem.SetSelectedGameObject(gameObject);
+            }
         }
 
         public void StopConsideringButton()
@@ -40,6 +45,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
             selectionAction?.Invoke(buttonIndex);
             if(stopConsidering)
                 StopConsideringButton();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            CheckForConsideration(buttonIndex);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            StopConsideringButton();
         }
     }
 }
