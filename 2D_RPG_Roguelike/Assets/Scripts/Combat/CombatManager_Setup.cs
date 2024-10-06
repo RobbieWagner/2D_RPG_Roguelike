@@ -1,3 +1,4 @@
+using RobbieWagnerGames.StrategyCombat;
 using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.Utilities.SaveData;
 using System;
@@ -18,6 +19,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public List<Vector2> allyPositionOffsets;
         public List<Vector2> enemyPositionOffsets;
         public Ally baseAllyPrefab;
+
+        [SerializeField] protected UnitUI unitUIPrefab;
+        protected List<UnitUI> allyUIInstances = new List<UnitUI>();
 
         // NOTE: ASSUMES ALLIES NEED TO BE INSTANTIATED
         protected virtual IEnumerator SetupCombat()
@@ -47,6 +51,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
                     Ally newAlly = Instantiate(baseAllyPrefab, transform);
                     serializableAlly.InitializeAlly(ref newAlly);
                     result.Add(newAlly);
+                    UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
+                    unitUI.Unit = newAlly;
+                    allyUIInstances.Add(unitUI);
                 }
                 return result;
             }
@@ -65,6 +72,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 allyInstance.HP = allyInstance.GetMaxHP();
                 allyInstance.transform.position = allyPositionOffsets[i];
                 newAllies.Add(allyInstance);
+                UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
+                unitUI.Unit = allyInstance;
+                allyUIInstances.Add(unitUI);
             }
             return newAllies;
         }

@@ -41,6 +41,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 Destroy(enemy.gameObject);
             enemyInstances.Clear();
 
+            foreach(UnitUI unitUI in allyUIInstances)
+                Destroy(unitUI.gameObject);
+            allyUIInstances.Clear();
+
             CurrentCombatPhase = CombatPhase.NONE;
             OnCombatPhaseChange -= StartCombatPhase;
             currentCombat = null;

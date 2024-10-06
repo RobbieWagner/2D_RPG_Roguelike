@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -24,6 +25,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private bool debugEnabled = false;
         [SerializeField] private DebugLogSequenceEvent debugSequenceEventPrefab;
         [SerializeField] private CombatConfiguration debugCombatConfiguration;
+        [SerializeField] private LayoutGroup unitUIParent;
 
         protected List<Ally> allyInstances = new List<Ally>();
         protected List<Ally> activeAllies => allyInstances.Where(a => a.isUnitFighting).ToList();
