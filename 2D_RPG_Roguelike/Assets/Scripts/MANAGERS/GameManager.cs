@@ -14,7 +14,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public class GameManager : MonoBehaviour
     {
         public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
-        private GameMode currentGameMode = GameMode.NONE;
+        public static Action<GameMode> OnGameModeEnded = (GameMode gameMode) => { };
+        private GameMode currentGameMode = GameMode.EXPLORATION; //GameMode.NONE //TODO: HAVE GAMEMODE INITIALIZED TO NONE
         public GameMode CurrentGameMode
         {
             get 
@@ -25,6 +26,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 if (value == currentGameMode)
                     return;
+                OnGameModeEnded?.Invoke(currentGameMode);
                 currentGameMode = value;
                 OnGameModeChanged?.Invoke(currentGameMode);
             }
@@ -40,6 +42,27 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             StaticGameStats.persistentDataPath = Application.persistentDataPath;
             new JsonDataService();
+
+            OnGameModeChanged += OnChangeGameMode;
+            OnGameModeEnded += OnEndGameMode;
+        }
+
+        private void OnEndGameMode(GameMode mode)
+        {
+            if(mode == GameMode.EXPLORATION)
+            {
+                CharacterMovement2D.Instance.enabled = false;
+                CharacterMovement2D.Instance.spriteRenderer.enabled = false;
+            }
+        }
+
+        private void OnChangeGameMode(GameMode mode)
+        {
+            if(mode == GameMode.EXPLORATION)
+            {
+                CharacterMovement2D.Instance.enabled = true;
+                CharacterMovement2D.Instance.spriteRenderer.enabled = true;
+            }
         }
     }
 }

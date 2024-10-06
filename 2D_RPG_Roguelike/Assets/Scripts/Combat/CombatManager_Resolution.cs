@@ -44,6 +44,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
             CurrentCombatPhase = CombatPhase.NONE;
             OnCombatPhaseChange -= StartCombatPhase;
             currentCombat = null;
+
+            //TODO: Handle by another means (Should not be hardcoded to go to exploration)
+            GameManager.Instance.CurrentGameMode = GameMode.EXPLORATION;
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
         protected virtual bool CheckForCombatCompletion()

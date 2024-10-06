@@ -1,10 +1,10 @@
 using RobbieWagnerGames.StrategyCombat;
 using RobbieWagnerGames.StrategyCombat.Units;
+using RobbieWagnerGames.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -74,15 +74,18 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 debugSequenceEventPrefab.message = eventType.ToString();
             }
 
-            StartCombat(debugCombatConfiguration);
+            StartCoroutine(StartCombat(debugCombatConfiguration));
         }
 
-        public virtual bool StartCombat(CombatConfiguration combatConfiguration)
+        public virtual IEnumerator StartCombat(CombatConfiguration combatConfiguration)
         {
+            yield return null;
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
             currentCombat = combatConfiguration;
             OnCombatPhaseChange += StartCombatPhase;
+            GameManager.Instance.CurrentGameMode = GameMode.COMBAT;
             CurrentCombatPhase = CombatPhase.SETUP;
-            return true;
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
         protected virtual void StartCombatPhase(CombatPhase phase)

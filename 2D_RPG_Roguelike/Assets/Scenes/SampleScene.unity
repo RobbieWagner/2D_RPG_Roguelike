@@ -946,12 +946,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102358406}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33f0ce82c21caf04ea53b15f0b71a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitAnimator: {fileID: 1671982360}
+  spriteRenderer: {fileID: 1671982359}
   canMove: 1
   moving: 0
   currentWalkSpeed: 5
@@ -1524,7 +1525,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671982357}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
