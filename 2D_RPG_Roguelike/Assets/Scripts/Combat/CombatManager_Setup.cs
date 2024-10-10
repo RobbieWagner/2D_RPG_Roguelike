@@ -16,8 +16,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         [Space(10)]
         [Header("Combat Setup")]
-        public List<Vector2> allyPositionOffsets;
-        public List<Vector2> enemyPositionOffsets;
+        public List<Vector3> allyPositionOffsets;
+        public List<Vector3> enemyPositionOffsets;
         public Ally baseAllyPrefab;
 
         [SerializeField] protected UnitUI unitUIPrefab;
@@ -51,6 +51,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                     Ally newAlly = Instantiate(baseAllyPrefab, transform);
                     serializableAlly.InitializeAlly(ref newAlly);
                     result.Add(newAlly);
+                    newAlly.transform.localPosition = allyPositionOffsets[i];
                     UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
                     unitUI.Unit = newAlly;
                     allyUIInstances.Add(unitUI);
@@ -70,7 +71,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 allyInstance.name = $"ally_{i}";
                 allyInstance.unitName += $"_{i}";
                 allyInstance.HP = allyInstance.GetMaxHP();
-                allyInstance.transform.position = allyPositionOffsets[i];
+                allyInstance.transform.localPosition = allyPositionOffsets[i];
                 newAllies.Add(allyInstance);
                 UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
                 unitUI.Unit = allyInstance;
@@ -88,7 +89,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 enemyInstance.name = $"enemy_{i}";
                 enemyInstance.unitName += $"_{i}";
                 enemyInstance.HP = enemyInstance.GetMaxHP();
-                enemyInstance.transform.position = enemyPositionOffsets[i];
+                enemyInstance.transform.localPosition = enemyPositionOffsets[i];
                 newEnemies.Add(enemyInstance);
             }
             return newEnemies;

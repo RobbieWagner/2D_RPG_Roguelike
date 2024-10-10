@@ -69,7 +69,7 @@ public class GridController : MonoBehaviour
                 List<MapTile> tileOptions = tilePrefabs.Where(x => x.possibilityValue == cell.value).ToList();
                 int selectedOptionIndex = random.Next(0, tileOptions.Count);
                 MapTile newMapTile = Instantiate(tileOptions[selectedOptionIndex], gridParent);
-                newMapTile.transform.localPosition = new Vector2(cellSize.x * j, cellSize.y * (i - grid.Count));
+                newMapTile.transform.localPosition = new Vector3(cellSize.x * j,0, cellSize.y * (i - grid.Count));
                 newRow.Add(newMapTile);
             }
             gridInstance.Add(newRow);
