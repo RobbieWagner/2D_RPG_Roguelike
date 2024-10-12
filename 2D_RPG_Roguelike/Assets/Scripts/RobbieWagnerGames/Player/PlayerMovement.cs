@@ -10,19 +10,46 @@ namespace RobbieWagnerGames
     public class PlayerMovement : MonoBehaviour
     {
 
-        [HideInInspector] public bool canMove;
+        [HideInInspector] private bool canMove = true;
+        public bool CanMove
+        {
+            get 
+            {
+                return canMove;
+            }
+            set 
+            {
+                if(canMove == value)
+                    return;
+                canMove = value;
+                if(canMove)
+                {
+                    inputActions.Enable();
+                    spriteRenderer.enabled = true;
+                }
+                else
+                {
+                    CeasePlayerMovement();
+                    inputActions.Disable();
+                    spriteRenderer.enabled = false;
+                }
+            }
+        }
         [HideInInspector] public bool moving = false;
 
         private Vector3 movementVector;
         [SerializeField] private float defaultWalkSpeed = 3f;
         private float currentWalkSpeed;
         [SerializeField] public UnitAnimator movementAnimator;
+        public SpriteRenderer spriteRenderer;
 
         private CharacterController body;
         private bool isGrounded;
         private float GRAVITY = -7.5f;
         private Vector3 lastFramePos;
         [SerializeField] private LayerMask groundMask;
+
+        private PlayerMovementActions inputActions;
 
         private Vector3 lastPosition;
         private bool movingForcibly = false;
@@ -62,6 +89,11 @@ namespace RobbieWagnerGames
 
             body = GetComponent<CharacterController>();
             isGrounded = false;
+
+            inputActions = new PlayerMovementActions();
+            inputActions.Enable();
+            inputActions.Movement.Move.performed += OnMove;
+            inputActions.Movement.Move.canceled += StopPlayer;
         }
 
         private void LateUpdate() 
@@ -104,17 +136,17 @@ namespace RobbieWagnerGames
                 Animate();
             }
 
-            if(moving && !footstepAudioSource.isPlaying) 
-            {
-                PlayMovementSounds();
-            }
+            //if(moving && !footstepAudioSource.isPlaying) 
+            //{
+            //    PlayMovementSounds();
+            //}
         }
 
-        private void OnMove(InputValue inputValue)
+        private void OnMove(InputAction.CallbackContext context)
         {
             if(canMove)
             {
-                Vector2 input = inputValue.Get<Vector2>();
+                Vector2 input = context.ReadValue<Vector2>();
 
                 if(movementVector.x != input.x && input.x != 0f)
                 {
@@ -148,7 +180,7 @@ namespace RobbieWagnerGames
             StopPlayer();
         }
 
-        public void StopPlayer()
+        public void StopPlayer(InputAction.CallbackContext context = new InputAction.CallbackContext())
         {
             if(movementVector.x > 0) movementAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
             else if(movementVector.x < 0) movementAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
@@ -162,7 +194,6 @@ namespace RobbieWagnerGames
 
         public void CeasePlayerMovement()
         {
-            canMove = false;
             StopPlayer();
         }
 
@@ -203,18 +234,18 @@ namespace RobbieWagnerGames
 
         private void ChangeFootstepSounds(AudioClip clip)
         {
-            StopMovementSounds();
-            footstepAudioSource.clip = clip;
+            //StopMovementSounds();
+            //footstepAudioSource.clip = clip;
         }
         
         public void PlayMovementSounds()
         {
-            footstepAudioSource.Play();
+            //footstepAudioSource.Play();
         }
 
         public void StopMovementSounds()
         {
-            footstepAudioSource.Stop();
+            //footstepAudioSource.Stop();
         }
 
         private IEnumerator FootStepStopTimer(float timeToTurnOff)

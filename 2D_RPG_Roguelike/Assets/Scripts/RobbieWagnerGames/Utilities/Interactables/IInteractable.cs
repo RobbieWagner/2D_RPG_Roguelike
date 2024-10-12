@@ -59,7 +59,8 @@ namespace RobbieWagnerGames
         {
             //ExplorationManager.Instance.currentInteractable = null;
             canInteract = true;
-            if(PlayerMovement.Instance != null) PlayerMovement.Instance.canMove = true;
+            if(PlayerMovement.Instance != null) 
+                PlayerMovement.Instance.CanMove = true;
         }
 
         protected virtual IEnumerator Interact()

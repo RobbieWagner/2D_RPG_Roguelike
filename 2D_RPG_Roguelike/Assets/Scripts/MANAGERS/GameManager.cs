@@ -51,18 +51,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if(mode == GameMode.EXPLORATION)
             {
-                CharacterMovement2D.Instance.enabled = false;
-                CharacterMovement2D.Instance.spriteRenderer.enabled = false;
+                PlayerMovement.Instance.CeasePlayerMovement();
+                PlayerMovement.Instance.spriteRenderer.enabled = false;
             }
         }
 
         private void OnChangeGameMode(GameMode mode)
         {
             if(mode == GameMode.EXPLORATION)
-            {
-                CharacterMovement2D.Instance.enabled = true;
-                CharacterMovement2D.Instance.spriteRenderer.enabled = true;
-            }
+                PlayerMovement.Instance.CanMove = true;
         }
     }
 }

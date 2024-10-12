@@ -29,6 +29,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
             //Debug.Log("Setting up Combat");
             yield return null;
 
+            PlayerMovement.Instance.CanMove = false;
+
             if (currentCombat.pullAlliesFromSave)
                 allyInstances = InstantiateAlliesFromSave();
             else
