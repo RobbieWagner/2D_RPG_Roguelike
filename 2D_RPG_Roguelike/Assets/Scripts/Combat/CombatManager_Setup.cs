@@ -61,7 +61,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 return result;
             }
             else
-                throw new NullReferenceException("Error starting combat: could not find party data!!");
+                throw new NullReferenceException("Error starting combatInfo: could not find party data!!");
         }
 
         protected List<Ally> InstantiateAllies(List<Ally> allyPrefabs)

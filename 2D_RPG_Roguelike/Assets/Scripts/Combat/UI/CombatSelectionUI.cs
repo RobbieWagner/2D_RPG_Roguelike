@@ -70,7 +70,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                     mainCombatMenu.CurIndex = 0;
             }
             else
-                Debug.LogWarning("Could not display combat selection UI: unit found null!!");
+                Debug.LogWarning("Could not display combatInfo selection UI: unit found null!!");
         }
 
         protected virtual void HandleMainCombatMenuOptionSelection(int index)
@@ -94,7 +94,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
             catch (NotImplementedException e) 
             {
-                Debug.LogWarning($"Error thrown while executing main combat menu option selection: {e}");
+                Debug.LogWarning($"Error thrown while executing main combatInfo menu option selection: {e}");
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                     actionCombatMenu.CurIndex = 0;
             }
             else
-                Debug.LogWarning("Could not display combat selection UI: unit or their actions found null!!");
+                Debug.LogWarning("Could not display combatInfo selection UI: unit or their actions found null!!");
         }
 
         protected virtual void HandleActionCombatMenuOptionSelection(int index)

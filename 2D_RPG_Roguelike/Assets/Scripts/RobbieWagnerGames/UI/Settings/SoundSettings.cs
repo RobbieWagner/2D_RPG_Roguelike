@@ -116,7 +116,7 @@ namespace RobbieWagnerGames.UI
         {
             if(volume < -40) volume = -80;
             combatVolume = volume;
-            audioMixer.SetFloat("combat", combatVolume);
+            audioMixer.SetFloat("combatInfo", combatVolume);
             SaveDataManager.SaveFloat("combat_volume", combatVolume);
         } 
 
@@ -172,7 +172,7 @@ namespace RobbieWagnerGames.UI
 
             dialogueVolume = PlayerPrefs.GetFloat("combat_volume", -10f);
             if(dialogueVolume < -40) dialogueVolume = -80;
-            audioMixer.SetFloat("combat", dialogueVolume);
+            audioMixer.SetFloat("combatInfo", dialogueVolume);
 
             playerVolume = PlayerPrefs.GetFloat("player_volume", -5f);
             if(playerVolume < -40) playerVolume = -80;
@@ -200,7 +200,7 @@ namespace RobbieWagnerGames.UI
 
             float loaded_dialogueVolume = PlayerPrefs.GetFloat("combat_volume", -10f);
             if(loaded_dialogueVolume < -40) loaded_dialogueVolume = -80;
-            mixer.SetFloat("combat", loaded_dialogueVolume);
+            mixer.SetFloat("combatInfo", loaded_dialogueVolume);
 
             float loaded_playerVolume = PlayerPrefs.GetFloat("player_volume", -5f);
             if(loaded_playerVolume < -40) loaded_playerVolume = -80;
@@ -214,7 +214,7 @@ namespace RobbieWagnerGames.UI
         public static void SaveSettings(AudioMixer mixer)
         {
             List<float> volumes = new List<float>();
-            List<string> volumeTypes = new List<string>() {"volume", "music", "dialogue", "combat", "player", "ui"};
+            List<string> volumeTypes = new List<string>() {"volume", "music", "dialogue", "combatInfo", "player", "ui"};
 
             foreach(string volumeType in volumeTypes)
             {

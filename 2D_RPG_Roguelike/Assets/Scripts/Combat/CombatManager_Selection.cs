@@ -53,7 +53,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else if (IsUnitInCombatEnemy(selectingUnit))
                 SelectActionForUnit(selectingUnit);
             else
-                throw new InvalidOperationException($"Could not complete action selection phase: unit {selectingUnit.GetName()} is not valid for combat!!");
+                throw new InvalidOperationException($"Could not complete action selection phase: unit {selectingUnit.GetName()} is not valid for combatInfo!!");
 
             while(currentSelectedAction == null || targets == null || !targets.Any() || isCurrentlySelecting)
                 yield return null;

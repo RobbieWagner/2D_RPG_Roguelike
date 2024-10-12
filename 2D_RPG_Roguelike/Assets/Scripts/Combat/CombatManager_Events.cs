@@ -54,14 +54,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
            // Debug.Log("attempt to subscribe");
             if (combatEventHandlers.Keys.Contains(triggerType))
                 combatEventHandlers[triggerType].Subscribe(combatEvent, combatEvent.priority);
-            else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combat event");
+            else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combatInfo event");
         }
 
         public void UnsubscribeEventFromCombatEventHandler(CombatEvent combatEvent, CombatEventTriggerType triggerType)
         {
             if (combatEventHandlers.Keys.Contains(triggerType))
                 combatEventHandlers[triggerType].Unsubscribe(combatEvent);
-            else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combat event");
+            else Debug.LogWarning($"Trigger type {triggerType} not found, please ensure that trigger type is valid for combatInfo event");
         }
 
         public IEnumerator WaitForCombatEvents(CombatEventTriggerType triggerType, Action callback)

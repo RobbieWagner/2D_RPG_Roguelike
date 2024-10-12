@@ -112,7 +112,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 case CombatPhase.NONE:
                     break;
                 default:
-                    throw new ArgumentException($"Invalid combat phase used {phase}");
+                    throw new ArgumentException($"Invalid combatInfo phase used {phase}");
             }
         }
 
@@ -151,7 +151,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 case CombatPhase.NONE:
                     break;
                 default:
-                    throw new NotImplementedException($"Functionality for combat phase {currentCombatPhase} is not implemented for the current kind of combat!!");
+                    throw new NotImplementedException($"Functionality for combatInfo phase {currentCombatPhase} is not implemented for the current kind of combatInfo!!");
             }
         }
 
