@@ -1,6 +1,4 @@
 using RobbieWagnerGames.StrategyCombat;
-using RobbieWagnerGames.StrategyCombat.Units;
-using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +7,14 @@ using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
+    public enum CombatMenuType
+    {
+        NONE,
+        MAIN,
+        ACTION,
+        TARGET
+    }
+
     public enum MainCombatMenuOption
     {
         NONE,
@@ -51,6 +57,68 @@ namespace RobbieWagnerGames.TurnBasedCombat
             DisplayMainSelectionUI();
         }
 
+        #region controls subscription
+        protected virtual void ToggleControlsSubscription(CombatMenuType type, bool on)
+        {
+            if(type == CombatMenuType.MAIN)
+            {
+                if(on)
+                {
+                    controls.MainSelectionMenu.Navigate.performed += mainCombatMenu.NavigateMenu;
+                    controls.MainSelectionMenu.Select.performed += mainCombatMenu.SelectCurrentButton;
+                }
+                else
+                {
+                    controls.MainSelectionMenu.Navigate.performed -= mainCombatMenu.NavigateMenu;
+                    controls.MainSelectionMenu.Select.performed -= mainCombatMenu.SelectCurrentButton;
+                }
+            }
+            else if (type == CombatMenuType.ACTION)
+            {
+                if (on)
+                {
+                    controls.ActionSelectionMenu.Navigate.performed += actionCombatMenu.NavigateMenu;
+                    controls.ActionSelectionMenu.Select.performed += actionCombatMenu.SelectCurrentButton;
+                    controls.ActionSelectionMenu.Cancel.performed += ReturnToMainSelectionMenu;
+                }
+                else
+                {
+                    controls.ActionSelectionMenu.Navigate.performed -= actionCombatMenu.NavigateMenu;
+                    controls.ActionSelectionMenu.Select.performed -= actionCombatMenu.SelectCurrentButton;
+                    controls.ActionSelectionMenu.Cancel.performed -= ReturnToMainSelectionMenu;
+                }
+            }
+            else if (type == CombatMenuType.TARGET)
+            {
+                if (on)
+                {
+                    controls.TargetSelectionMenu.Navigate.performed += targetCombatMenu.NavigateMenu;
+                    controls.TargetSelectionMenu.Select.performed += targetCombatMenu.SelectCurrentButton;
+                    controls.TargetSelectionMenu.Cancel.performed += ReturnToActionSelectionMenu;
+                }
+                else
+                {
+                    controls.TargetSelectionMenu.Navigate.performed -= targetCombatMenu.NavigateMenu;
+                    controls.TargetSelectionMenu.Select.performed -= targetCombatMenu.SelectCurrentButton;
+                    controls.TargetSelectionMenu.Cancel.performed -= ReturnToActionSelectionMenu;
+                }
+            }
+        }
+
+        private void ReturnToMainSelectionMenu(InputAction.CallbackContext context)
+        {
+            DisableActionMenu();
+            DisplayMainSelectionUI();
+        }
+
+        private void ReturnToActionSelectionMenu(InputAction.CallbackContext context)
+        {
+            DisableTargetMenu();
+            CombatManagerBase.Instance.currentSelectedAction = null;
+            DisplayActionSelectionUI();
+        }
+        #endregion
+
         public virtual void DisplayMainSelectionUI()
         {
             if (selectingUnit != null)
@@ -60,8 +128,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ITEM.ToString());
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.FLEE.ToString());
 
-                controls.MainSelectionMenu.Navigate.performed += mainCombatMenu.NavigateMenu;
-                controls.MainSelectionMenu.Select.performed += mainCombatMenu.SelectCurrentButton;
+                ToggleControlsSubscription(CombatMenuType.MAIN, true);
                 controls.MainSelectionMenu.Enable();
 
                 if(savedMainSelectionIndices.TryGetValue(selectingUnit, out int index) && index < 3)
@@ -92,7 +159,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 else
                     throw new NotImplementedException($"Index {index} does not have an implemented action");
             }
-            catch (NotImplementedException e) 
+            catch (NotImplementedException e)
             {
                 Debug.LogWarning($"Error thrown while executing main combatInfo menu option selection: {e}");
                 return;
@@ -109,8 +176,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 useSavedActionIndex = false;
             }
 
-            controls.MainSelectionMenu.Navigate.performed -= mainCombatMenu.NavigateMenu;
-            controls.MainSelectionMenu.Select.performed -= mainCombatMenu.SelectCurrentButton;
+            DisableMainCombatMenu();
+        }
+
+        private void DisableMainCombatMenu()
+        {
+            ToggleControlsSubscription(CombatMenuType.MAIN, false);
             Destroy(mainCombatMenu.gameObject);
             mainCombatMenu = null;
             controls.MainSelectionMenu.Disable();
@@ -127,8 +198,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 controls.ActionSelectionMenu.Navigate.Reset();
                 controls.ActionSelectionMenu.Select.Reset();
 
-                controls.ActionSelectionMenu.Navigate.performed += actionCombatMenu.NavigateMenu;
-                controls.ActionSelectionMenu.Select.performed += actionCombatMenu.SelectCurrentButton;
+                ToggleControlsSubscription(CombatMenuType.ACTION, true);
                 controls.ActionSelectionMenu.Enable();
 
                 if (useSavedActionIndex && savedActionSelectionIndices.TryGetValue(selectingUnit, out int index) && index < selectingUnit.unitActions.Count)
@@ -156,13 +226,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 useSavedTargetIndex = false;
             }
 
-            controls.ActionSelectionMenu.Navigate.performed -= actionCombatMenu.NavigateMenu;
-            controls.ActionSelectionMenu.Select.performed -= actionCombatMenu.SelectCurrentButton;
+            DisableActionMenu();
+
+            DisplayTargetSelectionUI();
+        }
+
+        protected void DisableActionMenu()
+        {
+            ToggleControlsSubscription(CombatMenuType.ACTION, false);
             Destroy(actionCombatMenu.gameObject);
             actionCombatMenu = null;
             controls.ActionSelectionMenu.Disable();
-
-            DisplayTargetSelectionUI();
         }
 
         #region target selection
@@ -178,8 +252,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 controls.TargetSelectionMenu.Navigate.Reset();
                 controls.TargetSelectionMenu.Select.Reset();
 
-                controls.TargetSelectionMenu.Navigate.performed += targetCombatMenu.NavigateMenu;
-                controls.TargetSelectionMenu.Select.performed += targetCombatMenu.SelectCurrentButton;
+                ToggleControlsSubscription(CombatMenuType.TARGET, true);
                 controls.TargetSelectionMenu.Enable();
 
                 if (useSavedTargetIndex && savedTargetSelectionIndices.TryGetValue(selectingUnit, out int index) && index < targets.Count)
@@ -198,14 +271,18 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 savedTargetSelectionIndices[selectingUnit] = index;
             else
                 savedTargetSelectionIndices.Add(selectingUnit, index);
+            
+            DisableTargetMenu();
 
-            controls.TargetSelectionMenu.Navigate.performed -= targetCombatMenu.NavigateMenu;
-            controls.TargetSelectionMenu.Select.performed -= targetCombatMenu.SelectCurrentButton;
+            CombatManagerBase.Instance.isCurrentlySelecting = false;
+        }
+
+        private void DisableTargetMenu()
+        {
+            ToggleControlsSubscription(CombatMenuType.TARGET, false);
             Destroy(targetCombatMenu.gameObject);
             targetCombatMenu = null;
             controls.TargetSelectionMenu.Disable();
-
-            CombatManagerBase.Instance.isCurrentlySelecting = false;
         }
         #endregion
     }

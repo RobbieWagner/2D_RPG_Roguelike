@@ -44,6 +44,15 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2c17613-ac28-46ec-8101-7243b7b147d2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -200,6 +209,28 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e62e1adb-f2ae-4dbe-9d98-8ae996ca5dd4"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68655c0f-de57-4821-a893-4dbed570afdb"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -215,6 +246,15 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""7682ec58-f2eb-4765-b7d3-3ea924e1a173"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Select"",
@@ -380,6 +420,28 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a673fee-aa43-4349-ae61-585ef644d942"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cd42fc3-81ca-4bb4-a7d8-a09bf6f7cd32"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -395,6 +457,15 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""8275c7c2-92b6-4be9-90ee-43c728fb8f28"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Select"",
@@ -560,6 +631,28 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdebd4a8-3920-4a39-acc2-9da7b0dd1be0"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57649cfb-0710-4442-b1d9-734382e888dc"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -570,13 +663,16 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
         m_MainSelectionMenu = asset.FindActionMap("MainSelectionMenu", throwIfNotFound: true);
         m_MainSelectionMenu_Navigate = m_MainSelectionMenu.FindAction("Navigate", throwIfNotFound: true);
         m_MainSelectionMenu_Select = m_MainSelectionMenu.FindAction("Select", throwIfNotFound: true);
+        m_MainSelectionMenu_Cancel = m_MainSelectionMenu.FindAction("Cancel", throwIfNotFound: true);
         // ActionSelectionMenu
         m_ActionSelectionMenu = asset.FindActionMap("ActionSelectionMenu", throwIfNotFound: true);
         m_ActionSelectionMenu_Navigate = m_ActionSelectionMenu.FindAction("Navigate", throwIfNotFound: true);
+        m_ActionSelectionMenu_Cancel = m_ActionSelectionMenu.FindAction("Cancel", throwIfNotFound: true);
         m_ActionSelectionMenu_Select = m_ActionSelectionMenu.FindAction("Select", throwIfNotFound: true);
         // TargetSelectionMenu
         m_TargetSelectionMenu = asset.FindActionMap("TargetSelectionMenu", throwIfNotFound: true);
         m_TargetSelectionMenu_Navigate = m_TargetSelectionMenu.FindAction("Navigate", throwIfNotFound: true);
+        m_TargetSelectionMenu_Cancel = m_TargetSelectionMenu.FindAction("Cancel", throwIfNotFound: true);
         m_TargetSelectionMenu_Select = m_TargetSelectionMenu.FindAction("Select", throwIfNotFound: true);
     }
 
@@ -641,12 +737,14 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
     private List<IMainSelectionMenuActions> m_MainSelectionMenuActionsCallbackInterfaces = new List<IMainSelectionMenuActions>();
     private readonly InputAction m_MainSelectionMenu_Navigate;
     private readonly InputAction m_MainSelectionMenu_Select;
+    private readonly InputAction m_MainSelectionMenu_Cancel;
     public struct MainSelectionMenuActions
     {
         private @CombatControls m_Wrapper;
         public MainSelectionMenuActions(@CombatControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_MainSelectionMenu_Navigate;
         public InputAction @Select => m_Wrapper.m_MainSelectionMenu_Select;
+        public InputAction @Cancel => m_Wrapper.m_MainSelectionMenu_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_MainSelectionMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -662,6 +760,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IMainSelectionMenuActions instance)
@@ -672,6 +773,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IMainSelectionMenuActions instance)
@@ -694,12 +798,14 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_ActionSelectionMenu;
     private List<IActionSelectionMenuActions> m_ActionSelectionMenuActionsCallbackInterfaces = new List<IActionSelectionMenuActions>();
     private readonly InputAction m_ActionSelectionMenu_Navigate;
+    private readonly InputAction m_ActionSelectionMenu_Cancel;
     private readonly InputAction m_ActionSelectionMenu_Select;
     public struct ActionSelectionMenuActions
     {
         private @CombatControls m_Wrapper;
         public ActionSelectionMenuActions(@CombatControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_ActionSelectionMenu_Navigate;
+        public InputAction @Cancel => m_Wrapper.m_ActionSelectionMenu_Cancel;
         public InputAction @Select => m_Wrapper.m_ActionSelectionMenu_Select;
         public InputActionMap Get() { return m_Wrapper.m_ActionSelectionMenu; }
         public void Enable() { Get().Enable(); }
@@ -713,6 +819,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
@@ -723,6 +832,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
@@ -748,12 +860,14 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_TargetSelectionMenu;
     private List<ITargetSelectionMenuActions> m_TargetSelectionMenuActionsCallbackInterfaces = new List<ITargetSelectionMenuActions>();
     private readonly InputAction m_TargetSelectionMenu_Navigate;
+    private readonly InputAction m_TargetSelectionMenu_Cancel;
     private readonly InputAction m_TargetSelectionMenu_Select;
     public struct TargetSelectionMenuActions
     {
         private @CombatControls m_Wrapper;
         public TargetSelectionMenuActions(@CombatControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_TargetSelectionMenu_Navigate;
+        public InputAction @Cancel => m_Wrapper.m_TargetSelectionMenu_Cancel;
         public InputAction @Select => m_Wrapper.m_TargetSelectionMenu_Select;
         public InputActionMap Get() { return m_Wrapper.m_TargetSelectionMenu; }
         public void Enable() { Get().Enable(); }
@@ -767,6 +881,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
@@ -777,6 +894,9 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
@@ -801,15 +921,18 @@ public partial class @CombatControls: IInputActionCollection2, IDisposable
     {
         void OnNavigate(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IActionSelectionMenuActions
     {
         void OnNavigate(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
     }
     public interface ITargetSelectionMenuActions
     {
         void OnNavigate(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
     }
 }
