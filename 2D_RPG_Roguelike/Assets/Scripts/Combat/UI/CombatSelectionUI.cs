@@ -124,6 +124,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (selectingUnit != null)
             {
                 mainCombatMenu = Instantiate(menuPrefab, transform);
+                mainCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ACTION.ToString());
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ITEM.ToString());
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.FLEE.ToString());
@@ -192,6 +193,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (selectingUnit != null && selectingUnit.unitActions != null && selectingUnit.unitActions.Any())
             {
                 actionCombatMenu = Instantiate(menuPrefab, transform);
+                actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 for (int i = 0; i < selectingUnit.unitActions.Count; i++)
                     actionCombatMenu.AddButtonToList(HandleActionCombatMenuOptionSelection, selectingUnit.unitActions[i].actionName);
 
