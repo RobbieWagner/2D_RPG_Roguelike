@@ -578,6 +578,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36c8ea7693952b4e8c55c4b35f3d39b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialParty:
+  - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
+  - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
+  - {fileID: 2423254420611760383, guid: 420c4009d5c434e44b395039c6f242c6, type: 3}
 --- !u!1 &456016868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fb0221cdb0725498dbe6c943f546de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullAlliesFromSave: 0
+  pullAlliesFromSave: 1
   allyPrefabs:
   - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
   - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
@@ -1441,7 +1445,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: eaab61a805ee0cb4abbe45a9fe2f110c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1841,7 +1845,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: eaab61a805ee0cb4abbe45a9fe2f110c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1861,7 +1865,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e79aa4e2431e2044f83ffe12030a7249, type: 3}
   m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
   m_FlipX: 0
@@ -1908,37 +1912,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &1733173392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1733173393}
-  m_Layer: 0
-  m_Name: JsonDataService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1733173393
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733173392}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2022164529}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764564212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2338,7 +2311,6 @@ Transform:
   - {fileID: 1018285569}
   - {fileID: 275056997}
   - {fileID: 1279837677}
-  - {fileID: 1733173393}
   - {fileID: 276264934}
   - {fileID: 1315313287}
   - {fileID: 2083530146}

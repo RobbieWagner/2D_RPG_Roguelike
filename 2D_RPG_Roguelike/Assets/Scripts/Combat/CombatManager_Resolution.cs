@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using RobbieWagnerGames.Utilities.SaveData;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -32,6 +33,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public virtual IEnumerator EndCombat()
         {
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+
+            if(currentCombat.pullAlliesFromSave)
+            {
+                List<SerializableAlly> allySaves = allyInstances.Select(x => new SerializableAlly(x)).ToList();
+                JsonDataService.Instance.SaveData(StaticGameStats.partySavePath, allySaves);
+            }
 
             foreach (Ally ally in allyInstances)
                 Destroy(ally.gameObject);

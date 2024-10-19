@@ -53,15 +53,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
                     Ally newAlly = Instantiate(baseAllyPrefab, transform);
                     serializableAlly.InitializeAlly(ref newAlly);
                     result.Add(newAlly);
-                    newAlly.transform.localPosition = allyPositionOffsets[i];
-                    UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
-                    unitUI.Unit = newAlly;
-                    allyUIInstances.Add(unitUI);
+
+                    PlaceUnit(i, newAlly);
                 }
                 return result;
             }
             else
-                throw new NullReferenceException("Error starting combatInfo: could not find party data!!");
+            {
+                Debug.Log("loading first time party data");
+
+                return InstantiateAllies(GameManager.Instance.initialParty);
+            }
         }
 
         protected List<Ally> InstantiateAllies(List<Ally> allyPrefabs)
@@ -72,14 +74,20 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 Ally allyInstance = Instantiate(allyPrefabs[i], transform);
                 allyInstance.name = $"ally_{i}";
                 allyInstance.unitName += $"_{i}";
-                allyInstance.HP = allyInstance.GetMaxHP();
-                allyInstance.transform.localPosition = allyPositionOffsets[i];
+                //allyInstance.HP = allyInstance.GetMaxHP();
                 newAllies.Add(allyInstance);
-                UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
-                unitUI.Unit = allyInstance;
-                allyUIInstances.Add(unitUI);
+                
+                PlaceUnit(i, allyInstance);
             }
             return newAllies;
+        }
+
+        private void PlaceUnit(int i, Ally newAlly)
+        {
+            newAlly.transform.localPosition = allyPositionOffsets[i];
+            UnitUI unitUI = Instantiate(unitUIPrefab, unitUIParent.transform);
+            unitUI.Unit = newAlly;
+            allyUIInstances.Add(unitUI);
         }
 
         protected List<Enemy> InstantiateEnemies(List<Enemy> enemyPrefabs)

@@ -247,7 +247,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 targetCombatMenu = Instantiate(targetMenuPrefab, transform);
                 List<Unit> targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
                 foreach (Unit target in targets)
-                    targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.zero);
+                    targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.up);
 
                 controls.TargetSelectionMenu.Navigate.Reset();
                 controls.TargetSelectionMenu.Select.Reset();

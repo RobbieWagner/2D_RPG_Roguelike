@@ -1,5 +1,7 @@
+using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.Utilities.SaveData;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -16,6 +18,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
         public static Action<GameMode> OnGameModeEnded = (GameMode gameMode) => { };
         private GameMode currentGameMode = GameMode.EXPLORATION; //GameMode.NONE //TODO: HAVE GAMEMODE INITIALIZED TO NONE
+        public List<Ally> initialParty;
+
         public GameMode CurrentGameMode
         {
             get 
