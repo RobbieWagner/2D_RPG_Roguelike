@@ -195,6 +195,7 @@ namespace RobbieWagnerGames
         public void CeasePlayerMovement()
         {
             StopPlayer();
+            canMove = false;
         }
 
         public IEnumerator MoveUnitToSpot(Vector3 position, float unitsPerSecond = -1)

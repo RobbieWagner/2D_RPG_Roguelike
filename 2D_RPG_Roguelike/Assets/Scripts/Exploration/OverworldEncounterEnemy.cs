@@ -15,6 +15,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (other.CompareTag("Player"))
             {
                 CombatManagerBase.Instance.transform.position = new Vector3(transform.position.x, CombatManagerBase.Instance.transform.position.y, transform.position.z);
+                PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(CombatManagerBase.Instance.StartCombat(combatInfo));
                 trigger.enabled = false;
                 CombatManagerBase.OnCombatPhaseChange += CheckFoOverworldDestruction;
