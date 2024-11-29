@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -9,12 +10,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
     {
         public Collider trigger;
         public CombatConfiguration combatInfo;
+        public Scene combatScene;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                CombatManagerBase.Instance.transform.position = new Vector3(transform.position.x, CombatManagerBase.Instance.transform.position.y, transform.position.z);
                 PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(CombatManagerBase.Instance.StartCombat(combatInfo));
                 trigger.enabled = false;

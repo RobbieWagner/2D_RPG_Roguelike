@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using RobbieWagnerGames.Utilities.SaveData;
+using UnityEngine.SceneManagement;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -34,7 +35,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
 
-            if(currentCombat.pullAlliesFromSave)
+            if (currentCombat.pullAlliesFromSave)
             {
                 List<SerializableAlly> allySaves = allyInstances.Select(x => new SerializableAlly(x)).ToList();
                 JsonDataService.Instance.SaveData(StaticGameStats.partySavePath, allySaves);
@@ -54,6 +55,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             CurrentCombatPhase = CombatPhase.NONE;
             OnCombatPhaseChange -= StartCombatPhase;
+
+            SceneManager.UnloadSceneAsync(currentCombat.combatSceneRef);
+            CameraManager.Instance.TrySwitchToDefaultCamera();
             currentCombat = null;
 
             //TODO: Handle by another means (Should not be hardcoded to go to exploration)

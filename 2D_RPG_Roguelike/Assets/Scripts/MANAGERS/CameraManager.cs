@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Ink.Parsed;
@@ -7,6 +8,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 {
     public class CameraManager : MonoBehaviour
     {
+        public GameCamera defaultCamera;
+
         private HashSet<GameCamera> gameCameras;
         private GameCamera activeGameCamera;
         public GameCamera ActiveGameCamera => activeGameCamera;
@@ -55,6 +58,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
             Debug.LogWarning("Could not switch game cameras (game camera was never added to the manager)");
             return false;
+        }
+
+        public void TrySwitchToDefaultCamera()
+        {
+            TrySwitchGameCamera(defaultCamera);
         }
     }
 }

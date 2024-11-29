@@ -10,6 +10,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public Camera cam;
         public bool switchToOnEnable = false;
         public Vector3 defaultPosition = Vector3.zero;
+        public bool initialPositionIsDefault = false;
 
         public void ActivateCamera()
         {
@@ -20,6 +21,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void Awake()
         {
+            if(initialPositionIsDefault)
+                defaultPosition = transform.position;
+
             CameraManager.Instance?.AddCamera(this);
 
             if (switchToOnEnable)

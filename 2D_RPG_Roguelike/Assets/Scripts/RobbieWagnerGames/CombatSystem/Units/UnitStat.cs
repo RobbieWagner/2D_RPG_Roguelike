@@ -8,9 +8,9 @@ namespace RobbieWagnerGames.StrategyCombat
     {
         BRAWN = 0,
         AGILITY = 1,
-        LORE = 2,
+        FOCUS = 2,
         HEART = 3,
-        OCCULT = 4,
+        PSYCH = 4,
     }
 
     [Serializable]

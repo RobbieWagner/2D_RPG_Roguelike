@@ -205,12 +205,12 @@ namespace RobbieWagnerGames.StrategyCombat
             return stats[stat].BaseValue;
         }
         public int GetInitiativeBoost() {return stats[StatType.AGILITY].CurrentValue;}
-        public int GetAccuracyBoost() { return stats[StatType.LORE].CurrentValue; }
+        public int GetAccuracyBoost() { return stats[StatType.FOCUS].CurrentValue; }
         public int GetBoonBoost() { return stats[StatType.HEART].CurrentValue; }
 
         #region derived stat getters;
-        public int GetCritChance() { return (stats[StatType.BRAWN].CurrentValue + stats[StatType.OCCULT].CurrentValue / 2);}
-        public int GetBaneBoost() {return (stats[StatType.AGILITY].CurrentValue + stats[StatType.LORE].CurrentValue / 2);}
+        public int GetCritChance() { return (stats[StatType.BRAWN].CurrentValue + stats[StatType.PSYCH].CurrentValue / 2);}
+        public int GetBaneBoost() {return (stats[StatType.AGILITY].CurrentValue + stats[StatType.FOCUS].CurrentValue / 2);}
         #endregion
         #endregion
         #endregion

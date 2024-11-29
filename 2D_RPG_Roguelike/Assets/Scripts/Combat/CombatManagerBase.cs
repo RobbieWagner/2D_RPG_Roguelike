@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -83,10 +84,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             yield return null;
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+
+            SceneManager.LoadScene(combatConfiguration.combatSceneRef, LoadSceneMode.Additive);
+            while (CombatBattlefield.Instance == null)
+                yield return null;
+            transform.position = CombatBattlefield.Instance.scenePosition + (Vector3.up * 2);
+            
             currentCombat = combatConfiguration;
             OnCombatPhaseChange += StartCombatPhase;
             GameManager.Instance.CurrentGameMode = GameMode.COMBAT;
             CurrentCombatPhase = CombatPhase.SETUP;
+            
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
