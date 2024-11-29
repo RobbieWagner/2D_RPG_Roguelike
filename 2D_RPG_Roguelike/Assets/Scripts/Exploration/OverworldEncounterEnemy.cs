@@ -213,6 +213,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
             navMeshAgent.isStopped = false;
             while (true)
             {
+                if (Vector3.Distance(PlayerMovement.Instance.transform.position, transform.position) > 10)
+                    ChangeMovementState(MovementState.Idle);
+
                 yield return null;
                 navMeshAgent.SetDestination(PlayerMovement.Instance.transform.position);
             }
