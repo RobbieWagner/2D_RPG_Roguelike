@@ -43,7 +43,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected List<Ally> InstantiateAlliesFromSave()
         {
-            List<SerializableAlly> savedAllies = JsonDataService.Instance.LoadData<List<SerializableAlly>>(StaticGameStats.partySavePath , null);
+            List<SerializableAlly> savedAllies = JsonDataService.Instance.LoadDataRelative<List<SerializableAlly>>(StaticGameStats.partySavePath , null);
             if (savedAllies != null)
             {
                 List<Ally> result = new List<Ally>();

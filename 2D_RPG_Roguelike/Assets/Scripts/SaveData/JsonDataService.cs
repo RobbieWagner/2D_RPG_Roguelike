@@ -64,7 +64,7 @@ namespace RobbieWagnerGames.Utilities.SaveData
             return result;
         }
 
-        public T LoadDataRelative<T>(string RelativePath, T DefaultData, bool saveDefaultIfMissing, bool isEncrypted = false)
+        public T LoadDataRelative<T>(string RelativePath, T DefaultData, bool saveDefaultIfMissing = false, bool isEncrypted = false)
         {
             string path = CreateValidDataPath(RelativePath);
             return LoadData(path, DefaultData, saveDefaultIfMissing, isEncrypted);
@@ -72,6 +72,7 @@ namespace RobbieWagnerGames.Utilities.SaveData
 
         public T LoadData<T>(string FullPath, T DefaultData, bool saveDefaultIfMissing = false,  bool isEncrypted = false)
         {
+            Debug.Log(FullPath);
             if(!File.Exists(FullPath))
             {
                 Debug.LogWarning($"File at path {FullPath} not found, returning default data...");

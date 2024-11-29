@@ -40,6 +40,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         {
             allyInstance.InitializeStats(stats);
             allyInstance.unitName = UnitName;
+            allyInstance.InitializeMaxHP();
             allyInstance.HP = HP;
 
             allyInstance.unitActions = LoadActions(actionFilePaths);

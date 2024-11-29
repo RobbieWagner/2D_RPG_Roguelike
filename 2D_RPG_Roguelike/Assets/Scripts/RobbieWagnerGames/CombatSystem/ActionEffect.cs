@@ -11,6 +11,11 @@ namespace RobbieWagnerGames.StrategyCombat
         [Header("General Info")]
         [SerializeField][Range(1,101)] public float accuracy = 101f;
         [SerializeField] private bool failureStopsActionExecution;
+        public bool FailureStopsActionExecution 
+        { 
+            get { return failureStopsActionExecution; }
+            private set { failureStopsActionExecution = value; }
+        }
     }
 
     [Serializable]
@@ -26,7 +31,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return damage;
         }
 
-        public void AttemptAttack(Unit user, Unit target)
+        public bool AttemptAttack(Unit user, Unit target)
         {
             bool hit = false;
             if (accuracy > 100)
@@ -36,6 +41,8 @@ namespace RobbieWagnerGames.StrategyCombat
 
             if (hit)
                 target.DealDamage(CalculateDamage(user, target));
+
+            return hit;
         }
     }
 
@@ -44,6 +51,7 @@ namespace RobbieWagnerGames.StrategyCombat
     {
         [Header("Heal")]
         [SerializeField] private int power = 10;
+        public bool healsSelf;
 
         public int CalculateHealing(Unit user, Unit target)
         {
@@ -52,7 +60,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return heal;
         }
 
-        public void AttemptHeal(Unit user, Unit target)
+        public bool AttemptHeal(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -62,6 +70,8 @@ namespace RobbieWagnerGames.StrategyCombat
 
             if (success)
                 target.Heal(CalculateHealing(user, target));
+
+            return success;
         }
     }
 
@@ -78,7 +88,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return power;
         }
 
-        public void AttemptStatRaise(Unit user, Unit target)
+        public bool AttemptStatRaise(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -88,6 +98,8 @@ namespace RobbieWagnerGames.StrategyCombat
 
             if (success)
                 target.ChangeStatValue(stat, CalculateStatChange(user, target));
+
+            return success;
         }
     }
 
@@ -105,7 +117,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return -power;
         }
 
-        public void AttemptStatLower(Unit user, Unit target)
+        public bool AttemptStatLower(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -115,6 +127,8 @@ namespace RobbieWagnerGames.StrategyCombat
 
             if (success)
                 target.ChangeStatValue(stat, CalculateStatChange(user, target));
+
+            return success;
         }
     }
 

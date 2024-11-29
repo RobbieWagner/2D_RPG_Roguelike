@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -17,6 +18,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] protected CombatExecutionUI executionUI;
         protected Unit executingUnit;
         protected CombatAction currentExecutingAction;
+        private bool continueExecutingAction = true;
 
         protected virtual IEnumerator HandleExecutionPhase()
         {
@@ -38,9 +40,13 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             //Debug.Log(combatAction.actionName);
             yield return StartCoroutine(executionUI.DisplayExecutingAction(combatAction));
+            continueExecutingAction = true;
 
-            foreach(ActionEffect effect in combatAction.effects)
+            foreach (ActionEffect effect in combatAction.effects)
             {
+                if(!continueExecutingAction)
+                    break;
+
                 if (effect.GetType() == typeof(Attack))
                     yield return StartCoroutine(ExecuteDamageEffect((Attack) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(Heal))
@@ -63,7 +69,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             foreach (Unit target in targets)
             {
-                effect.AttemptAttack(user, target);
+                continueExecutingAction = effect.AttemptAttack(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
                 yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Attack attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
             }
@@ -71,19 +77,27 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator ExecuteHealingEffect(Heal effect, Unit user, List<Unit> targets)
         {
-            foreach (Unit target in targets)
+            if (effect.healsSelf)
             {
-                effect.AttemptHeal(user, target);
-                yield return new WaitForSeconds(1.25f);
-                Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
+                continueExecutingAction = effect.AttemptHeal(user, user) || !effect.FailureStopsActionExecution;
+                Debug.Log($"Heal attemmpted on self({user.unitName}). Users health is now {user.HP}/{user.GetMaxHP()}");
             }
+            else
+            {
+                foreach (Unit target in targets)
+                {
+                    continueExecutingAction = effect.AttemptHeal(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
+                    Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
+                }
+            }
+            yield return new WaitForSeconds(1.25f);
         }
 
         protected virtual IEnumerator ExecuteStatRaiseEffect(StatRaise effect, Unit user, List<Unit> targets)
         {
             foreach (Unit target in targets)
             {
-                effect.AttemptStatRaise(user, target);
+                continueExecutingAction = effect.AttemptStatRaise(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
                 yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Stat raise attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
             }
@@ -93,7 +107,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             foreach (Unit target in targets)
             {
-                effect.AttemptStatLower(user, target);
+                continueExecutingAction = effect.AttemptStatLower(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
                 yield return new WaitForSeconds(1.25f);
                 Debug.Log($"Stat lower attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
             }

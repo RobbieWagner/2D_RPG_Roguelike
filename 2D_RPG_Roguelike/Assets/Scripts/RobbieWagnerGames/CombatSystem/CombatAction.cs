@@ -9,7 +9,10 @@ namespace RobbieWagnerGames.StrategyCombat
     {
         NONE,
         ATTACK,
-        HEAL
+        HEAL,
+        STAT_RAISE,
+        STAT_LOWER,
+        PASS
     }
 
     [CreateAssetMenu(menuName = "Combat Action")]

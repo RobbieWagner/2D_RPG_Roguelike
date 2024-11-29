@@ -51,14 +51,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public void NavigateMenu(InputAction.CallbackContext context)
         {
             float delta = context.ReadValue<float>();
-            Debug.Log($"navigating menu: {delta}");
 
             if (delta > 0f)
                 CurIndex = Math.Clamp(CurIndex + 1, 0, optionInstances.Count - 1);
             else if (delta < 0f)
                 CurIndex = Math.Clamp(CurIndex - 1, 0, optionInstances.Count - 1);
-
-            Debug.Log($"index {CurIndex}");
         }
 
         public void SelectCurrentButton(InputAction.CallbackContext context)
