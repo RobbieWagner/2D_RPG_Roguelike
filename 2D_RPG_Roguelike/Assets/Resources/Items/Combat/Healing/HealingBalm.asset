@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c85d3bb81c3354ab1979cba73e8e7e, type: 3}
+  m_Name: HealingBalm
+  m_EditorClassIdentifier: 
+  name: Balm
+  icon: {fileID: 0}
+  combatItemType: 0
+  effects:
+  - rid: 5165208783443460096
+  references:
+    version: 2
+    RefIds:
+    - rid: 5165208783443460096
+      type: {class: HealItemEffect, ns: , asm: Assembly-CSharp}
+      data:
+        usableOutsideCombat: 1
+        failureStopsEffectExecution: 0
+        healAmount: 20
