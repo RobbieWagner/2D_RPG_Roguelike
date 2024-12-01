@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -23,13 +24,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] protected UnitUI unitUIPrefab;
         protected List<UnitUI> allyUIInstances = new List<UnitUI>();
 
+        [SerializeField] protected Image fightOverlay;
+        [SerializeField] protected Animator fightOverlayAnimator;
+
         // NOTE: ASSUMES ALLIES NEED TO BE INSTANTIATED
         protected virtual IEnumerator SetupCombat()
         {
             //Debug.Log("Setting up Combat");
             yield return null;
-
-            PlayerMovement.Instance.CanMove = false;
 
             if (currentCombat.pullAlliesFromSave)
                 allyInstances = InstantiateAlliesFromSave();
@@ -38,7 +40,21 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             enemyInstances = InstantiateEnemies(currentCombat.enemyPrefabs);
 
+            yield return StartCoroutine(DisplayFightOverlay());
+
             CompleteSetup();
+        }
+
+        private IEnumerator DisplayFightOverlay()
+        {
+            fightOverlayAnimator.SetTrigger("flash");
+            yield return null;
+            fightOverlay.enabled = true;
+
+            while (!fightOverlayAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Equals("idle", StringComparison.CurrentCultureIgnoreCase))
+                yield return null;
+
+            fightOverlay.enabled = false;
         }
 
         protected List<Ally> InstantiateAlliesFromSave()

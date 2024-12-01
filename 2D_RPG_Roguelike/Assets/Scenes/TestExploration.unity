@@ -1082,22 +1082,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1791015599819456100, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
-      propertyPath: debugCombatConfiguration.pullAlliesFromSave
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1791015599819456100, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
-      propertyPath: debugCombatConfiguration.enemyPrefabs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1791015599819456100, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
-      propertyPath: debugCombatConfiguration.enemyPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 2435873788988366986, guid: 2bc9a12df5f249b418de777ca3350ab9, type: 3}
-    - target: {fileID: 1791015599819456100, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
-      propertyPath: debugCombatConfiguration.enemyPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 2435873788988366986, guid: 2bc9a12df5f249b418de777ca3350ab9, type: 3}
     - target: {fileID: 2556839671685456577, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
