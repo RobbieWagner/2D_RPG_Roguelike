@@ -55,7 +55,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else
                 throw new InvalidOperationException($"Could not complete action selection phase: unit {selectingUnit.GetName()} is not valid for combatInfo!!");
 
-            while(currentSelectedAction == null || targets == null || !targets.Any() || isCurrentlySelecting)
+            InputManager.Instance.EnableActionMap(ActionMapName.COMBAT.ToString());
+
+            while (currentSelectedAction == null || targets == null || !targets.Any() || isCurrentlySelecting)
                 yield return null;
 
             EndSelectionPhase();
@@ -141,6 +143,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void EndSelectionPhase()
         {
+            InputManager.Instance.DisableActionMap(ActionMapName.COMBAT.ToString());
             CurrentCombatPhase = CombatPhase.ACTION_EXECUTION;
         }
     }

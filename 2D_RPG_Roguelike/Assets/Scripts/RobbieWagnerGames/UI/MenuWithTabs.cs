@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using RobbieWagnerGames.TurnBasedCombat;
 
 namespace RobbieWagnerGames.UI
 {
@@ -19,8 +20,6 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected List<MenuTab> menus;
         [SerializeField] protected Color inactiveColor;
         [SerializeField] protected Color activeColor;
-
-        private UIControls uiControls;
 
         private int activeTab = -1;
         public int ActiveTab
@@ -51,8 +50,7 @@ namespace RobbieWagnerGames.UI
         protected override void Awake()
         {
             base.Awake();
-            uiControls = new UIControls();
-            uiControls.UI.NavigateTab.performed += NavigateTab;
+            InputManager.Instance.gameControls.UI.NavigateTab.performed += NavigateTab;
         }
 
         protected override void OnEnable()
@@ -61,13 +59,13 @@ namespace RobbieWagnerGames.UI
             base.OnEnable();
             ActiveTab = 0;
             EnableTab(ActiveTab);
-            uiControls.Enable();
+            InputManager.Instance.EnableActionMap(ActionMapName.UI.ToString());
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            uiControls.Disable();
+            InputManager.Instance.DisableActionMap(ActionMapName.UI.ToString());
         }
 
         protected virtual void BuildMenu()

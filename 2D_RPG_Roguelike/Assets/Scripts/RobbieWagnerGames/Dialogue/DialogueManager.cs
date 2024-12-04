@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using System.Text.RegularExpressions;
+using RobbieWagnerGames.TurnBasedCombat;
 
 namespace RobbieWagnerGames
 {
@@ -18,7 +19,6 @@ namespace RobbieWagnerGames
 
         private Story currentStory;
         public IEnumerator dialogueCoroutine {get; private set;}
-        private DialogueControls controls;
 
         private string currentSentenceText = "";
         private bool sentenceTyping = false;
@@ -78,9 +78,8 @@ namespace RobbieWagnerGames
             dialogueCanvas.enabled = canvasEnabledOnStart;
             CanContinue = false;
             continueIcon.enabled = false;
-            controls = new DialogueControls();
-            controls.Dialogue.Navigate.performed += OnNavigateDialogueMenu;
-            controls.Dialogue.Select.performed += OnNextDialogueLine;
+            InputManager.Instance.gameControls.DIALOGUE.Navigate.performed += OnNavigateDialogueMenu;
+            InputManager.Instance.gameControls.DIALOGUE.Select.performed += OnNextDialogueLine;
         }
 
         public void EnterDialogueMode(Story story)
@@ -102,7 +101,7 @@ namespace RobbieWagnerGames
 
         private void ConfigureDialogueControls()
         {
-           controls.Enable();
+            InputManager.Instance.EnableActionMap(ActionMapName.DIALOGUE.ToString());
         }
 
         #region core mechanics

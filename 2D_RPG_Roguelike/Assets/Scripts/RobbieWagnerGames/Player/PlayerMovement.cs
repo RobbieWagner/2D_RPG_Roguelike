@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -92,8 +93,8 @@ namespace RobbieWagnerGames
 
             inputActions = new PlayerMovementActions();
             inputActions.Enable();
-            inputActions.Movement.Move.performed += OnMove;
-            inputActions.Movement.Move.canceled += StopPlayer;
+            InputManager.Instance.gameControls.EXPLORATION.Move.performed += OnMove;
+            InputManager.Instance.gameControls.EXPLORATION.Move.canceled += StopPlayer;
         }
 
         private void LateUpdate() 

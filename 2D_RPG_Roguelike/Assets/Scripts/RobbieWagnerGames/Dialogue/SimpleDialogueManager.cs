@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
+using RobbieWagnerGames.TurnBasedCombat;
 
 namespace RobbieWagnerGames
 {
@@ -19,7 +20,6 @@ namespace RobbieWagnerGames
 
         private Story currentStory;
         public IEnumerator dialogueCoroutine {get; private set;}
-        private DialogueControls dialogueControls;
 
         private string currentSentenceText = "";
         //private bool sentenceTyping = false;
@@ -88,9 +88,8 @@ namespace RobbieWagnerGames
 
             dialogueCanvas.enabled = false;
             CanContinue = false;
-            dialogueControls = new DialogueControls();
-            dialogueControls.Disable();
-            dialogueControls.Dialogue.Select.performed += ReadNextSentence;
+            InputManager.Instance.DisableActionMap(ActionMapName.DIALOGUE.ToString());
+            InputManager.Instance.gameControls.DIALOGUE.Select.performed += ReadNextSentence;
         }
 
         public void EnterDialogueMode(Story story)
@@ -109,7 +108,7 @@ namespace RobbieWagnerGames
             if(dialogueCoroutine == null)
             {
                 dialogueCoroutine = RunDialogue(story);
-                dialogueControls.Enable();
+                InputManager.Instance.EnableActionMap(ActionMapName.DIALOGUE.ToString());
                 yield return StartCoroutine(dialogueCoroutine);
             }
         }
@@ -198,7 +197,7 @@ namespace RobbieWagnerGames
             dialogueCanvas.enabled = false;
             dialogueCoroutine = null;
             currentStory = null;
-            dialogueControls.Disable();
+            InputManager.Instance.DisableActionMap(ActionMapName.DIALOGUE.ToString());
             OnEndDialogue?.Invoke();
             StopCoroutine(EndDialogue());
         }

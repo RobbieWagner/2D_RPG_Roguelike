@@ -1,3 +1,4 @@
+using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,19 +83,19 @@ namespace RobbieWagnerGames.FirstPerson
         private void SetupControls()
         {
             inputActions = new PlayerMovementActions();
-            inputActions.Movement.Move.performed += OnMove;
-            inputActions.Movement.Move.canceled += OnStop;
+            InputManager.Instance.gameControls.EXPLORATION.Move.performed += OnMove;
+            InputManager.Instance.gameControls.EXPLORATION.Move.canceled += OnStop;
             OnToggleMovement += ToggleMovement;
             if (CanMove)
-                inputActions.Movement.Enable();
+                InputManager.Instance.EnableActionMap(ActionMapName.EXPLORATION.ToString());
         }
 
         private void ToggleMovement(bool on)
         {
             if (on)
-                inputActions.Movement.Enable();
+                InputManager.Instance.gameControls.EXPLORATION.Move.Enable();
             else
-                inputActions.Movement.Disable();
+                InputManager.Instance.gameControls.EXPLORATION.Move.Disable();
         }
 
         private void LateUpdate()

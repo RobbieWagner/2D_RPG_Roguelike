@@ -1,3 +1,4 @@
+using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,10 +64,10 @@ namespace RobbieWagnerGames.FirstPerson
                 Cursor.lockState = CursorLockMode.None;
 
             inputActions = new PlayerMovementActions();
-            inputActions.Movement.Enable();
-            inputActions.Movement.MouseLook.performed += OnMouseLook;
-            inputActions.Movement.ControllerLook.performed += OnControllerLook;
-            inputActions.Movement.ControllerLook.canceled += StopRotating;
+            InputManager.Instance.gameControls.EXPLORATION.Move.Enable();
+            InputManager.Instance.gameControls.EXPLORATION.MouseLook.performed += OnMouseLook;
+            InputManager.Instance.gameControls.EXPLORATION.ControllerLook.performed += OnControllerLook;
+            InputManager.Instance.gameControls.EXPLORATION.ControllerLook.canceled += StopRotating;
         }
 
         private void Update()

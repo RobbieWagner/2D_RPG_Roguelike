@@ -1,4 +1,5 @@
 using RobbieWagnerGames.FirstPerson;
+using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace RobbieWagnerGames
         [SerializeField] private float speed = 6f;
         [SerializeField] private float turnSmoothTime = 0.1f;
         private float turnVel;
-        [SerializeField] private PlayerMovementActions controls;
 
         private bool isMoving = false;
 
@@ -72,12 +72,11 @@ namespace RobbieWagnerGames
 
         private void SetupControls()
         {
-            controls = new PlayerMovementActions();
-            controls.Movement.Move.performed += OnMove;
-            controls.Movement.Move.canceled += OnStop;
+            InputManager.Instance.gameControls.EXPLORATION.Move.performed += OnMove;
+            InputManager.Instance.gameControls.EXPLORATION.Move.canceled += OnStop;
             OnToggleMovement += ToggleMovement;
             if (CanMove)
-                controls.Movement.Enable();
+                InputManager.Instance.EnableActionMap(ActionMapName.EXPLORATION.ToString());
         }
 
         private void OnStop(InputAction.CallbackContext context)
@@ -146,9 +145,9 @@ namespace RobbieWagnerGames
         private void ToggleMovement(bool on)
         {
             if (on)
-                controls.Movement.Enable();
+                InputManager.Instance.gameControls.EXPLORATION.Move.Enable();
             else
-                controls.Movement.Disable();
+                InputManager.Instance.gameControls.EXPLORATION.Move.Disable();
         }
     }
 }

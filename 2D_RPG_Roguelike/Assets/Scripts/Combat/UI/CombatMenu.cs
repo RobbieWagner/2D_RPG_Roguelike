@@ -29,7 +29,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void Awake()
         {
-            
+             
         }
 
         public CombatMenuButton AddButtonToList(Action<int> onSelectedAction, string selectionText = null)

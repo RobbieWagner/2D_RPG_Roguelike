@@ -34,8 +34,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             inputActions = new PlayerMovementActions();
             inputActions.Enable();
-            inputActions.Movement.Move.performed += OnMove;
-            inputActions.Movement.Move.canceled += StopPlayer;
+            InputManager.Instance.gameControls.EXPLORATION.Move.performed += OnMove;
+            InputManager.Instance.gameControls.EXPLORATION.Move.canceled += StopPlayer;
             colliders = new HashSet<Collider2D>();
         }
 
