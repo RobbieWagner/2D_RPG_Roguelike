@@ -50,7 +50,6 @@ namespace RobbieWagnerGames.UI
         protected override void Awake()
         {
             base.Awake();
-            InputManager.Instance.gameControls.UI.NavigateTab.performed += NavigateTab;
         }
 
         protected override void OnEnable()
@@ -59,13 +58,13 @@ namespace RobbieWagnerGames.UI
             base.OnEnable();
             ActiveTab = 0;
             EnableTab(ActiveTab);
-            InputManager.Instance.EnableActionMap(ActionMapName.UI.ToString());
+            InputManager.Instance.gameControls.UI.NavigateTab.performed += NavigateTab;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            InputManager.Instance.DisableActionMap(ActionMapName.UI.ToString());
+            InputManager.Instance.gameControls.UI.NavigateTab.performed -= NavigateTab;
         }
 
         protected virtual void BuildMenu()
