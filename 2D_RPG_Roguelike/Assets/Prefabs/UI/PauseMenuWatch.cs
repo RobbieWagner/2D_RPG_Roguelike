@@ -15,6 +15,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         private void Awake()
         {
             InputManager.Instance.gameControls.UI.PauseGame.performed += TogglePauseMenu;
+            InputManager.Instance.EnableActionMap(ActionMapName.UI.ToString());
             pausedActionMaps = new List<string>();
         }
 

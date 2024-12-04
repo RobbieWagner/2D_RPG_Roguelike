@@ -177,9 +177,7 @@ namespace RobbieWagnerGames
                     yield return new WaitForSeconds(.036f);
                 }
 
-                //Debug.Log(text);
                 currentText.text = currentSentenceText;
-                //sentenceTyping = false;
                 skipSentenceTyping = false;
                 CanContinue = true;
             }
@@ -192,7 +190,6 @@ namespace RobbieWagnerGames
         public IEnumerator EndDialogue()
         {
             yield return null;
-            //Debug.Log("Dialogue ended");
             currentText.text = "";
             dialogueCanvas.enabled = false;
             dialogueCoroutine = null;

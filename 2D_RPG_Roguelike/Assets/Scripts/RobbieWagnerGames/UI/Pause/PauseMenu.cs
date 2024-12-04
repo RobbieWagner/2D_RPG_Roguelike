@@ -5,15 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using RobbieWagnerGames.TurnBasedCombat;
+using System;
 
 namespace RobbieWagnerGames.UI
 {
     public class PauseMenu : Menu
     {
-
-        [SerializeField] private PlayerInput playerInput;
-        [SerializeField] List<string> actionMapsToDisable;
-
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button controlsButton;
@@ -25,6 +23,8 @@ namespace RobbieWagnerGames.UI
 
         [HideInInspector] public bool canPause;
         [HideInInspector] public bool paused;
+
+        private List<string> pausedActionMaps;
 
         public static PauseMenu Instance {get; private set;}
 
@@ -41,32 +41,35 @@ namespace RobbieWagnerGames.UI
 
             canPause = true;
             paused = false;
+
+            pausedActionMaps = new List<string>();
         } 
 
         protected override void OnEnable()
         {
-                base.OnEnable();
+            base.OnEnable();
 
-                paused = true;
-                Time.timeScale = 0;
+            paused = true;
+            Time.timeScale = 0;
 
-                foreach(string actionMapName in actionMapsToDisable)
+            resumeButton.onClick.AddListener(ResumeGame);
+            settingsButton.onClick.AddListener(OpenSettings);
+            //controlsButton.onClick.AddListener(OpenControls);
+            saveButton.onClick.AddListener(SaveGame);
+            quitButton.onClick.AddListener(QuitToMainMenu);
+
+            thisCanvas.enabled = true;
+
+            foreach (InputActionMap actionMap in InputManager.Instance.gameControls.asset.actionMaps)
+            {
+                if (actionMap.enabled && !actionMap.name.Equals(ActionMapName.UI.ToString(), StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if(!string.IsNullOrEmpty(actionMapName))
-                    {
-                        playerInput.actions.FindActionMap(actionMapName).Disable();
-                    } 
+                    pausedActionMaps.Add(InputManager.Instance.actionMaps[actionMap.name].name);
+                    InputManager.Instance.DisableActionMap(actionMap.name);
                 }
+            }
 
-                resumeButton.onClick.AddListener(ResumeGame);
-                settingsButton.onClick.AddListener(OpenSettings);
-                controlsButton.onClick.AddListener(OpenControls);
-                saveButton.onClick.AddListener(SaveGame);
-                quitButton.onClick.AddListener(QuitToMainMenu);
-
-                thisCanvas.enabled = true;
-
-                OnGamePaused();
+            OnGamePaused?.Invoke();
         }
 
         public delegate void OnGamePausedDelegate();
@@ -79,22 +82,19 @@ namespace RobbieWagnerGames.UI
             if(!paused) 
             {
                 Time.timeScale = 1;
-                foreach(string actionMapName in actionMapsToDisable)
-                {
-                    if(!string.IsNullOrEmpty(actionMapName))
-                    {
-                        playerInput.actions.FindActionMap(actionMapName).Enable();
-                    } 
-                }
 
-                OnGameUnpaused();
+                OnGameUnpaused?.Invoke();
             }
 
             resumeButton.onClick.RemoveListener(ResumeGame);
             settingsButton.onClick.RemoveListener(OpenSettings);
-            controlsButton.onClick.RemoveListener(OpenControls);
+            //controlsButton.onClick.RemoveListener(OpenControls);
             saveButton.onClick.RemoveListener(SaveGame);
             quitButton.onClick.RemoveListener(QuitToMainMenu);
+
+            foreach (string map in pausedActionMaps)
+                InputManager.Instance.EnableActionMap(map);
+            pausedActionMaps.Clear();
 
             thisCanvas.enabled = false;
         }
@@ -105,7 +105,7 @@ namespace RobbieWagnerGames.UI
         public void ResumeGame()
         {
             paused = false;
-            this.enabled = false;
+            enabled = false;
         }
 
         private void OpenSettings()
@@ -141,7 +141,7 @@ namespace RobbieWagnerGames.UI
 
             resumeButton.interactable = toggleOn;
             settingsButton.interactable = toggleOn;
-            controlsButton.interactable = toggleOn;
+            //controlsButton.interactable = toggleOn;
             saveButton.interactable = toggleOn;
             quitButton.interactable = toggleOn;
         }
