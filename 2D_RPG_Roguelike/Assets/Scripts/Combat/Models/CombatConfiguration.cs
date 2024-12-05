@@ -12,5 +12,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public List<Ally> allyPrefabs;
         public List<Enemy> enemyPrefabs;
         public string combatSceneRef;
+        public bool isBossFight = false;
     }
 }

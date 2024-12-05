@@ -148,7 +148,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 }
                 else if (index == 2)
                 {
-                    throw new NotImplementedException($"{MainCombatMenuOption.FLEE} option is not yet implemented");
+                    AttemptFleeCombat();
                 }
                 else
                     throw new NotImplementedException($"Index {index} does not have an implemented action");
@@ -171,6 +171,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
 
             DisableMainCombatMenu();
+        }
+
+        private void AttemptFleeCombat()
+        {
+            if (!CombatManagerBase.Instance.currentCombat.isBossFight)
+                StartCoroutine(CombatManagerBase.Instance.EndCombat());
         }
 
         private void DisableMainCombatMenu()

@@ -80,14 +80,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (effect.healsSelf)
             {
                 continueExecutingAction = effect.AttemptHeal(user, user) || !effect.FailureStopsActionExecution;
-                Debug.Log($"Heal attemmpted on self({user.unitName}). Users health is now {user.HP}/{user.GetMaxHP()}");
+                //Debug.Log($"Heal attemmpted on self({user.unitName}). Users health is now {user.HP}/{user.GetMaxHP()}");
             }
             else
             {
                 foreach (Unit target in targets)
                 {
                     continueExecutingAction = effect.AttemptHeal(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
-                    Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
+                    //Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
                 }
             }
             yield return new WaitForSeconds(1.25f);

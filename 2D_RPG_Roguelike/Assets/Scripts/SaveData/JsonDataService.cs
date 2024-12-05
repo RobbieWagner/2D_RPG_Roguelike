@@ -35,16 +35,12 @@ namespace RobbieWagnerGames.Utilities.SaveData
             try
             {
                 if (File.Exists(FullPath))
-                {
-                    Debug.Log($"File exists at path {FullPath}. Overwriting");
                     File.Delete(FullPath);
-                }
-                Debug.Log($"Creating new file at path {FullPath}");
+                
                 Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
                 FileStream stream = File.Create(FullPath);
                 stream.Close();
                 string saveData = JsonConvert.SerializeObject(Data);
-                Debug.Log($"saving the following json: {saveData}");
                 File.WriteAllText(FullPath, saveData);
                 return true;
             }
@@ -70,7 +66,6 @@ namespace RobbieWagnerGames.Utilities.SaveData
 
         public T LoadData<T>(string FullPath, T DefaultData, bool saveDefaultIfMissing = false,  bool isEncrypted = false)
         {
-            Debug.Log(FullPath);
             if(!File.Exists(FullPath))
             {
                 Debug.LogWarning($"File at path {FullPath} not found, returning default data...");
@@ -88,7 +83,6 @@ namespace RobbieWagnerGames.Utilities.SaveData
             catch(Exception e)
             {
                 Debug.LogError($"Error loading data: {e}");
-                Debug.LogWarning($"Data at file path {FullPath} was not of the correct type, returning default data...");
                 return DefaultData;
             }
         }
@@ -113,6 +107,8 @@ namespace RobbieWagnerGames.Utilities.SaveData
                     foreach (DirectoryInfo dir in pathInfo.EnumerateDirectories())
                         dir.Delete(true); 
                 }
+
+                Debug.LogWarning("All save data has been purged...");
 
                 return true;
             }
