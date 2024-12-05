@@ -1,0 +1,20 @@
+[
+    {
+        "UnitName": "Base_Ally_0",
+        "HP": 20,
+        "actionFilePaths": [ "Actions/ATTACK/DebugAttack", "Actions/HEAL/DebugHeal", "Actions/ATTACK/Leech" ],
+        "headSpriteRelativePath": null
+    },
+    {
+        "UnitName": "Base_Ally_1",
+        "HP": 20,
+        "actionFilePaths": [ "Actions/ATTACK/DebugAttack", "Actions/HEAL/DebugHeal" ],
+        "headSpriteRelativePath": null
+    },
+    {
+        "UnitName": "Base_Ally_2",
+        "HP": 20,
+        "actionFilePaths": [ "Actions/ATTACK/DebugAttack", "Actions/HEAL/DebugHeal", "Actions/ATTACK/Leech" ],
+        "headSpriteRelativePath": null
+    }
+]

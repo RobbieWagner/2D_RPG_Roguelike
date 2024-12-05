@@ -44,8 +44,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else
                 Instance = this;
 
-            StaticGameStats.persistentDataPath = Application.persistentDataPath;
-            new JsonDataService();
+            if(JsonDataService.Instance == null)
+                new JsonDataService();
 
             OnGameModeChanged += OnChangeGameMode;
             OnGameModeEnded += OnEndGameMode;

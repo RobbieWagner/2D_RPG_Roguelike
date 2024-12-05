@@ -33,7 +33,20 @@ namespace RobbieWagnerGames
         #endregion
 
         #region Save Data
-        public static string persistentDataPath;
+        private static string persistentDataPath;
+        public static string PersistentDataPath
+        {
+            get 
+            {
+                if (string.IsNullOrWhiteSpace(persistentDataPath))
+                    persistentDataPath = Application.persistentDataPath; 
+                return persistentDataPath; 
+            }
+            private set 
+            { 
+                persistentDataPath = value; 
+            }
+        }
         public static string partySavePath = "player_party.json";
         #endregion
     }

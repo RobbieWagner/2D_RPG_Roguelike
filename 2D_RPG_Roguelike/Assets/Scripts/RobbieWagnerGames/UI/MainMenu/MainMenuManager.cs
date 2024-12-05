@@ -5,12 +5,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System;
+using RobbieWagnerGames.Utilities.SaveData;
+using Newtonsoft.Json.Linq;
 
 namespace RobbieWagnerGames.UI
 {
     public class MainMenuManager : Menu
     {
-        [SerializeField] private Button startButton;
+        [SerializeField] private Button continueButton;
+        [SerializeField] private Button newGameButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button controlsButton;
         [SerializeField] private Button creditsButton;
@@ -26,11 +30,15 @@ namespace RobbieWagnerGames.UI
         {
             base.Awake();
             Cursor.lockState = CursorLockMode.None;
+
+            if (JsonDataService.Instance == null)
+                new JsonDataService();
         }
 
         protected override void OnEnable()
         {
-            startButton.onClick.AddListener(StartGame);
+            newGameButton.onClick.AddListener(StartNewGame);
+            continueButton.onClick.AddListener(StartGame);
             settingsButton.onClick.AddListener(OpenSettings);
             //controlsButton.onClick.AddListener(OpenControls);
             //creditsButton.onClick.AddListener(OpenCredits);
@@ -43,11 +51,18 @@ namespace RobbieWagnerGames.UI
         {
             base.OnDisable();
 
-            startButton.onClick.RemoveListener(StartGame);
+            newGameButton.onClick.RemoveListener(StartNewGame);
+            continueButton.onClick.RemoveListener(StartGame);
             settingsButton.onClick.RemoveListener(OpenSettings);
             //controlsButton.onClick.RemoveListener(OpenControls);
             //creditsButton.onClick.RemoveListener(OpenCredits);
             quitButton.onClick.RemoveListener(QuitGame);
+        }
+
+        private void StartNewGame()
+        {
+            JsonDataService.Instance.PurgeData();
+            StartGame();
         }
 
         public void StartGame()
@@ -84,7 +99,7 @@ namespace RobbieWagnerGames.UI
         {
             base.ToggleButtonInteractibility(toggleOn);
 
-            startButton.interactable = toggleOn;
+            continueButton.interactable = toggleOn;
             settingsButton.interactable = toggleOn;
             //controlsButton.interactable = toggleOn;
             //creditsButton.interactable = toggleOn;

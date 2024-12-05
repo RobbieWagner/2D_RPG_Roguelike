@@ -25,7 +25,6 @@ namespace RobbieWagnerGames.Utilities.SaveData
 
         public bool SaveData<T>(string RelativePath, T Data, bool Encrypt = false)
         {
-            Debug.Log("saving data");
             string path = CreateValidDataPath(RelativePath);
             bool result = SaveDataInternal(path, Data, Encrypt);
             return result;
@@ -33,7 +32,6 @@ namespace RobbieWagnerGames.Utilities.SaveData
 
         private bool SaveDataInternal<T>(string FullPath, T Data, bool Encrypt)
         {
-            Debug.Log("saving internally");
             try
             {
                 if (File.Exists(FullPath))
@@ -104,8 +102,7 @@ namespace RobbieWagnerGames.Utilities.SaveData
 
         public bool PurgeData()
         {
-            string path = StaticGameStats.persistentDataPath;
-            Debug.LogWarning("File purge begun. Deleting all save data...");
+            string path = StaticGameStats.PersistentDataPath;
             try
             {
                 DirectoryInfo pathInfo = new DirectoryInfo(path);
@@ -134,7 +131,7 @@ namespace RobbieWagnerGames.Utilities.SaveData
             if(!result.EndsWith(".json"))
                 result += ".json";
 
-            return StaticGameStats.persistentDataPath + result;
+            return StaticGameStats.PersistentDataPath + result;
         }
     }
 }
