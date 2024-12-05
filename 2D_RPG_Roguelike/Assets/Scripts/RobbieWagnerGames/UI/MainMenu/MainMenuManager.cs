@@ -62,15 +62,15 @@ namespace RobbieWagnerGames.UI
             StartCoroutine(SwapCanvases(thisCanvas, settings));
         }
 
-        private void OpenControls()
-        {
-            StartCoroutine(SwapCanvases(thisCanvas, controls));
-        }
+        //private void OpenControls()
+        //{
+        //    StartCoroutine(SwapCanvases(thisCanvas, controls));
+        //}
 
-        private void OpenCredits()
-        {
-            StartCoroutine(SwapCanvases(thisCanvas, credits));
-        }
+        //private void OpenCredits()
+        //{
+        //    StartCoroutine(SwapCanvases(thisCanvas, credits));
+        //}
 
         private void QuitGame()
         {
