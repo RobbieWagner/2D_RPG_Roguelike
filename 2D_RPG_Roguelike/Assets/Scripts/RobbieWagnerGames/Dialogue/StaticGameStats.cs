@@ -1,4 +1,5 @@
 using RobbieWagnerGames.StrategyCombat;
+using RobbieWagnerGames.TurnBasedCombat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,26 @@ namespace RobbieWagnerGames
         public static string GetCombatActionResourcePath(CombatAction action)
         {
             return "Actions/" + (action.actionType == ActionType.NONE ? $"{action.name}" : $"{action.actionType}/{action.name}");
+        }
+
+        public static string GetItemResourcePath(GameItem item)
+        {
+            Type itemType = item.GetType();
+            string itemFolder = "";
+            switch(itemType.ToString())
+            {
+                case nameof(KeyItem):
+                    itemFolder = "KEY/";
+                    break;
+                case nameof(CombatItem):
+                    itemFolder = "COMBAT/" + ((CombatItem) item).combatItemType.ToString() + "/";
+                    break;
+                default:
+                    itemFolder = "";
+                    break;
+            }
+
+            return $"Items/{itemFolder}/{item.name}";
         }
         #endregion
 

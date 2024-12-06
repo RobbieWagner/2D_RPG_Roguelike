@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.Utilities.SaveData;
 using System;
@@ -65,5 +66,51 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if(mode == GameMode.EXPLORATION)
                 PlayerMovement.Instance.CanMove = true;
         }
+
+        #region Save/Load
+        public void SaveGame()
+        {
+            SavePlayerParty();
+            SavePlayerInventory();
+            SavePlayerExplorationData();
+        }
+
+        private void SavePlayerExplorationData()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SavePlayerInventory()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SavePlayerParty()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoadGame()
+        {
+            LoadPlayerParty();
+            LoadPlayerInventory();
+            LoadPlayerExplorationData();
+        }
+
+        private void LoadPlayerExplorationData()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LoadPlayerInventory()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LoadPlayerParty()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

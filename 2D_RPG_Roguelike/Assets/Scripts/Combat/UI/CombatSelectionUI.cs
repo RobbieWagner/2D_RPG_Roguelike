@@ -144,7 +144,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 }
                 else if (index == 1)
                 {
-                    throw new NotImplementedException($"{MainCombatMenuOption.ITEM} option is not yet implemented");
+                    DisplayItemSelectionUI();
                 }
                 else if (index == 2)
                 {
@@ -173,12 +173,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             DisableMainCombatMenu();
         }
 
-        private void AttemptFleeCombat()
-        {
-            if (!CombatManagerBase.Instance.currentCombat.isBossFight)
-                StartCoroutine(CombatManagerBase.Instance.EndCombat());
-        }
-
         private void DisableMainCombatMenu()
         {
             ToggleControlsSubscription(CombatMenuType.MAIN, false);
@@ -186,6 +180,13 @@ namespace RobbieWagnerGames.TurnBasedCombat
             mainCombatMenu = null;
         }
 
+        private void AttemptFleeCombat()
+        {
+            if (!CombatManagerBase.Instance.currentCombat.isBossFight)
+                StartCoroutine(CombatManagerBase.Instance.EndCombat());
+        }
+
+        #region Action Selection
         public virtual void DisplayActionSelectionUI()
         {
             if (selectingUnit != null && selectingUnit.unitActions != null && selectingUnit.unitActions.Any())
@@ -236,28 +237,42 @@ namespace RobbieWagnerGames.TurnBasedCombat
             Destroy(actionCombatMenu.gameObject);
             actionCombatMenu = null;
         }
+        #endregion
 
-        #region target selection
+        #region Item Selection
+        private void DisplayItemSelectionUI()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Target Selection
         public virtual void DisplayTargetSelectionUI()
         {
+            List<Unit> targets;
+
             if (CombatManagerBase.Instance.currentSelectedAction != null)
-            {
-                targetCombatMenu = Instantiate(targetMenuPrefab, transform);
-                List<Unit> targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
-                foreach (Unit target in targets)
-                    targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.up);
+                targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
+            else if (CombatManagerBase.Instance.currentSelectedItem != null)
+                targets = CombatManagerBase.Instance.GetItemTargets(CombatManagerBase.Instance.currentSelectedItem, selectingUnit);
+            else
+                return;
 
-                InputManager.Instance.gameControls.COMBAT.Navigate.Reset();
-                InputManager.Instance.gameControls.COMBAT.Select.Reset();
+            targetCombatMenu = Instantiate(targetMenuPrefab, transform);
+            foreach (Unit target in targets)
+                targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.up);
 
-                ToggleControlsSubscription(CombatMenuType.TARGET, true);
-                InputManager.Instance.gameControls.COMBAT.Enable();
+            InputManager.Instance.gameControls.COMBAT.Navigate.Reset();
+            InputManager.Instance.gameControls.COMBAT.Select.Reset();
 
-                if (useSavedTargetIndex && savedTargetSelectionIndices.TryGetValue(selectingUnit, out int index) && index < targets.Count)
-                    targetCombatMenu.CurIndex = index;
-                else
-                    targetCombatMenu.CurIndex = 0;
-            }
+            ToggleControlsSubscription(CombatMenuType.TARGET, true);
+            InputManager.Instance.gameControls.COMBAT.Enable();
+
+            if (useSavedTargetIndex && savedTargetSelectionIndices.TryGetValue(selectingUnit, out int index) && index < targets.Count)
+                targetCombatMenu.CurIndex = index;
+            else
+                targetCombatMenu.CurIndex = 0;
+            
         }
 
         public virtual void HandleTargetSelection(int index)

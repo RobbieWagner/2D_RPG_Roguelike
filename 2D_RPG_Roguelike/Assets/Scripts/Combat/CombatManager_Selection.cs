@@ -17,9 +17,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [Header("Action Selection")]
         [SerializeField] protected CombatSelectionUI selectionUI;
         protected Unit selectingUnit;
-        public CombatAction currentSelectedAction = null;
         public List<Unit> targets = null;
         public bool isCurrentlySelecting;
+
+        public CombatAction currentSelectedAction = null;
+        public CombatItem currentSelectedItem = null;
 
         protected virtual List<Unit> GetUnitsLeftToAct()
         {
@@ -57,7 +59,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             InputManager.Instance.EnableActionMap(ActionMapName.COMBAT.ToString());
 
-            while (currentSelectedAction == null || targets == null || !targets.Any() || isCurrentlySelecting)
+            while ((currentSelectedAction == null && currentSelectedItem == null) || targets == null || !targets.Any() || isCurrentlySelecting)
                 yield return null;
 
             EndSelectionPhase();
@@ -134,6 +136,26 @@ namespace RobbieWagnerGames.TurnBasedCombat
             result.Add(validTargets[UnityEngine.Random.Range(0, validTargets.Count)]);
 
             return result;
+        }
+
+        public List<Unit> GetItemTargets(CombatItem item, Unit user)
+        {
+            //TODO: Combine functionality with action? Would this create a dependency to get rid of this code?
+            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+
+            List<Unit> validTargets = new List<Unit>();
+
+            if (item.targetsAllAllies || item.canTargetAllies)
+                validTargets.AddRange(activeUnitsOnUsersSide);
+            if (item.targetsAllOpposition || item.canTargetOpposition)
+                validTargets.AddRange(activeUnitsOnOpposition);
+
+            if (!item.canTargetSelf)
+                validTargets.Remove(selectingUnit);
+
+            //Debug.Log($"valid targets for {action.actionName}: {validTargets.Count}");
+            return validTargets;
         }
 
         protected virtual void StartPlayerActionSelection(Unit unit)

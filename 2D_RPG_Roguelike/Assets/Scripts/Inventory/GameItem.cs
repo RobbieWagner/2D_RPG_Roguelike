@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
+
     public class GameItem : ScriptableObject
     {
         [Header("General Info")]

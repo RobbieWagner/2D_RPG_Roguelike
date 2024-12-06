@@ -120,7 +120,7 @@ namespace RobbieWagnerGames.UI
 
         protected virtual void SaveGame()
         {
-
+            GameManager.Instance.SaveGame();
         }
 
         protected virtual void OnSaveButtonComplete()
