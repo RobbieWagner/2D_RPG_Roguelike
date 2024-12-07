@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -139,17 +140,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             try
             {
                 if (index == 0)
-                {
                     DisplayActionSelectionUI();
-                }
                 else if (index == 1)
-                {
                     DisplayItemSelectionUI();
-                }
                 else if (index == 2)
-                {
                     AttemptFleeCombat();
-                }
                 else
                     throw new NotImplementedException($"Index {index} does not have an implemented action");
             }
@@ -240,9 +235,59 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #endregion
 
         #region Item Selection
-        private void DisplayItemSelectionUI()
+        public void DisplayItemSelectionUI()
         {
-            throw new NotImplementedException();
+            Debug.Log("select item");
+            if (CombatManagerBase.Instance.combatItemOptions.Count > 0)
+            {
+                actionCombatMenu = Instantiate(menuPrefab, transform);
+                actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
+                for (int i = 0; i < CombatManagerBase.Instance.combatItemOptions.Count; i++)
+                    actionCombatMenu.AddButtonToList(HandleItemCombatMenuOptionSelection, CombatManagerBase.Instance.combatItemOptions[i].itemName);
+
+                InputManager.Instance.gameControls.COMBAT.Navigate.Reset();
+                InputManager.Instance.gameControls.COMBAT.Select.Reset();
+
+                ToggleControlsSubscription(CombatMenuType.ACTION, true);
+
+                if (useSavedActionIndex && savedActionSelectionIndices.TryGetValue(selectingUnit, out int index) && index < CombatManagerBase.Instance.combatItemOptions.Count)
+                    actionCombatMenu.CurIndex = index;
+                else
+                    actionCombatMenu.CurIndex = 0;
+            }
+            else
+            {
+                DisableItemMenu();
+                DisplayMainSelectionUI();
+            }
+        }
+
+        protected virtual void HandleItemCombatMenuOptionSelection(int index)
+        {
+            Debug.Log($"selecting item {index}");
+            CombatItem item = CombatManagerBase.Instance.combatItemOptions[index];
+            CombatManagerBase.Instance.currentSelectedItem = item;
+
+            if (savedActionSelectionIndices.TryGetValue(selectingUnit, out int value))
+            {
+                savedActionSelectionIndices[selectingUnit] = index;
+                useSavedTargetIndex = true;
+            }
+            else
+            {
+                savedActionSelectionIndices.Add(selectingUnit, index);
+                useSavedTargetIndex = false;
+            }
+
+            DisableItemMenu();
+            DisplayTargetSelectionUI();
+        }
+
+        protected void DisableItemMenu()
+        {
+            ToggleControlsSubscription(CombatMenuType.ACTION, false);
+            Destroy(actionCombatMenu.gameObject);
+            actionCombatMenu = null;
         }
         #endregion
 
@@ -277,7 +322,13 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public virtual void HandleTargetSelection(int index)
         {
-            List<Unit> targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
+            //TODO : make target list private global
+            List<Unit> targets = new List<Unit>();
+            if (CombatManagerBase.Instance.currentSelectedAction != null)
+                targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);
+            else if (CombatManagerBase.Instance.currentSelectedItem != null)
+                targets = CombatManagerBase.Instance.GetItemTargets(CombatManagerBase.Instance.currentSelectedItem, selectingUnit);
+
             CombatManagerBase.Instance.targets = new List<Unit>() { targets[index] };
 
             if (savedTargetSelectionIndices.TryGetValue(selectingUnit, out int value))

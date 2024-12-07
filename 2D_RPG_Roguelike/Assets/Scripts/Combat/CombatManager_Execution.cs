@@ -18,6 +18,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] protected CombatExecutionUI executionUI;
         protected Unit executingUnit;
         protected CombatAction currentExecutingAction;
+        protected CombatItem currentConsumingItem;
         private bool continueExecutingAction = true;
 
         protected virtual IEnumerator HandleExecutionPhase()
@@ -26,9 +27,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 yield break;
 
             executingUnit = selectingUnit;
-            currentExecutingAction = currentSelectedAction;
 
-            yield return StartCoroutine(ExecuteCombatAction(currentExecutingAction, executingUnit, targets));
+            if (currentSelectedAction != null)
+            {
+                Debug.Log("executing action");
+                currentExecutingAction = currentSelectedAction;
+                yield return StartCoroutine(ExecuteCombatAction(currentExecutingAction, executingUnit, targets));
+            }
+            else if(currentSelectedItem != null)
+            {
+                Debug.Log("executing item consumption");
+                currentConsumingItem = currentSelectedItem;
+                yield return StartCoroutine(ConsumeCombatItem(currentConsumingItem, executingUnit, targets));
+            }
 
             executingUnit.hasActedThisTurn = true;
             executingUnit.GetComponentInChildren<SpriteRenderer>().color = Color.green;
@@ -50,14 +61,20 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 if (effect.GetType() == typeof(Attack))
                     yield return StartCoroutine(ExecuteDamageEffect((Attack) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(Heal))
-                    yield return StartCoroutine(ExecuteHealingEffect((Heal)effect, executingUnit, targets));
+                    yield return StartCoroutine(ExecuteHealingEffect((Heal) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(StatRaise))
-                    yield return StartCoroutine(ExecuteStatRaiseEffect((StatRaise)effect, executingUnit, targets));
+                    yield return StartCoroutine(ExecuteStatRaiseEffect((StatRaise) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(StatLower))
-                    yield return StartCoroutine(ExecuteStatLowerEffect((StatLower)effect, executingUnit, targets));
+                    yield return StartCoroutine(ExecuteStatLowerEffect((StatLower) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(Pass))
                     yield return StartCoroutine(PassTurn());
             }
+        }
+
+        protected virtual IEnumerator ConsumeCombatItem(CombatItem currentConsumingItem, Unit executingUnit, List<Unit> targets)
+        {
+            Debug.Log($"using item {currentConsumingItem.itemName}");
+            yield return null;
         }
 
         private IEnumerator PassTurn()
@@ -115,6 +132,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void EndExecutionPhase()
         {
+            currentExecutingAction = null;
+            currentConsumingItem = null;
+            currentSelectedAction = null;
+            currentSelectedItem = null;
+
             CurrentCombatPhase = CombatPhase.ACTION_SELECTION;
         }
     }

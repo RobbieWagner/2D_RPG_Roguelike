@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c85d3bb81c3354ab1979cba73e8e7e, type: 3}
   m_Name: HealingBalm
   m_EditorClassIdentifier: 
-  name: Balm
+  itemName: Balm
   icon: {fileID: 0}
   combatItemType: 0
   effects:
   - rid: 5165208783443460096
+  targetsAllOpposition: 0
+  targetsAllAllies: 0
+  canTargetSelf: 1
+  canTargetOpposition: 0
+  canTargetAllies: 1
   references:
     version: 2
     RefIds:

@@ -3,6 +3,7 @@ using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.Utilities.SaveData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -19,7 +20,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
         public static Action<GameMode> OnGameModeEnded = (GameMode gameMode) => { };
         private GameMode currentGameMode = GameMode.EXPLORATION; //GameMode.NONE //TODO: HAVE GAMEMODE INITIALIZED TO NONE
+        
         public List<Ally> initialParty;
+        public List<GameItem> initialInventory;
 
         public GameMode CurrentGameMode
         {
@@ -50,6 +53,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             OnGameModeChanged += OnChangeGameMode;
             OnGameModeEnded += OnEndGameMode;
+
+            LoadGameData();
         }
 
         private void OnEndGameMode(GameMode mode)
@@ -68,7 +73,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         }
 
         #region Save/Load
-        public void SaveGame()
+        public void SaveGameData()
         {
             SavePlayerParty();
             SavePlayerInventory();
@@ -90,11 +95,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             throw new NotImplementedException();
         }
 
-        public void LoadGame()
+        public void LoadGameData()
         {
             LoadPlayerParty();
             LoadPlayerInventory();
-            LoadPlayerExplorationData();
+            //LoadPlayerExplorationData();
         }
 
         private void LoadPlayerExplorationData()
@@ -104,12 +109,22 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void LoadPlayerInventory()
         {
-            throw new NotImplementedException();
+            List<string> gameItemFilePaths = JsonDataService.Instance.LoadDataRelative<List<string>>(StaticGameStats.inventorySavePath, new List<string>());
+
+            List<GameItem> inventory = new List<GameItem>();
+
+            foreach (string itemFilePath in gameItemFilePaths)
+                inventory.Add(Resources.Load<GameItem>(itemFilePath));
+
+            if (inventory.Any())
+                Inventory.AddItemsToInventory(inventory);
+            else
+                Inventory.AddItemsToInventory(initialInventory);
         }
 
         private void LoadPlayerParty()
         {
-            throw new NotImplementedException();
+            Party.party = JsonDataService.Instance.LoadDataRelative<List<SerializableAlly>>(StaticGameStats.partySavePath, null);
         }
         #endregion
     }

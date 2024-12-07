@@ -69,6 +69,7 @@ namespace RobbieWagnerGames
             }
         }
         public static string partySavePath = "player_party.json";
+        public static string inventorySavePath = "player_inventory.json";
         #endregion
     }
 }

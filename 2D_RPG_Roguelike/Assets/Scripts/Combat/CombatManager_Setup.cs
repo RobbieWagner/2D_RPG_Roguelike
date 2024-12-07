@@ -34,7 +34,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return null;
 
             if (currentCombat.pullAlliesFromSave)
-                allyInstances = InstantiateAlliesFromSave();
+                allyInstances = InstantiatePlayerParty();
             else
                 allyInstances = InstantiateAllies(currentCombat.allyPrefabs);
 
@@ -57,15 +57,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
             fightOverlay.enabled = false;
         }
 
-        protected List<Ally> InstantiateAlliesFromSave()
+        protected List<Ally> InstantiatePlayerParty()
         {
-            List<SerializableAlly> savedAllies = JsonDataService.Instance.LoadDataRelative<List<SerializableAlly>>(StaticGameStats.partySavePath , null);
-            if (savedAllies != null)
+            if (Party.party != null && Party.party.Any())
             {
                 List<Ally> result = new List<Ally>();
-                for(int i = 0; i < savedAllies.Count; i++)
+                for(int i = 0; i < Party.party.Count; i++)
                 {
-                    SerializableAlly serializableAlly = savedAllies[i];
+                    SerializableAlly serializableAlly = Party.party[i];
                     Ally newAlly = Instantiate(baseAllyPrefab, transform);
                     serializableAlly.InitializeAlly(ref newAlly);
                     result.Add(newAlly);

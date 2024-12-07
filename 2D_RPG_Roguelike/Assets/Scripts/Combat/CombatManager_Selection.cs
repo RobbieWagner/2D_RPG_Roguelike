@@ -23,6 +23,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public CombatAction currentSelectedAction = null;
         public CombatItem currentSelectedItem = null;
 
+        public List<CombatItem> combatItemOptions = new List<CombatItem>();
+
         protected virtual List<Unit> GetUnitsLeftToAct()
         {
             List<Unit> unitsLeftToAct = GetUnitsByInitiative().Where(x => !x.hasActedThisTurn && x.isUnitFighting).ToList();
@@ -58,6 +60,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 throw new InvalidOperationException($"Could not complete action selection phase: unit {selectingUnit.GetName()} is not valid for combatInfo!!");
 
             InputManager.Instance.EnableActionMap(ActionMapName.COMBAT.ToString());
+
+            combatItemOptions = Inventory.GetCombatItems();
 
             while ((currentSelectedAction == null && currentSelectedItem == null) || targets == null || !targets.Any() || isCurrentlySelecting)
                 yield return null;

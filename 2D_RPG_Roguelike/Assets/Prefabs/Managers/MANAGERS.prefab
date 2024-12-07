@@ -802,12 +802,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8175676054906266670}
   - {fileID: 7779095878966235421}
   - {fileID: 2927744324978250977}
   - {fileID: 4325521736277837416}
   - {fileID: 5722955526502393653}
   - {fileID: 4870128066406119364}
-  - {fileID: 8175676054906266670}
   - {fileID: 1186461319892042012}
   - {fileID: 512955592922908788}
   - {fileID: 490597921755847579}
@@ -864,6 +864,8 @@ MonoBehaviour:
   - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
   - {fileID: 2423254420611760383, guid: 7766edde8fd32cb40be9b960329dfcd8, type: 3}
   - {fileID: 2423254420611760383, guid: 420c4009d5c434e44b395039c6f242c6, type: 3}
+  initialInventory:
+  - {fileID: 11400000, guid: 52582edf8d2b92c4091ef980d6354d1a, type: 2}
 --- !u!1 &6515140787521724471
 GameObject:
   m_ObjectHideFlags: 0
