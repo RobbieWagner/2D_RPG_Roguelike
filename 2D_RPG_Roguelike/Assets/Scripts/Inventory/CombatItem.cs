@@ -17,7 +17,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public class CombatItem : GameItem
     {
         public CombatItemType combatItemType;
-        [SerializeReference] public List<CombatItemEffect> effects;
+        [SerializeReference] public List<ActionEffect> effects;
 
         public bool targetsAllOpposition;
         public bool targetsAllAllies;
@@ -26,9 +26,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public bool canTargetOpposition;
         public bool canTargetAllies;
 
-        [ContextMenu(nameof(AddHealingEffect))] void AddHealingEffect() { effects.Add(new HealItemEffect()); }
-        [ContextMenu(nameof(AddReviveEffect))] void AddReviveEffect() { effects.Add(new ReviveItemEffect()); }
-        [ContextMenu(nameof(AddReplenishStatEffect))] void AddReplenishStatEffect() { effects.Add(new ReplenishStatItemEffect()); }
+        public bool canTargetDownedAllies;
+
+        [ContextMenu(nameof(AddHealingEffect))] void AddHealingEffect() { effects.Add(new Heal()); }
+        [ContextMenu(nameof(AddReviveEffect))] void AddReviveEffect() { effects.Add(new Revive()); }
+        [ContextMenu(nameof(AddReplenishStatEffect))] void AddReplenishStatEffect() { effects.Add(new StatRaise()); }
         [ContextMenu(nameof(Clear))] void Clear() { effects.Clear(); }
     }
 }

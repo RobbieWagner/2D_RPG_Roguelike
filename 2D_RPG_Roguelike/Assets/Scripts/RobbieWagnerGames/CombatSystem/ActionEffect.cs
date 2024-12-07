@@ -16,6 +16,11 @@ namespace RobbieWagnerGames.StrategyCombat
             get { return failureStopsActionExecution; }
             private set { failureStopsActionExecution = value; }
         }
+
+        public virtual bool AttemptActionEffect(Unit user, Unit target)
+        {
+            return true;
+        }
     }
 
     [Serializable]
@@ -31,7 +36,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return damage;
         }
 
-        public bool AttemptAttack(Unit user, Unit target)
+        public override bool AttemptActionEffect(Unit user, Unit target)
         {
             bool hit = false;
             if (accuracy > 100)
@@ -60,7 +65,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return heal;
         }
 
-        public bool AttemptHeal(Unit user, Unit target)
+        public override bool AttemptActionEffect(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -69,7 +74,12 @@ namespace RobbieWagnerGames.StrategyCombat
                 success = UnityEngine.Random.Range(0, 100) < accuracy;
 
             if (success)
-                target.Heal(CalculateHealing(user, target));
+            {
+                if (healsSelf)
+                    user.Heal(CalculateHealing(user, user));
+                else
+                    target.Heal(CalculateHealing(user, target));
+            }
 
             return success;
         }
@@ -88,7 +98,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return power;
         }
 
-        public bool AttemptStatRaise(Unit user, Unit target)
+        public override bool AttemptActionEffect(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -117,7 +127,7 @@ namespace RobbieWagnerGames.StrategyCombat
             return -power;
         }
 
-        public bool AttemptStatLower(Unit user, Unit target)
+        public override bool AttemptActionEffect(Unit user, Unit target)
         {
             bool success = false;
             if (accuracy > 100)
@@ -127,6 +137,31 @@ namespace RobbieWagnerGames.StrategyCombat
 
             if (success)
                 target.ChangeStatValue(stat, CalculateStatChange(user, target));
+
+            return success;
+        }
+    }
+
+    [Serializable]
+    public class Revive: ActionEffect
+    {
+        [Header("Revive")]
+        [SerializeField] private int healAmount = 1;
+
+        public override bool AttemptActionEffect(Unit user, Unit target)
+        {
+            Debug.Log("revive");
+            bool success = false;
+            if (accuracy > 100)
+                success = true;
+            else
+                success = UnityEngine.Random.Range(0, 100) < accuracy;
+
+            if (success)
+            {
+                target.Heal(healAmount);
+                target.isUnitFighting = true;
+            }
 
             return success;
         }

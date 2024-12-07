@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85c85d3bb81c3354ab1979cba73e8e7e, type: 3}
-  m_Name: HealingBalm
+  m_Name: DebugRevivify
   m_EditorClassIdentifier: 
-  itemName: Balm
+  itemName: Inf Revive
   itemIcon: {fileID: 0}
-  reusable: 0
+  reusable: 1
   combatItemType: 0
   effects:
-  - rid: 5165208933854609408
+  - rid: 5165208933854609411
   targetsAllOpposition: 0
   targetsAllAllies: 0
   canTargetSelf: 1
-  canTargetOpposition: 0
+  canTargetOpposition: 1
   canTargetAllies: 1
+  canTargetDownedAllies: 1
   references:
     version: 2
     RefIds:
-    - rid: 5165208933854609408
-      type: {class: Heal, ns: RobbieWagnerGames.StrategyCombat, asm: Assembly-CSharp}
+    - rid: 5165208933854609411
+      type: {class: Revive, ns: RobbieWagnerGames.StrategyCombat, asm: Assembly-CSharp}
       data:
         accuracy: 101
         failureStopsActionExecution: 0
-        power: 20
-        healsSelf: 0
+        healAmount: 1000

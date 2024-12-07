@@ -19,7 +19,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         protected Unit executingUnit;
         protected CombatAction currentExecutingAction;
         protected CombatItem currentConsumingItem;
-        private bool continueExecutingAction = true;
+        private bool continueExecution = true;
 
         protected virtual IEnumerator HandleExecutionPhase()
         {
@@ -30,13 +30,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             if (currentSelectedAction != null)
             {
-                Debug.Log("executing action");
                 currentExecutingAction = currentSelectedAction;
                 yield return StartCoroutine(ExecuteCombatAction(currentExecutingAction, executingUnit, targets));
             }
             else if(currentSelectedItem != null)
             {
-                Debug.Log("executing item consumption");
                 currentConsumingItem = currentSelectedItem;
                 yield return StartCoroutine(ConsumeCombatItem(currentConsumingItem, executingUnit, targets));
             }
@@ -47,34 +45,23 @@ namespace RobbieWagnerGames.TurnBasedCombat
             EndExecutionPhase();
         }
 
+        #region Combat Action
         protected virtual IEnumerator ExecuteCombatAction(CombatAction combatAction, Unit executingUnit, List<Unit> targets)
         {
             //Debug.Log(combatAction.actionName);
             yield return StartCoroutine(executionUI.DisplayExecutingAction(combatAction));
-            continueExecutingAction = true;
+            continueExecution = true;
 
             foreach (ActionEffect effect in combatAction.effects)
             {
-                if(!continueExecutingAction)
+                if(!continueExecution)
                     break;
 
-                if (effect.GetType() == typeof(Attack))
-                    yield return StartCoroutine(ExecuteDamageEffect((Attack) effect, executingUnit, targets));
-                if (effect.GetType() == typeof(Heal))
-                    yield return StartCoroutine(ExecuteHealingEffect((Heal) effect, executingUnit, targets));
-                if (effect.GetType() == typeof(StatRaise))
-                    yield return StartCoroutine(ExecuteStatRaiseEffect((StatRaise) effect, executingUnit, targets));
-                if (effect.GetType() == typeof(StatLower))
-                    yield return StartCoroutine(ExecuteStatLowerEffect((StatLower) effect, executingUnit, targets));
                 if (effect.GetType() == typeof(Pass))
                     yield return StartCoroutine(PassTurn());
+               
+                yield return StartCoroutine(ExecuteActionEffect(effect, executingUnit, targets));
             }
-        }
-
-        protected virtual IEnumerator ConsumeCombatItem(CombatItem currentConsumingItem, Unit executingUnit, List<Unit> targets)
-        {
-            Debug.Log($"using item {currentConsumingItem.itemName}");
-            yield return null;
         }
 
         private IEnumerator PassTurn()
@@ -82,53 +69,34 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return new WaitForSeconds(1.25f);
         }
 
-        protected virtual IEnumerator ExecuteDamageEffect(Attack effect, Unit user, List<Unit> targets)
+        protected virtual IEnumerator ExecuteActionEffect(ActionEffect effect, Unit user, List<Unit> targets)
         {
             foreach (Unit target in targets)
             {
-                continueExecutingAction = effect.AttemptAttack(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
+                continueExecution = effect.AttemptActionEffect(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
                 yield return new WaitForSeconds(1.25f);
-                Debug.Log($"Attack attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
+                Debug.Log($"Action of type {effect.GetType()} executed by {user.unitName} on {target.unitName}");
             }
         }
+        #endregion
 
-        protected virtual IEnumerator ExecuteHealingEffect(Heal effect, Unit user, List<Unit> targets)
+        #region Combat Item
+        protected virtual IEnumerator ConsumeCombatItem(CombatItem item, Unit executingUnit, List<Unit> targets)
         {
-            if (effect.healsSelf)
-            {
-                continueExecutingAction = effect.AttemptHeal(user, user) || !effect.FailureStopsActionExecution;
-                //Debug.Log($"Heal attemmpted on self({user.unitName}). Users health is now {user.HP}/{user.GetMaxHP()}");
-            }
-            else
-            {
-                foreach (Unit target in targets)
-                {
-                    continueExecutingAction = effect.AttemptHeal(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
-                    //Debug.Log($"Heal attempted from {user.unitName} on {target.unitName}. Targets health is now {target.HP}/{target.GetMaxHP()}");
-                }
-            }
-            yield return new WaitForSeconds(1.25f);
-        }
+            yield return StartCoroutine(executionUI.DisplayConsumingAction(item));
+            continueExecution = true;
 
-        protected virtual IEnumerator ExecuteStatRaiseEffect(StatRaise effect, Unit user, List<Unit> targets)
-        {
-            foreach (Unit target in targets)
+            foreach (ActionEffect effect in item.effects)
             {
-                continueExecutingAction = effect.AttemptStatRaise(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
-                yield return new WaitForSeconds(1.25f);
-                Debug.Log($"Stat raise attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
-            }
-        }
+                if (!continueExecution)
+                    break;
 
-        protected virtual IEnumerator ExecuteStatLowerEffect(StatLower effect, Unit user, List<Unit> targets)
-        {
-            foreach (Unit target in targets)
-            {
-                continueExecutingAction = effect.AttemptStatLower(user, target) || !effect.FailureStopsActionExecution || targets.Count > 1;
-                yield return new WaitForSeconds(1.25f);
-                Debug.Log($"Stat lower attempted from {user.unitName} on {target.unitName}. Targets {effect.stat} is now {target.Stats[effect.stat]}/{target.GetBaseStatValue(effect.stat)}");
+                yield return StartCoroutine(ExecuteActionEffect(effect, executingUnit, targets));
             }
+
+            Inventory.TryRemoveItemFromInventory(item);
         }
+        #endregion
 
         protected virtual void EndExecutionPhase()
         {

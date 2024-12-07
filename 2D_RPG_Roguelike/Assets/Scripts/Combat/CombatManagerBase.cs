@@ -32,8 +32,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         protected List<Ally> activeAllies => allyInstances.Where(a => a.isUnitFighting).ToList();
         protected List<Enemy> enemyInstances = new List<Enemy>();
         protected List<Enemy> activeEnemies => enemyInstances.Where(a => a.isUnitFighting).ToList();
-        protected bool IsUnitInCombatAlly(Unit unit) => unit.GetType() == typeof(Ally);
-        protected bool IsUnitInCombatEnemy(Unit unit) => unit.GetType() == typeof(Enemy);
+        protected bool IsUnitAlly(Unit unit) => unit.GetType() == typeof(Ally);
+        protected bool IsUnitEnemy(Unit unit) => unit.GetType() == typeof(Enemy);
 
         public static Action<CombatPhase> OnCombatPhaseChange = (CombatPhase phase) => { };
         private Coroutine phaseChangeCoroutine;

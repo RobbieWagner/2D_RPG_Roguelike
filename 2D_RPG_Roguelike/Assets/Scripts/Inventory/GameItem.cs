@@ -12,8 +12,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [Header("General Info")]
         [FormerlySerializedAs("name")]
         public string itemName;
-        public Sprite icon;
-
+        public Sprite itemIcon;
+        public bool reusable = false;
         
     }
 }

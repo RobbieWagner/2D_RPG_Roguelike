@@ -35,9 +35,13 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 if(count < amount)
                     return false;
-                inventory[item] -= amount;
-                if(count == amount)
-                    inventory.Remove(item);
+                if (!item.reusable)
+                {
+                    inventory[item] -= amount;
+                    if (count == amount)
+                        inventory.Remove(item);
+                }
+                return true;
             }
             return false;
         }

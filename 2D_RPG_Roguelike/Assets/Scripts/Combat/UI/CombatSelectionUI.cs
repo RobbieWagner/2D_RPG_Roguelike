@@ -88,13 +88,13 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 {
                     InputManager.Instance.gameControls.COMBAT.Navigate.performed += targetCombatMenu.NavigateMenu;
                     InputManager.Instance.gameControls.COMBAT.Select.performed += targetCombatMenu.SelectCurrentButton;
-                    InputManager.Instance.gameControls.COMBAT.Cancel.performed += ReturnToActionSelectionMenu;
+                    InputManager.Instance.gameControls.COMBAT.Cancel.performed += ReturnToPreTargetMenu;
                 }
                 else
                 {
                     InputManager.Instance.gameControls.COMBAT.Navigate.performed -= targetCombatMenu.NavigateMenu;
                     InputManager.Instance.gameControls.COMBAT.Select.performed -= targetCombatMenu.SelectCurrentButton;
-                    InputManager.Instance.gameControls.COMBAT.Cancel.performed -= ReturnToActionSelectionMenu;
+                    InputManager.Instance.gameControls.COMBAT.Cancel.performed -= ReturnToPreTargetMenu;
                 }
             }
         }
@@ -105,11 +105,21 @@ namespace RobbieWagnerGames.TurnBasedCombat
             DisplayMainSelectionUI();
         }
 
-        private void ReturnToActionSelectionMenu(InputAction.CallbackContext context)
+        private void ReturnToPreTargetMenu(InputAction.CallbackContext context)
         {
             DisableTargetMenu();
-            CombatManagerBase.Instance.currentSelectedAction = null;
-            DisplayActionSelectionUI();
+
+            if (CombatManagerBase.Instance.currentSelectedAction != null)
+            {
+                CombatManagerBase.Instance.currentSelectedAction = null;
+                DisplayActionSelectionUI();
+            }
+            else if (CombatManagerBase.Instance.currentSelectedItem != null)
+            {
+                CombatManagerBase.Instance.currentSelectedItem = null;
+                DisplayItemSelectionUI();
+            }
+            
         }
         #endregion
 
@@ -117,6 +127,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (selectingUnit != null)
             {
+                CombatManagerBase.Instance.currentSelectedAction = null;
+                CombatManagerBase.Instance.currentSelectedItem = null;
+
                 mainCombatMenu = Instantiate(menuPrefab, transform);
                 mainCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ACTION.ToString());
@@ -237,7 +250,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #region Item Selection
         public void DisplayItemSelectionUI()
         {
-            Debug.Log("select item");
             if (CombatManagerBase.Instance.combatItemOptions.Count > 0)
             {
                 actionCombatMenu = Instantiate(menuPrefab, transform);
@@ -264,7 +276,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual void HandleItemCombatMenuOptionSelection(int index)
         {
-            Debug.Log($"selecting item {index}");
             CombatItem item = CombatManagerBase.Instance.combatItemOptions[index];
             CombatManagerBase.Instance.currentSelectedItem = item;
 
@@ -322,7 +333,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public virtual void HandleTargetSelection(int index)
         {
-            //TODO : make target list private global
+            //TODO : make target list private global?
             List<Unit> targets = new List<Unit>();
             if (CombatManagerBase.Instance.currentSelectedAction != null)
                 targets = CombatManagerBase.Instance.GetActionTargets(CombatManagerBase.Instance.currentSelectedAction, selectingUnit);

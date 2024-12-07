@@ -52,9 +52,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             isCurrentlySelecting = true;
 
-            if (IsUnitInCombatAlly(selectingUnit))
+            if (IsUnitAlly(selectingUnit))
                 StartPlayerActionSelection(selectingUnit);
-            else if (IsUnitInCombatEnemy(selectingUnit))
+            else if (IsUnitEnemy(selectingUnit))
                 SelectActionForUnit(selectingUnit);
             else
                 throw new InvalidOperationException($"Could not complete action selection phase: unit {selectingUnit.GetName()} is not valid for combatInfo!!");
@@ -97,8 +97,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public virtual List<Unit> GetActionTargets(CombatAction action, Unit user)
         {
-            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
-            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnUsersSide = IsUnitAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
 
             List<Unit> validTargets = new List<Unit>();
 
@@ -110,17 +110,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (!action.canTargetSelf)
                 validTargets.Remove(selectingUnit);
 
+            validTargets = validTargets.OrderBy(u => u.unitCombatPos).ToList();
+
             //Debug.Log($"valid targets for {action.actionName}: {validTargets.Count}");
             return validTargets;
         }
 
         private List<Unit> SelectActionTargets(CombatAction action, Unit user)
         {
-            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
-            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
-
-            activeUnitsOnUsersSide = activeUnitsOnUsersSide.Where(u => u.isUnitFighting).ToList();
-            activeUnitsOnOpposition = activeUnitsOnOpposition.Where(u => u.isUnitFighting).ToList();
+            List<Unit> activeUnitsOnUsersSide = IsUnitAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
 
             List<Unit> result = new List<Unit>();
 
@@ -145,18 +144,22 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public List<Unit> GetItemTargets(CombatItem item, Unit user)
         {
             //TODO: Combine functionality with action? Would this create a dependency to get rid of this code?
-            List<Unit> activeUnitsOnUsersSide = IsUnitInCombatAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
-            List<Unit> activeUnitsOnOpposition = IsUnitInCombatEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnUsersSide = IsUnitAlly(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
+            List<Unit> activeUnitsOnOpposition = IsUnitEnemy(user) ? activeAllies.Select(a => (Unit)a).ToList() : activeEnemies.Select(e => (Unit)e).ToList();
 
             List<Unit> validTargets = new List<Unit>();
 
             if (item.targetsAllAllies || item.canTargetAllies)
                 validTargets.AddRange(activeUnitsOnUsersSide);
+            if (item.canTargetDownedAllies)
+                validTargets.AddRange(allyInstances.Where(a => !a.isUnitFighting));
             if (item.targetsAllOpposition || item.canTargetOpposition)
                 validTargets.AddRange(activeUnitsOnOpposition);
 
             if (!item.canTargetSelf)
                 validTargets.Remove(selectingUnit);
+
+            validTargets = validTargets.OrderBy(u => u.unitCombatPos).ToList();
 
             //Debug.Log($"valid targets for {action.actionName}: {validTargets.Count}");
             return validTargets;

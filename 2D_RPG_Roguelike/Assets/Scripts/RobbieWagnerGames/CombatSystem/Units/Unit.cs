@@ -33,6 +33,7 @@ namespace RobbieWagnerGames.StrategyCombat
         [HideInInspector] public List<Unit> selectedTargets;
 
         [SerializeField] protected SpriteRenderer spriteRenderer;
+        [HideInInspector] public int unitCombatPos = 0; // units position in combat. Determines order of options in UI for target selection
 
         [SerializeField] protected int unitBaseHP;
         protected int maxHP;
