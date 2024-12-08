@@ -34,6 +34,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
         protected Dictionary<Unit, int> savedTargetSelectionIndices = new Dictionary<Unit, int>();
         protected bool useSavedTargetIndex = false;
 
+        [SerializeField] protected Canvas worldSpaceCanvas;
+        [SerializeField] protected Canvas overlayCanvas;
+
         [SerializeField] protected CombatMenu menuPrefab;
         [SerializeField] protected CombatHUDMenu targetMenuPrefab;
 
@@ -130,7 +133,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 CombatManagerBase.Instance.currentSelectedAction = null;
                 CombatManagerBase.Instance.currentSelectedItem = null;
 
-                mainCombatMenu = Instantiate(menuPrefab, transform);
+                mainCombatMenu = Instantiate(menuPrefab, worldSpaceCanvas.transform);
                 mainCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ACTION.ToString());
                 mainCombatMenu.AddButtonToList(HandleMainCombatMenuOptionSelection, MainCombatMenuOption.ITEM.ToString());
@@ -199,7 +202,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (selectingUnit != null && selectingUnit.unitActions != null && selectingUnit.unitActions.Any())
             {
-                actionCombatMenu = Instantiate(menuPrefab, transform);
+                actionCombatMenu = Instantiate(menuPrefab, worldSpaceCanvas.transform);
                 actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 for (int i = 0; i < selectingUnit.unitActions.Count; i++)
                     actionCombatMenu.AddButtonToList(HandleActionCombatMenuOptionSelection, selectingUnit.unitActions[i].actionName);
@@ -252,7 +255,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (CombatManagerBase.Instance.combatItemOptions.Count > 0)
             {
-                actionCombatMenu = Instantiate(menuPrefab, transform);
+                actionCombatMenu = Instantiate(menuPrefab, worldSpaceCanvas.transform);
                 actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
                 for (int i = 0; i < CombatManagerBase.Instance.combatItemOptions.Count; i++)
                     actionCombatMenu.AddButtonToList(HandleItemCombatMenuOptionSelection, CombatManagerBase.Instance.combatItemOptions[i].itemName);
@@ -314,7 +317,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             else
                 return;
 
-            targetCombatMenu = Instantiate(targetMenuPrefab, transform);
+            targetCombatMenu = Instantiate(targetMenuPrefab, worldSpaceCanvas.transform);
             foreach (Unit target in targets)
                 targetCombatMenu.AddButtonToList(HandleTargetSelection, target.transform, Vector3.up);
 

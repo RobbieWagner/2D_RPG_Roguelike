@@ -40,9 +40,61 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             enemyInstances = InstantiateEnemies(currentCombat.enemyPrefabs);
 
+            HookupUnitGameplayEvents();
+            AssignUnitCombatPositions();
+
             yield return StartCoroutine(DisplayFightOverlay());
 
             CompleteSetup();
+        }
+
+        private void AssignUnitCombatPositions()
+        {
+            //Assigns a combat position value to all units. Used in Selection phase to order the units properly
+            int i = 0;
+            foreach(Ally ally in allyInstances.OrderByDescending(a => a.transform.position.z))
+            {
+                ally.unitCombatPos = i;
+                i++;
+            }
+            foreach (Enemy enemy in enemyInstances.OrderByDescending(a => a.transform.position.z))
+            {
+                enemy.unitCombatPos = i;
+                i++;
+            }
+        }
+
+        private void HookupUnitGameplayEvents()
+        {
+            // Logic to hookup events on units to UI and other methods
+            foreach (Ally ally in allyInstances)
+            {
+                ally.OnHPLowered += CombatExecutionUI.Instance.DisplayHPChange;
+                ally.OnHPRaised += CombatExecutionUI.Instance.DisplayHPChange;
+                ally.OnStatChanged += CombatExecutionUI.Instance.DisplayEffectText;
+            }
+            foreach (Enemy enemy in enemyInstances)
+            {
+                enemy.OnHPLowered += CombatExecutionUI.Instance.DisplayHPChange;
+                enemy.OnHPRaised += CombatExecutionUI.Instance.DisplayHPChange;
+                enemy.OnStatChanged += CombatExecutionUI.Instance.DisplayEffectText;
+            }
+        }
+
+        private void UnhookUnitGameplayEvents()
+        {
+            foreach (Ally ally in allyInstances)
+            {
+                ally.OnHPLowered -= CombatExecutionUI.Instance.DisplayHPChange;
+                ally.OnHPRaised -= CombatExecutionUI.Instance.DisplayHPChange;
+                ally.OnStatChanged -= CombatExecutionUI.Instance.DisplayEffectText;
+            }
+            foreach (Enemy enemy in enemyInstances)
+            {
+                enemy.OnHPLowered -= CombatExecutionUI.Instance.DisplayHPChange;
+                enemy.OnHPRaised -= CombatExecutionUI.Instance.DisplayHPChange;
+                enemy.OnStatChanged -= CombatExecutionUI.Instance.DisplayEffectText;
+            }
         }
 
         private IEnumerator DisplayFightOverlay()
@@ -91,11 +143,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 allyInstance.unitName += $"_{i}";
                 //allyInstance.HP = allyInstance.GetMaxHP();
                 newAllies.Add(allyInstance);
-
-                allyInstance.unitCombatPos = i;
                 
                 PlaceUnit(i, allyInstance);
             }
+
             return newAllies;
         }
 
@@ -116,7 +167,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 enemyInstance.name = $"enemy_{i}";
                 enemyInstance.unitName += $"_{i}";
                 enemyInstance.HP = enemyInstance.GetMaxHP();
-                enemyInstance.unitCombatPos = i + 3;
                 enemyInstance.transform.localPosition = enemyPositionOffsets[i];
                 newEnemies.Add(enemyInstance);
             }

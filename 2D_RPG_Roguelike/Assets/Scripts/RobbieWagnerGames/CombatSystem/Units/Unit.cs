@@ -45,18 +45,18 @@ namespace RobbieWagnerGames.StrategyCombat
             {
                 if(value == hp) 
                 {
-                    OnHPLowered?.Invoke(0, this, Color.gray);
+                    OnHPLowered?.Invoke(0, this);
                     return;
                 }
 
                 int difference = Math.Abs(value - hp);
                 if (value < hp) 
                 {
-                    OnHPLowered?.Invoke(difference * -1, this, Color.red);
+                    OnHPLowered?.Invoke(difference * -1, this);
                 }
                 else
                 {
-                    OnHPRaised?.Invoke(difference, this, Color.green);
+                    OnHPRaised?.Invoke(difference, this);
                 }
 
                 hp = value;
@@ -79,11 +79,14 @@ namespace RobbieWagnerGames.StrategyCombat
         public delegate void OnUnitsHPReaches0Delegate(Unit unit);
         public event OnUnitsHPReaches0Delegate OnUnitsHPReaches0;
 
-        public delegate void OnHPRaisedDelegate(int hpDifference, Unit unit, Color color);
+        public delegate void OnHPRaisedDelegate(int hpDifference, Unit unit);
         public event OnHPRaisedDelegate OnHPRaised;
 
-        public delegate void OnHPLoweredDelegate(int hpDifference, Unit unit, Color color);
+        public delegate void OnHPLoweredDelegate(int hpDifference, Unit unit);
         public event OnHPLoweredDelegate OnHPLowered;
+
+        public delegate void OnStatChangedDelegate(Unit unit, StatType stat, int delta);
+        public event OnStatChangedDelegate OnStatChanged;
 
         protected virtual void Awake()
         {
@@ -142,7 +145,13 @@ namespace RobbieWagnerGames.StrategyCombat
 
         public void ChangeStatValue(StatType stat, int amount)
         {
-            stats[stat].CurrentValue = amount;
+            if (amount != stats[stat].CurrentValue)
+            {
+                int delta = amount - stats[stat].CurrentValue;
+                stats[stat].CurrentValue = amount;
+
+                OnStatChanged?.Invoke(this, stat, delta);
+            }
         }
 
         public virtual IEnumerator DownUnitCo()

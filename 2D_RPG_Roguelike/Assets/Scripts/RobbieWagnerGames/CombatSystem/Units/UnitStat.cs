@@ -6,6 +6,7 @@ namespace RobbieWagnerGames.StrategyCombat
     [Serializable]
     public enum StatType
     {
+        NONE = -1,
         BRAWN = 0,
         AGILITY = 1,
         FOCUS = 2,

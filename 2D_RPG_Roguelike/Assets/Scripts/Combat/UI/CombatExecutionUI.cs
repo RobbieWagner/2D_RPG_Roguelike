@@ -1,24 +1,35 @@
 using DG.Tweening;
 using RobbieWagnerGames.StrategyCombat;
 using RobbieWagnerGames.TurnBasedCombat;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CombatExecutionUI : MonoBehaviour
 {
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private Image displayedActionIcon;
-    [SerializeField] private TextMeshProUGUI displayedActionName;
-    [SerializeField] private RectTransform textBox;
-    [SerializeField] private Vector2 offScreenPosition;
-    [SerializeField] private Vector2 onScreenPosition;
+    [SerializeField] protected Image displayedActionIcon;
+    [SerializeField] protected TextMeshProUGUI displayedActionName;
+    [SerializeField] protected RectTransform textBox;
+    [SerializeField] protected Vector2 offScreenPosition;
+    [SerializeField] protected Vector2 onScreenPosition;
 
+    [SerializeField] protected TextMeshProUGUI effectTextPrefab;
+    [SerializeField] protected Vector3 effectTextOffset;
+
+    [SerializeField] protected Canvas worldSpaceCanvas;
+    [SerializeField] protected Canvas overlayCanvas;
+
+    public static CombatExecutionUI Instance { get; private set; }
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        else
+            Instance = this;
+
         textBox.anchoredPosition = offScreenPosition;
     }
 
@@ -69,5 +80,43 @@ public class CombatExecutionUI : MonoBehaviour
         if(delayStart > 0)
             yield return new WaitForSeconds(delayStart);
         yield return textBox.DOAnchorPos(position, seconds).WaitForCompletion();
+    }
+
+    public void DisplayEffectText(Unit effectedUnit, StatType stat, int delta)
+    {
+        StartCoroutine(DisplayEffectTextCo(effectedUnit, stat, delta));
+    }
+
+    public IEnumerator DisplayEffectTextCo(Unit effectedUnit, StatType stat, int delta)
+    {
+        TextMeshProUGUI text = Instantiate(effectTextPrefab, worldSpaceCanvas.transform);
+
+        if (stat == StatType.NONE)
+        {
+            text.color = GameUIConfiguration.Instance.GetHPChangeColor(delta);
+            text.text =  delta > 0 ? $"+{delta}" : delta.ToString();
+
+            text.transform.position = effectedUnit.transform.position + effectTextOffset;
+            yield return text.transform.DOJump(text.transform.position + Vector3.right * .25f, .25f, 1, .5f).WaitForCompletion();
+            yield return new WaitForSeconds(1.5f);
+        }
+        else
+        {
+            text.color = Color.clear;
+            text.text = delta.ToString();
+
+            text.transform.position = effectedUnit.transform.position + effectTextOffset;
+            text.DOColor(GameUIConfiguration.Instance.GetStatColor(stat), 1);
+            yield return text.transform.DOMove(text.transform.position + Vector3.up * .2f, 1).WaitForCompletion();
+            text.DOColor(Color.clear, 1);
+            yield return text.transform.DOMove(text.transform.position + Vector3.up * .2f, 1).WaitForCompletion();
+        }    
+
+        Destroy(text.gameObject);
+    }
+
+    public void DisplayHPChange(int hpDifference, Unit unit)
+    {
+        StartCoroutine(DisplayEffectTextCo(unit, StatType.NONE, hpDifference));
     }
 }
