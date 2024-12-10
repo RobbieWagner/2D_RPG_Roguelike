@@ -77,7 +77,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             SavePlayerParty();
             SavePlayerInventory();
-            SavePlayerExplorationData();
+            //SavePlayerExplorationData();
         }
 
         private void SavePlayerExplorationData()
@@ -87,12 +87,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void SavePlayerInventory()
         {
-            throw new NotImplementedException();
+            JsonDataService.Instance.SaveData(StaticGameStats.inventorySavePath, Inventory.inventory.Select(i => i.Key.filePath).ToList());
         }
 
         private void SavePlayerParty()
         {
-            throw new NotImplementedException();
+            JsonDataService.Instance.SaveData(StaticGameStats.partySavePath, Party.party);
         }
 
         public void LoadGameData()

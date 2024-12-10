@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Balm
   itemIcon: {fileID: 0}
+  filePath: Items/COMBAT/HEALING/HealingBalm
   reusable: 0
   combatItemType: 0
   effects:
@@ -23,6 +24,7 @@ MonoBehaviour:
   canTargetSelf: 1
   canTargetOpposition: 0
   canTargetAllies: 1
+  canTargetDownedAllies: 0
   references:
     version: 2
     RefIds:

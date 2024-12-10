@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Inf Revive
   itemIcon: {fileID: 0}
+  filePath: Items/COMBAT/HEALING/DebugRevivify
   reusable: 1
   combatItemType: 0
   effects:

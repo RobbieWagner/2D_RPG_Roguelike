@@ -253,17 +253,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #region Item Selection
         public void DisplayItemSelectionUI()
         {
+            actionCombatMenu = Instantiate(menuPrefab, worldSpaceCanvas.transform);
+            actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
+
+            ToggleControlsSubscription(CombatMenuType.ACTION, true);
+
             if (CombatManagerBase.Instance.combatItemOptions.Count > 0)
             {
-                actionCombatMenu = Instantiate(menuPrefab, worldSpaceCanvas.transform);
-                actionCombatMenu.transform.position = selectingUnit.transform.position + new Vector3(2, 2, 0);
+                
                 for (int i = 0; i < CombatManagerBase.Instance.combatItemOptions.Count; i++)
                     actionCombatMenu.AddButtonToList(HandleItemCombatMenuOptionSelection, CombatManagerBase.Instance.combatItemOptions[i].itemName);
 
                 InputManager.Instance.gameControls.COMBAT.Navigate.Reset();
                 InputManager.Instance.gameControls.COMBAT.Select.Reset();
-
-                ToggleControlsSubscription(CombatMenuType.ACTION, true);
 
                 if (useSavedActionIndex && savedActionSelectionIndices.TryGetValue(selectingUnit, out int index) && index < CombatManagerBase.Instance.combatItemOptions.Count)
                     actionCombatMenu.CurIndex = index;

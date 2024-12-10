@@ -911,6 +911,8 @@ MonoBehaviour:
   - {fileID: 2423254420611760383, guid: 420c4009d5c434e44b395039c6f242c6, type: 3}
   initialInventory:
   - {fileID: 11400000, guid: 52582edf8d2b92c4091ef980d6354d1a, type: 2}
+  - {fileID: 11400000, guid: 52582edf8d2b92c4091ef980d6354d1a, type: 2}
+  - {fileID: 11400000, guid: 52582edf8d2b92c4091ef980d6354d1a, type: 2}
   - {fileID: 11400000, guid: 2bc90c803f8f60448ad2c066db54bc5e, type: 2}
 --- !u!1 &6515140787521724471
 GameObject:

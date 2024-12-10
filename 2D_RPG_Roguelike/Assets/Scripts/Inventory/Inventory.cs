@@ -18,6 +18,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public static bool TryAddItemToInventory(GameItem item)
         {
+            if(item == null)
+                return false;
+
             if(inventory.TryGetValue(item, out int count))
             {
                 if(count >= 99)

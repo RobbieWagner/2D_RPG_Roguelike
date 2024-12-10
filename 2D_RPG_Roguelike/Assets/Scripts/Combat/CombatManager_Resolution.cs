@@ -37,8 +37,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             if (currentCombat.pullAlliesFromSave)
             {
-                List<SerializableAlly> allySaves = allyInstances.Select(x => new SerializableAlly(x)).ToList();
-                JsonDataService.Instance.SaveData(StaticGameStats.partySavePath, allySaves);
+                List<SerializableAlly> postCombatAllies = allyInstances.Select(x => new SerializableAlly(x)).ToList();
+                Party.party = postCombatAllies;
             }
 
             foreach (Ally ally in allyInstances)
