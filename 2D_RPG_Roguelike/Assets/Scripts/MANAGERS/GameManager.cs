@@ -1,7 +1,9 @@
 using JetBrains.Annotations;
 using RobbieWagnerGames.StrategyCombat.Units;
+using RobbieWagnerGames.UI;
 using RobbieWagnerGames.Utilities.SaveData;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +22,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
         public static Action<GameMode> OnGameModeEnded = (GameMode gameMode) => { };
         private GameMode currentGameMode = GameMode.EXPLORATION; //GameMode.NONE //TODO: HAVE GAMEMODE INITIALIZED TO NONE
-        
+        private GameMode previousGameMode = GameMode.NONE;
+
         public List<Ally> initialParty;
         public List<GameItem> initialInventory;
 
@@ -35,6 +38,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 if (value == currentGameMode)
                     return;
                 OnGameModeEnded?.Invoke(currentGameMode);
+                previousGameMode = currentGameMode;
                 currentGameMode = value;
                 OnGameModeChanged?.Invoke(currentGameMode);
             }
@@ -51,26 +55,55 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if(JsonDataService.Instance == null)
                 new JsonDataService();
 
-            OnGameModeChanged += OnChangeGameMode;
             OnGameModeEnded += OnEndGameMode;
 
             LoadGameData();
         }
 
+        #region Game Modes
         private void OnEndGameMode(GameMode mode)
         {
-            if(mode == GameMode.EXPLORATION)
+            if (mode == GameMode.EXPLORATION)
             {
                 PlayerMovement.Instance.CeasePlayerMovement();
                 PlayerMovement.Instance.spriteRenderer.enabled = false;
             }
+            else if (mode == GameMode.COMBAT)
+            {
+
+            }
         }
 
-        private void OnChangeGameMode(GameMode mode)
+        public IEnumerator TriggerCombat(CombatConfiguration combatInfo)
         {
-            if(mode == GameMode.EXPLORATION)
-                PlayerMovement.Instance.CanMove = true;
+            yield return null;
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+
+            yield return StartCoroutine(CombatManagerBase.Instance.StartCombat(combatInfo));
+            CurrentGameMode = GameMode.COMBAT;
+            CombatManagerBase.Instance.OnCombatEnded += TriggerPreviousGameMode;
+
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
+
+        public IEnumerator TriggerExploration()
+        {
+            yield return null;
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+
+            yield return StartCoroutine(ExplorationManager.Instance.StartExploration());
+            CurrentGameMode = GameMode.EXPLORATION;
+            
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
+        }
+
+        public void TriggerPreviousGameMode()
+        {
+            if (previousGameMode == GameMode.EXPLORATION)
+                StartCoroutine(TriggerExploration());
+        }
+
+        #endregion
 
         #region Save/Load
         public void SaveGameData()

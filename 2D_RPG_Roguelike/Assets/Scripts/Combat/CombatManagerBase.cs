@@ -82,20 +82,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public virtual IEnumerator StartCombat(CombatConfiguration combatConfiguration)
         {
-            yield return null;
-            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
-
             SceneManager.LoadScene(combatConfiguration.combatSceneRef, LoadSceneMode.Additive);
             while (CombatBattlefield.Instance == null)
                 yield return null;
             transform.position = CombatBattlefield.Instance.scenePosition + (Vector3.up * 2);
-            
+
             currentCombat = combatConfiguration;
             OnCombatPhaseChange += StartCombatPhase;
-            GameManager.Instance.CurrentGameMode = GameMode.COMBAT;
             CurrentCombatPhase = CombatPhase.SETUP;
-            
-            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
         protected virtual void StartCombatPhase(CombatPhase phase)

@@ -62,13 +62,22 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ExplorationMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f250863-3d7f-4afb-b495-91b254832185"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""e0116e67-52d1-47ac-88af-392f65349594"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -229,6 +238,28 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""action"": ""ControllerLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89b16da7-3e82-48c2-91e3-a681b5608781"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExplorationMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82feb30e-3151-4e6e-9c95-010623cb43c9"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExplorationMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -262,6 +293,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CombatDetails"",
+                    ""type"": ""Button"",
+                    ""id"": ""cff6ca0f-4511-43b1-a54c-82e8ca6fc296"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -438,6 +478,28 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad4b342b-bbbf-4ddd-b14b-21bca7a7c907"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CombatDetails"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e11e672-bd35-47f6-bb2b-e027fefd36f6"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CombatDetails"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -626,7 +688,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""cd0c1155-2eb0-4a5a-beb6-6467117b62be"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -637,7 +699,40 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""037ad1bc-9302-46d4-b08c-1e2f44128e30"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""00bca89a-7fb8-424d-8086-d95c57dad0bd"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateTab"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6e82e71c-7165-4927-b4a9-3f86f8920fc9"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1cfc1a5d-367e-4baf-8920-7acb1859a38f"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -711,11 +806,13 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_EXPLORATION_Move = m_EXPLORATION.FindAction("Move", throwIfNotFound: true);
         m_EXPLORATION_MouseLook = m_EXPLORATION.FindAction("MouseLook", throwIfNotFound: true);
         m_EXPLORATION_ControllerLook = m_EXPLORATION.FindAction("ControllerLook", throwIfNotFound: true);
+        m_EXPLORATION_ExplorationMenu = m_EXPLORATION.FindAction("ExplorationMenu", throwIfNotFound: true);
         // COMBAT
         m_COMBAT = asset.FindActionMap("COMBAT", throwIfNotFound: true);
         m_COMBAT_Select = m_COMBAT.FindAction("Select", throwIfNotFound: true);
         m_COMBAT_Cancel = m_COMBAT.FindAction("Cancel", throwIfNotFound: true);
         m_COMBAT_Navigate = m_COMBAT.FindAction("Navigate", throwIfNotFound: true);
+        m_COMBAT_CombatDetails = m_COMBAT.FindAction("CombatDetails", throwIfNotFound: true);
         // DIALOGUE
         m_DIALOGUE = asset.FindActionMap("DIALOGUE", throwIfNotFound: true);
         m_DIALOGUE_Navigate = m_DIALOGUE.FindAction("Navigate", throwIfNotFound: true);
@@ -790,6 +887,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_EXPLORATION_Move;
     private readonly InputAction m_EXPLORATION_MouseLook;
     private readonly InputAction m_EXPLORATION_ControllerLook;
+    private readonly InputAction m_EXPLORATION_ExplorationMenu;
     public struct EXPLORATIONActions
     {
         private @GameControls m_Wrapper;
@@ -798,6 +896,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_EXPLORATION_Move;
         public InputAction @MouseLook => m_Wrapper.m_EXPLORATION_MouseLook;
         public InputAction @ControllerLook => m_Wrapper.m_EXPLORATION_ControllerLook;
+        public InputAction @ExplorationMenu => m_Wrapper.m_EXPLORATION_ExplorationMenu;
         public InputActionMap Get() { return m_Wrapper.m_EXPLORATION; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -819,6 +918,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ControllerLook.started += instance.OnControllerLook;
             @ControllerLook.performed += instance.OnControllerLook;
             @ControllerLook.canceled += instance.OnControllerLook;
+            @ExplorationMenu.started += instance.OnExplorationMenu;
+            @ExplorationMenu.performed += instance.OnExplorationMenu;
+            @ExplorationMenu.canceled += instance.OnExplorationMenu;
         }
 
         private void UnregisterCallbacks(IEXPLORATIONActions instance)
@@ -835,6 +937,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ControllerLook.started -= instance.OnControllerLook;
             @ControllerLook.performed -= instance.OnControllerLook;
             @ControllerLook.canceled -= instance.OnControllerLook;
+            @ExplorationMenu.started -= instance.OnExplorationMenu;
+            @ExplorationMenu.performed -= instance.OnExplorationMenu;
+            @ExplorationMenu.canceled -= instance.OnExplorationMenu;
         }
 
         public void RemoveCallbacks(IEXPLORATIONActions instance)
@@ -859,6 +964,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_COMBAT_Select;
     private readonly InputAction m_COMBAT_Cancel;
     private readonly InputAction m_COMBAT_Navigate;
+    private readonly InputAction m_COMBAT_CombatDetails;
     public struct COMBATActions
     {
         private @GameControls m_Wrapper;
@@ -866,6 +972,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_COMBAT_Select;
         public InputAction @Cancel => m_Wrapper.m_COMBAT_Cancel;
         public InputAction @Navigate => m_Wrapper.m_COMBAT_Navigate;
+        public InputAction @CombatDetails => m_Wrapper.m_COMBAT_CombatDetails;
         public InputActionMap Get() { return m_Wrapper.m_COMBAT; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -884,6 +991,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
+            @CombatDetails.started += instance.OnCombatDetails;
+            @CombatDetails.performed += instance.OnCombatDetails;
+            @CombatDetails.canceled += instance.OnCombatDetails;
         }
 
         private void UnregisterCallbacks(ICOMBATActions instance)
@@ -897,6 +1007,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
+            @CombatDetails.started -= instance.OnCombatDetails;
+            @CombatDetails.performed -= instance.OnCombatDetails;
+            @CombatDetails.canceled -= instance.OnCombatDetails;
         }
 
         public void RemoveCallbacks(ICOMBATActions instance)
@@ -1036,12 +1149,14 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnMouseLook(InputAction.CallbackContext context);
         void OnControllerLook(InputAction.CallbackContext context);
+        void OnExplorationMenu(InputAction.CallbackContext context);
     }
     public interface ICOMBATActions
     {
         void OnSelect(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);
+        void OnCombatDetails(InputAction.CallbackContext context);
     }
     public interface IDIALOGUEActions
     {

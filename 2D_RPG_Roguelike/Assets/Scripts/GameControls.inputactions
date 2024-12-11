@@ -40,13 +40,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ExplorationMenu",
+                    "type": "Button",
+                    "id": "4f250863-3d7f-4afb-b495-91b254832185",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "e0116e67-52d1-47ac-88af-392f65349594",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -207,6 +216,28 @@
                     "action": "ControllerLook",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89b16da7-3e82-48c2-91e3-a681b5608781",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExplorationMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82feb30e-3151-4e6e-9c95-010623cb43c9",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExplorationMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -240,6 +271,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CombatDetails",
+                    "type": "Button",
+                    "id": "cff6ca0f-4511-43b1-a54c-82e8ca6fc296",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -416,6 +456,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad4b342b-bbbf-4ddd-b14b-21bca7a7c907",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CombatDetails",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e11e672-bd35-47f6-bb2b-e027fefd36f6",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CombatDetails",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -604,7 +666,7 @@
                 {
                     "name": "negative",
                     "id": "cd0c1155-2eb0-4a5a-beb6-6467117b62be",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -615,7 +677,40 @@
                 {
                     "name": "positive",
                     "id": "037ad1bc-9302-46d4-b08c-1e2f44128e30",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigateTab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "00bca89a-7fb8-424d-8086-d95c57dad0bd",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigateTab",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "6e82e71c-7165-4927-b4a9-3f86f8920fc9",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigateTab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "1cfc1a5d-367e-4baf-8920-7acb1859a38f",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

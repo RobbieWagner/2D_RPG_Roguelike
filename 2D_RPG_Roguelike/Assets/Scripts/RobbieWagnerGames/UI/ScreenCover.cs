@@ -22,18 +22,24 @@ namespace RobbieWagnerGames.UI
 
         public IEnumerator FadeCoverIn(float time = 1f)
         {
-            canvas.enabled = false;
-            screenCover.color = Color.clear;
-            canvas.enabled = true;
-            yield return screenCover.DOColor(Color.black, time).SetEase(Ease.Linear).WaitForCompletion();
+            if (!canvas.enabled)
+            {
+                canvas.enabled = false;
+                screenCover.color = Color.clear;
+                canvas.enabled = true;
+                yield return screenCover.DOColor(Color.black, time).SetEase(Ease.Linear).WaitForCompletion();
+            }
         }
 
         public IEnumerator FadeCoverOut(float time = 1f)
         {
-            screenCover.color = Color.black;
-            canvas.enabled = true;
-            yield return screenCover.DOColor(Color.clear, time).SetEase(Ease.Linear).WaitForCompletion();
-            canvas.enabled = false;
+            if (canvas.enabled)
+            {
+                screenCover.color = Color.black;
+                canvas.enabled = true;
+                yield return screenCover.DOColor(Color.clear, time).SetEase(Ease.Linear).WaitForCompletion();
+                canvas.enabled = false;
+            }
         }
     }
 }

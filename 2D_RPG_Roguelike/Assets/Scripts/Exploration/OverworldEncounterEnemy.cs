@@ -39,7 +39,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 ChangeMovementState(MovementState.Idle);
                 PlayerMovement.Instance.CeasePlayerMovement();
-                StartCoroutine(CombatManagerBase.Instance.StartCombat(combatInfo));
+                StartCoroutine(GameManager.Instance.TriggerCombat(combatInfo));
                 trigger.enabled = false;
                 CombatManagerBase.OnCombatPhaseChange += CheckFoOverworldDestruction;
             }
