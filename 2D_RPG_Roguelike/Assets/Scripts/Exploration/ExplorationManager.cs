@@ -31,5 +31,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             Instance = null;
         }
+
+        private void OnDisable()
+        {
+            Instance = null;
+        }
     }
 }

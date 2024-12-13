@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &909365457898138535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7965776731162397356}
-  m_Layer: 0
-  m_Name: GridParent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7965776731162397356
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909365457898138535}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7779095878966235421}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1623137987527051104
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,222 +385,6 @@ MonoBehaviour:
   controls: {fileID: 0}
   canPause: 0
   paused: 0
---- !u!1 &3656990135389445802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7779095878966235421}
-  - component: {fileID: 4064195543173529208}
-  m_Layer: 0
-  m_Name: GridController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7779095878966235421
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3656990135389445802}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7965776731162397356}
-  m_Father: {fileID: 584815250507446861}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4064195543173529208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3656990135389445802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6053f15de883304a8830090b2379e8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  possibilities: 16
-  tilePrefabs:
-  - {fileID: 6991375212778167578, guid: 931ca42cf588e13469fa5a954fc1f85f, type: 3}
-  - {fileID: 6991375212778167578, guid: 4a4bd4d634acff944a5360b7f5759669, type: 3}
-  - {fileID: 6991375212778167578, guid: 658e72454c6e20c47a4f8cca50fe0f82, type: 3}
-  - {fileID: 6991375212778167578, guid: 197636f6fc42506418f3c71fcbc0be5d, type: 3}
-  - {fileID: 6991375212778167578, guid: 314cba4f244da944c828705457d502cf, type: 3}
-  - {fileID: 6991375212778167578, guid: 5296466d29738ec4da961c2594861b0d, type: 3}
-  - {fileID: 6991375212778167578, guid: 920d4e250c236ff4da1ec6882cd54ac8, type: 3}
-  - {fileID: 6991375212778167578, guid: a8b2aac1bd2ed7e45af3d94a9f16f0c1, type: 3}
-  - {fileID: 6991375212778167578, guid: 814868170e780364b9ed8f1b721c208f, type: 3}
-  - {fileID: 6991375212778167578, guid: 51a27b00b6d3cd44e88e86204a4af47f, type: 3}
-  - {fileID: 6991375212778167578, guid: 23cf51d98c0d07f4c9b980de935b9d5f, type: 3}
-  - {fileID: 6991375212778167578, guid: e58a9377a650a0a4ebddfe93d90e6c50, type: 3}
-  - {fileID: 6991375212778167578, guid: 929eae8ed0fd7fc46872cf6d9e3efb2c, type: 3}
-  - {fileID: 6991375212778167578, guid: a4ceb7e87d05a0248a02e1c998550397, type: 3}
-  - {fileID: 6991375212778167578, guid: 3168fab44d83aed49b0dbd1df5ca8a7e, type: 3}
-  - {fileID: 6991375212778167578, guid: daffe9f00f3ca7a4bb5ddecfde1d082a, type: 3}
-  seed: 4
-  columns: 10
-  rows: 12
-  cellSize: {x: 5, y: 5}
-  gridParent: {fileID: 7965776731162397356}
-  aboveAllowList:
-    _serializedList:
-    - Key: 0
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 1
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 2
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 3
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 4
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 5
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 6
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 7
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 8
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 9
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 10
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 11
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 12
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 13
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-    - Key: 14
-      Value: 000000000100000002000000040000000500000007000000090000000c000000
-    - Key: 15
-      Value: 0300000006000000080000000a0000000b0000000d0000000e0000000f000000
-  belowAllowList:
-    _serializedList:
-    - Key: 0
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 1
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 2
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 3
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 4
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 5
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 6
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 7
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 8
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 9
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 10
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 11
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 12
-      Value: 0000000002000000030000000400000008000000090000000a0000000e000000
-    - Key: 13
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 14
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-    - Key: 15
-      Value: 010000000500000006000000070000000b0000000c0000000d0000000f000000
-  leftAllowList:
-    _serializedList:
-    - Key: 0
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 1
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 2
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 3
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 4
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 5
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 6
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 7
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 8
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 9
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 10
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 11
-      Value: 0000000001000000030000000400000006000000070000000a0000000d000000
-    - Key: 12
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 13
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 14
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-    - Key: 15
-      Value: 020000000500000008000000090000000b0000000c0000000e0000000f000000
-  rightAllowList:
-    _serializedList:
-    - Key: 0
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 1
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 2
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 3
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 4
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 5
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 6
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 7
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 8
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 9
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 10
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 11
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 12
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 13
-      Value: 000000000100000002000000030000000500000006000000080000000b000000
-    - Key: 14
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-    - Key: 15
-      Value: 0400000007000000090000000a0000000c0000000d0000000e0000000f000000
-  weights:
-    _serializedList:
-    - Key: 0
-      Value: 250
-    - Key: 1
-      Value: 2
-    - Key: 2
-      Value: 2
-    - Key: 3
-      Value: 2
-    - Key: 4
-      Value: 2
 --- !u!1 &4672573020696738311
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,12 +600,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7779095878966235421}
   - {fileID: 2927744324978250977}
   - {fileID: 4325521736277837416}
   - {fileID: 5722955526502393653}
   - {fileID: 4870128066406119364}
-  - {fileID: 4293554974027307149}
   - {fileID: 1186461319892042012}
   - {fileID: 512955592922908788}
   - {fileID: 490597921755847579}
@@ -884,8 +635,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 52582edf8d2b92c4091ef980d6354d1a, type: 2}
   - {fileID: 11400000, guid: 2bc90c803f8f60448ad2c066db54bc5e, type: 2}
   initialExplorationConfiguration:
-    explorationSceneRef: TestExploration
-    playerPosition: {x: 0, y: 0.25, z: 0}
+    explorationSceneRef: _TestExploration
+    playerPositionX: 0
+    playerPositionY: 0
+    playerPositionZ: 0
   initialGameData:
     triggeredEvents: []
 --- !u!1 &6515140787521724471
@@ -1280,6 +1033,7 @@ MonoBehaviour:
   switchToOnEnable: 0
   defaultPosition: {x: 0, y: 0, z: 0}
   initialPositionIsDefault: 0
+  setAsDefault: 0
 --- !u!1 &7190397595527114424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,53 +1144,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 44}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &7793014730293056494
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4293554974027307149}
-  - component: {fileID: 8409969583897204188}
-  m_Layer: 0
-  m_Name: ExplorationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &4293554974027307149
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7793014730293056494}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 584815250507446861}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8409969583897204188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7793014730293056494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d51051a7ae458f44978566de61ae32d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentExplorationConfiguration:
-    explorationSceneRef: 
-    playerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8587768927533470456
 GameObject:
   m_ObjectHideFlags: 0

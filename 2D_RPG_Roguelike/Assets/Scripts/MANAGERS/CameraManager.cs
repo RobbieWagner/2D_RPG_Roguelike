@@ -36,6 +36,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public void RemoveCamera(GameCamera camera)
         {
+            // TODO: Find a better solution to solve edge case
+            if(camera == defaultCamera)
+                defaultCamera = Camera.main.gameObject.GetComponent<GameCamera>();
             gameCameras.Remove(camera);
         }
 
@@ -63,6 +66,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public void TrySwitchToDefaultCamera()
         {
             TrySwitchGameCamera(defaultCamera);
+        }
+
+        public void SetDefaultCamera(GameCamera gameCamera)
+        {
+            defaultCamera = gameCamera;
         }
     }
 }

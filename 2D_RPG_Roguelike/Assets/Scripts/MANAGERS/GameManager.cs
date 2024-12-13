@@ -100,6 +100,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             CombatManagerBase.Instance.StartCombat(combatInfo);
             CurrentGameMode = GameMode.COMBAT;
+            RandomEncounterEnemy.isCombatTriggered = false;
             CombatManagerBase.Instance.OnCombatEnded += TriggerPreviousGameMode;
 
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());

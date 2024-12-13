@@ -33,6 +33,7 @@ namespace RobbieWagnerGames.UI
 
         public IEnumerator FadeCoverOut(float time = 1f)
         {
+            Debug.Log("fade out");
             if (canvas.enabled)
             {
                 screenCover.color = Color.black;

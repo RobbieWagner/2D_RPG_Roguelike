@@ -16,6 +16,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public class RandomEncounterEnemy : MonoBehaviour
     {
         public Collider trigger;
+        public static bool isCombatTriggered = false;
         public CombatConfiguration combatInfo;
         public Scene combatScene;
 
@@ -32,25 +33,18 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private float walkRadius = 25f;
         [SerializeField] private Vector2 walkDistanceRange;
 
+        [SerializeField] private float disableDistance = 10;
+
         #region combat
         private void OnCollisionEnter(Collision other)
         {
-            if (other.collider.CompareTag("Player"))
+            if (other.collider.CompareTag("Player") && !isCombatTriggered && GameManager.Instance.CurrentGameMode == GameMode.EXPLORATION)
             {
                 ChangeMovementState(MovementState.Idle);
                 PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(GameManager.Instance.TriggerCombat(combatInfo));
                 trigger.enabled = false;
-                GameManager.OnGameModeChanged += CheckFoOverworldDestruction;
-            }
-        }
-
-        private void CheckFoOverworldDestruction(GameMode gameMode)
-        {
-            if (gameMode == GameMode.COMBAT)
-            {
-                GameManager.OnGameModeChanged -= CheckFoOverworldDestruction;
-                Destroy(gameObject);
+                isCombatTriggered = true;
             }
         }
         #endregion
@@ -58,29 +52,46 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #region ai navigation
         private void Awake()
         {
-            if (Vector3.Distance(PlayerMovement.Instance.transform.position, transform.position) < 10)
-            {
+            if (Vector3.Distance(PlayerMovement.Instance.transform.position, transform.position) < disableDistance)
                 DisableOverworldEnemy();
-            }
 
             //unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
 
             currentMovementStateCoroutine = null;
-
-            InitializeAgent();
+            GameManager.OnGameModeChanged += CheckGameMode;
         }
 
         private void DisableOverworldEnemy()
         {
+            GameManager.OnGameModeChanged -= CheckGameMode;
             navMeshAgent.enabled = false;
             Destroy(parentGameObject);
         }
 
-        private void InitializeAgent()
+        private void ResumeAgent()
         {
             movementState = MovementState.Idle;
             ChangeMovementCoroutine(Standby(Random.Range(idleTimeRange.x, idleTimeRange.y)));
             navMeshAgent.updateRotation = false;
+        }
+
+        private void CheckGameMode(GameMode mode)
+        {
+            if (mode != GameMode.EXPLORATION)
+                PauseAgent(true);
+            else if (mode == GameMode.EXPLORATION)
+                ResumeAgent();
+        }
+
+        private void PauseAgent(bool deleteifClose = false)
+        {
+            movementState = MovementState.Idle;
+            if(currentMovementStateCoroutine != null)
+                StopCoroutine(currentMovementStateCoroutine);
+            navMeshAgent.SetDestination(transform.position);
+
+            if (deleteifClose && Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position) < disableDistance)
+                DisableOverworldEnemy();
         }
 
         public void ChangeMovementState(MovementState state)

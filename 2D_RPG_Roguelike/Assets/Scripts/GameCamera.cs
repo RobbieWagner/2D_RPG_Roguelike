@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RobbieWagnerGames.TurnBasedCombat
@@ -11,6 +12,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public bool switchToOnEnable = false;
         public Vector3 defaultPosition = Vector3.zero;
         public bool initialPositionIsDefault = false;
+        public bool setAsDefault = false;
 
         public void ActivateCamera()
         {
@@ -28,6 +30,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             if (switchToOnEnable)
                 CameraManager.Instance?.TrySwitchGameCamera(this);
+
+            if (setAsDefault)
+                CameraManager.Instance?.SetDefaultCamera(this);
         }
 
         protected virtual void OnEnable()

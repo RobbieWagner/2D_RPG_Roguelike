@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: f51ae6eda2d210f47b2a21e528c8bcab
   - enabled: 1
-    path: Assets/Scenes/TestExploration.unity
+    path: Assets/Scenes/ExplorationScenes/_TestExploration.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/TestCombat.unity
+    path: Assets/Scenes/CombatScenes/_TestCombat.unity
     guid: 3d3324d3d2e79cd4c8fe998579b382ff
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
