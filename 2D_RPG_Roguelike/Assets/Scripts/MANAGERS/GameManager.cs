@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.UI;
 using RobbieWagnerGames.Utilities.SaveData;
@@ -7,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
@@ -26,6 +26,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public List<Ally> initialParty;
         public List<GameItem> initialInventory;
+        public ExplorationConfiguration initialExplorationConfiguration;
+        public GameConfigurationData initialGameData;
 
         public GameMode CurrentGameMode
         {
@@ -58,6 +60,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
             OnGameModeEnded += OnEndGameMode;
 
             LoadGameData();
+            StartCoroutine(StartGame());
+        }
+
+        private IEnumerator StartGame()
+        {
+            // Determines how to load the game correctly, and triggers the correct load
+            yield return null;
+            if (ExplorationManager.Instance != null)
+                StartCoroutine(TriggerExploration(null));
+            else if (GeneralGameData.gameData == null)
+                StartCoroutine(StartNewGame());
+            else if (ExplorationData.explorationConfiguration != null)
+                StartCoroutine(TriggerExploration(ExplorationData.explorationConfiguration));
         }
 
         #region Game Modes
@@ -79,19 +94,30 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return null;
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
 
-            yield return StartCoroutine(CombatManagerBase.Instance.StartCombat(combatInfo));
+            SceneManager.LoadScene(combatInfo.combatSceneRef, LoadSceneMode.Additive);
+            while (CombatBattlefield.Instance == null)
+                yield return null;
+
+            CombatManagerBase.Instance.StartCombat(combatInfo);
             CurrentGameMode = GameMode.COMBAT;
             CombatManagerBase.Instance.OnCombatEnded += TriggerPreviousGameMode;
 
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
-        public IEnumerator TriggerExploration()
+        public IEnumerator TriggerExploration(ExplorationConfiguration explorationConfiguration)
         {
             yield return null;
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
 
-            yield return StartCoroutine(ExplorationManager.Instance.StartExploration());
+            if(explorationConfiguration != null)
+            {
+                SceneManager.LoadScene(explorationConfiguration.explorationSceneRef, LoadSceneMode.Additive);
+                while (ExplorationManager.Instance == null)
+                    yield return null;
+            }
+
+            yield return StartCoroutine(ExplorationManager.Instance.StartExploration(explorationConfiguration));
             CurrentGameMode = GameMode.EXPLORATION;
             
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
@@ -100,7 +126,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public void TriggerPreviousGameMode()
         {
             if (previousGameMode == GameMode.EXPLORATION)
-                StartCoroutine(TriggerExploration());
+                StartCoroutine(TriggerExploration(null));
         }
 
         #endregion
@@ -110,12 +136,27 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             SavePlayerParty();
             SavePlayerInventory();
-            //SavePlayerExplorationData();
+            SavePlayerExplorationData();
+
+            JsonDataService.Instance.SaveData(StaticGameStats.gameDataSavePath, GeneralGameData.gameData);
         }
 
         private void SavePlayerExplorationData()
         {
-            throw new NotImplementedException();
+            if (ExplorationManager.Instance != null)
+            {
+                ExplorationConfiguration explorationSaveData = new ExplorationConfiguration()
+                {
+                    explorationSceneRef = ExplorationManager.Instance.gameObject.scene.name,
+                    playerPositionX = PlayerMovement.Instance.transform.position.x,
+                    playerPositionY = PlayerMovement.Instance.transform.position.y,
+                    playerPositionZ = PlayerMovement.Instance.transform.position.z
+                };
+
+                JsonDataService.Instance.SaveData(StaticGameStats.explorationDataSavePath, explorationSaveData);
+            }
+            else
+                JsonDataService.Instance.SaveData<ExplorationConfiguration>(StaticGameStats.explorationDataSavePath, null);
         }
 
         private void SavePlayerInventory()
@@ -132,17 +173,28 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             LoadPlayerParty();
             LoadPlayerInventory();
-            //LoadPlayerExplorationData();
+            LoadPlayerExplorationData();
+
+            GeneralGameData.gameData = JsonDataService.Instance.LoadDataRelative<GameConfigurationData>(StaticGameStats.gameDataSavePath, null);
+        }
+
+        private IEnumerator StartNewGame()
+        {
+            // TODO: Replace with logic that will start a new game !!!!!
+
+            GeneralGameData.gameData = initialGameData;
+            yield return StartCoroutine(TriggerExploration(initialExplorationConfiguration));
         }
 
         private void LoadPlayerExplorationData()
         {
-            throw new NotImplementedException();
+            ExplorationConfiguration explorationData = JsonDataService.Instance.LoadDataRelative<ExplorationConfiguration>(StaticGameStats.explorationDataSavePath, null);
+            ExplorationData.explorationConfiguration = explorationData;
         }
 
         private void LoadPlayerInventory()
         {
-            List<string> gameItemFilePaths = JsonDataService.Instance.LoadDataRelative<List<string>>(StaticGameStats.inventorySavePath, new List<string>());
+            List<string> gameItemFilePaths = JsonDataService.Instance.LoadDataRelative(StaticGameStats.inventorySavePath, new List<string>());
 
             List<GameItem> inventory = new List<GameItem>();
 

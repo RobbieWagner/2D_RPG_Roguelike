@@ -77,14 +77,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 debugSequenceEventPrefab.message = eventType.ToString();
             }
 
-            StartCoroutine(StartCombat(debugCombatConfiguration));
+            StartCombat(debugCombatConfiguration);
         }
 
-        public virtual IEnumerator StartCombat(CombatConfiguration combatConfiguration)
+        public virtual void StartCombat(CombatConfiguration combatConfiguration)
         {
-            SceneManager.LoadScene(combatConfiguration.combatSceneRef, LoadSceneMode.Additive);
-            while (CombatBattlefield.Instance == null)
-                yield return null;
             transform.position = CombatBattlefield.Instance.scenePosition + (Vector3.up * 2);
 
             currentCombat = combatConfiguration;
@@ -172,6 +169,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             units.AddRange(enemyInstances);
 
             return units;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
     }
 }

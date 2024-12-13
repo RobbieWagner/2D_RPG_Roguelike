@@ -199,7 +199,7 @@ namespace RobbieWagnerGames
             canMove = false;
         }
 
-        public IEnumerator MoveUnitToSpot(Vector3 position, float unitsPerSecond = -1)
+        public IEnumerator MovePlayerToSpot(Vector3 position, float unitsPerSecond = -1)
         {
             CeasePlayerMovement();
             PlayMovementSounds();
@@ -213,7 +213,14 @@ namespace RobbieWagnerGames
             movingForcibly = false;
 
             characterController.enabled = true;
-            StopCoroutine(MoveUnitToSpot(position));
+            StopCoroutine(MovePlayerToSpot(position));
+        }
+
+        public void Warp(Vector3 position)
+        {
+            characterController.enabled = false;
+            transform.position = position;
+            characterController.enabled = true;
         }
 
         private void Animate()

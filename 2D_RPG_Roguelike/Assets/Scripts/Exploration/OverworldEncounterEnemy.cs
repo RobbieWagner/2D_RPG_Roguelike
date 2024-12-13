@@ -41,15 +41,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(GameManager.Instance.TriggerCombat(combatInfo));
                 trigger.enabled = false;
-                CombatManagerBase.OnCombatPhaseChange += CheckFoOverworldDestruction;
+                GameManager.OnGameModeChanged += CheckFoOverworldDestruction;
             }
         }
 
-        private void CheckFoOverworldDestruction(CombatPhase phase)
+        private void CheckFoOverworldDestruction(GameMode gameMode)
         {
-            if (phase == CombatPhase.SETUP)
+            if (gameMode == GameMode.COMBAT)
             {
-                CombatManagerBase.OnCombatPhaseChange -= CheckFoOverworldDestruction;
+                GameManager.OnGameModeChanged -= CheckFoOverworldDestruction;
                 Destroy(gameObject);
             }
         }

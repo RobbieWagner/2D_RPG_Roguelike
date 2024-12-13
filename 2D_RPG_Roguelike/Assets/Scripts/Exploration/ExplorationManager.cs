@@ -1,12 +1,13 @@
-using RobbieWagnerGames.UI;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
     public class ExplorationManager : MonoBehaviour
     {
+        public ExplorationConfiguration currentExplorationConfiguration;
+
         public static ExplorationManager Instance { get; private set; }
         private void Awake()
         {
@@ -16,11 +17,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 Instance = this;
         }
 
-        public IEnumerator StartExploration()
+        public IEnumerator StartExploration(ExplorationConfiguration explorationConfiguration)
         {
+            currentExplorationConfiguration = explorationConfiguration; 
+
             yield return null;
             PlayerMovement.Instance.CanMove = true;
-            GameManager.Instance.CurrentGameMode = GameMode.EXPLORATION;
+            if(explorationConfiguration != null)
+                PlayerMovement.Instance.Warp(new Vector3(explorationConfiguration.playerPositionX, explorationConfiguration.playerPositionY, explorationConfiguration.playerPositionZ));
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
     }
 }

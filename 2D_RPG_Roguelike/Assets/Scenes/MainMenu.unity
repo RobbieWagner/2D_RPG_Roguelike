@@ -689,7 +689,7 @@ MonoBehaviour:
   controlsButton: {fileID: 0}
   creditsButton: {fileID: 0}
   quitButton: {fileID: 1946078191}
-  sceneToGoTo: TestExploration
+  sceneToGoTo: MainScene
   settings: {fileID: 2110135410}
   controls: {fileID: 0}
   credits: {fileID: 0}
