@@ -24,7 +24,7 @@ namespace RobbieWagnerGames.UI
         public virtual void ToggleTab(bool on)
         {
             foreach(Transform child in transform)
-                transform.gameObject.SetActive(on);
+                child.gameObject.SetActive(on);
         }
 
         protected string AddSpacesToString(string text, bool preserveAcronyms)
