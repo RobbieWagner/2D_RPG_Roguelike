@@ -376,12 +376,13 @@ MonoBehaviour:
   thisCanvas: {fileID: 6283366634227092683}
   backButton: {fileID: 0}
   lastCanvas: {fileID: 0}
+  defaultSelection: {fileID: 3819544315513186627}
   resumeButton: {fileID: 6975316636060320177}
   settingsButton: {fileID: 6844822138747436317}
   controlsButton: {fileID: 0}
   saveButton: {fileID: 6511989296201554743}
   quitButton: {fileID: 7838946041821082290}
-  settings: {fileID: 0}
+  settings: {fileID: 7773339795294710900}
   controls: {fileID: 0}
   canPause: 0
   paused: 0
@@ -1451,6 +1452,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3836532233762096603, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836532233762096603, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6985904812512570665, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
       propertyPath: m_Name
       value: ResumeButton
@@ -1460,6 +1469,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+--- !u!1 &3819544315513186627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6985904812512570665, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+  m_PrefabInstance: {fileID: 6193386526865769578}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6409463966162224689 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 937216838583075419, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
@@ -1470,7 +1484,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3836532233762096603, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
   m_PrefabInstance: {fileID: 6193386526865769578}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3819544315513186627}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -1700,6 +1714,14 @@ PrefabInstance:
     - target: {fileID: 2303679450301697848, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
       propertyPath: m_text
       value: Settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836532233762096603, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836532233762096603, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6985904812512570665, guid: 09d5cfca12d043f4b8e15e0cfbbe788f, type: 3}
       propertyPath: m_Name
@@ -1999,5 +2021,10 @@ PrefabInstance:
 --- !u!224 &5039117704265335656 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4427283414277215613, guid: b53b37f89f1786d43b57c167bc0d7271, type: 3}
+  m_PrefabInstance: {fileID: 8691476777692222997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &7773339795294710900 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 1404603356509649505, guid: b53b37f89f1786d43b57c167bc0d7271, type: 3}
   m_PrefabInstance: {fileID: 8691476777692222997}
   m_PrefabAsset: {fileID: 0}

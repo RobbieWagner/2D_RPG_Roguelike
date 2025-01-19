@@ -11,10 +11,11 @@ namespace RobbieWagnerGames.UI
     public class MenuTab : MonoBehaviour
     {
         [Header("General")]
-        [SerializeField] public string tabName;
-        [SerializeField] public LayoutGroup tabContentParent;
+        public string tabName;
+        public LayoutGroup tabContentParent;
 
-        [SerializeField] public TextMeshProUGUI contentTextPrefab;
+        public TextMeshProUGUI contentTextPrefab;
+        public GameObject defaultSelection;
 
         public virtual void BuildTab()
         {
@@ -25,6 +26,11 @@ namespace RobbieWagnerGames.UI
         {
             foreach(Transform child in transform)
                 child.gameObject.SetActive(on);
+
+            if (on)
+            {
+                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
+            }
         }
 
         protected string AddSpacesToString(string text, bool preserveAcronyms)

@@ -179,4 +179,5 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   selectedTargets: []
   spriteRenderer: {fileID: 4794937257987412894}
-  unitBaseHP: 0
+  unitCombatPos: 0
+  maxHP: 10

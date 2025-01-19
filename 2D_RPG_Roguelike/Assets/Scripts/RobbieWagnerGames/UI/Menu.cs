@@ -1,3 +1,5 @@
+using RobbieWagnerGames.TurnBasedCombat;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +17,8 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected Button backButton;
         [HideInInspector] public Canvas lastCanvas;
 
+        [SerializeField] private GameObject defaultSelection;
+
         protected virtual void Awake()
         {
             
@@ -25,13 +29,17 @@ namespace RobbieWagnerGames.UI
             ToggleButtonInteractibility(true);
 
             if(backButton != null) backButton.onClick.AddListener(BackToLastMenu);
+            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
+            //InputManager.Instance.gameControls.UI.NavigateOption.performed += OnNavigateOptions;
         }
 
         protected virtual void OnDisable()
         {
-        ToggleButtonInteractibility(false);  
+            ToggleButtonInteractibility(false);  
 
-        if(backButton != null) backButton.onClick.RemoveListener(BackToLastMenu);
+            if(backButton != null) backButton.onClick.RemoveListener(BackToLastMenu);
+            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
+            //InputManager.Instance.gameControls.UI.NavigateOption.performed -= OnNavigateOptions;
         }
 
         protected virtual void ToggleButtonInteractibility(bool toggleOn)
@@ -46,6 +54,15 @@ namespace RobbieWagnerGames.UI
                 StartCoroutine(SwapCanvases(thisCanvas, lastCanvas));
             }
         }
+
+        //protected virtual void OnNavigateOptions(InputAction.CallbackContext context)
+        //{
+        //    float direction = context.ReadValue<float>();
+        //    if (direction > 0) 
+        //    {
+                
+        //    }
+        //}
 
         protected virtual IEnumerator SwapCanvases(Canvas active, Canvas next)
         {

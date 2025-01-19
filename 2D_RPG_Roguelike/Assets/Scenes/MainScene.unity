@@ -287,6 +287,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6283366634227092683, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6409463966162224689, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -351,11 +355,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8902397224046483826, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
+      propertyPath: defaultSelection
+      value: 
+      objectReference: {fileID: 1745062503}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
+--- !u!1 &1745062503 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 885962372539762313, guid: 323a82b4218fc3f4d9f8dad9e3b05be8, type: 3}
+  m_PrefabInstance: {fileID: 959141172}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
