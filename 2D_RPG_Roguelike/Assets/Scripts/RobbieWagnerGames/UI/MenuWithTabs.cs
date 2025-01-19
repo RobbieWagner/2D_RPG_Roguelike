@@ -20,6 +20,7 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected List<MenuTab> menus;
         [SerializeField] protected Color inactiveColor;
         [SerializeField] protected Color activeColor;
+        [SerializeField] protected bool horizontalTabs = true;
 
         private int activeTab = -1;
         public int ActiveTab
@@ -58,13 +59,21 @@ namespace RobbieWagnerGames.UI
             base.OnEnable();
             ActiveTab = 0;
             EnableTab(ActiveTab);
-            InputManager.Instance.gameControls.UI.NavigateTab.performed += NavigateTab;
+
+            if (horizontalTabs) 
+                InputManager.Instance.gameControls.UI.NavigateHorizontal.performed += NavigateTab;
+            else 
+                InputManager.Instance.gameControls.UI.NavigateVertical.performed += NavigateTab;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            InputManager.Instance.gameControls.UI.NavigateTab.performed -= NavigateTab;
+
+            if (horizontalTabs) 
+                InputManager.Instance.gameControls.UI.NavigateHorizontal.performed -= NavigateTab;
+            else 
+                InputManager.Instance.gameControls.UI.NavigateVertical.performed -= NavigateTab;
         }
 
         protected virtual void BuildMenu()

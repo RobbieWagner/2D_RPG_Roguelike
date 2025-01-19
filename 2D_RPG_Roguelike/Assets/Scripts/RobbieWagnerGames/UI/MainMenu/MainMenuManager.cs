@@ -22,9 +22,9 @@ namespace RobbieWagnerGames.UI
 
         [SerializeField] private string sceneToGoTo;
 
-        [SerializeField] private Canvas settings;
-        [SerializeField] private Canvas controls;
-        [SerializeField] private Canvas credits;
+        [SerializeField] private Menu settings;
+        [SerializeField] private Menu controls;
+        [SerializeField] private Menu credits;
 
         protected override void Awake()
         {
@@ -74,7 +74,7 @@ namespace RobbieWagnerGames.UI
 
         private void OpenSettings()
         {
-            StartCoroutine(SwapCanvases(thisCanvas, settings));
+            StartCoroutine(SwapMenu(this, settings));
         }
 
         //private void OpenControls()
@@ -106,11 +106,11 @@ namespace RobbieWagnerGames.UI
             quitButton.interactable = toggleOn;
         }
 
-        protected override IEnumerator SwapCanvases(Canvas active, Canvas next)
+        protected override IEnumerator SwapMenu(Menu active, Menu next, bool setAsLastMenu = true)
         {
-            yield return StartCoroutine(base.SwapCanvases(active, next));
+            yield return StartCoroutine(base.SwapMenu(active, next));
 
-            StopCoroutine(SwapCanvases(active, next));
+            StopCoroutine(SwapMenu(active, next));
         }
     }
 }

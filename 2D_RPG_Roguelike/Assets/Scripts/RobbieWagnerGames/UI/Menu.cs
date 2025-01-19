@@ -5,17 +5,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace RobbieWagnerGames.UI
 {
     public class Menu : MonoBehaviour
     {
-
-        [SerializeField] public Canvas thisCanvas;
+        [FormerlySerializedAs("thisCanvas")]
+        [SerializeField] public Canvas canvas;
 
         [SerializeField] protected Button backButton;
-        [HideInInspector] public Canvas lastCanvas;
+        //[HideInInspector] public Canvas lastMenu;
+        [HideInInspector] public Menu lastMenu;
 
         [SerializeField] private GameObject defaultSelection;
 
@@ -28,18 +30,26 @@ namespace RobbieWagnerGames.UI
         {
             ToggleButtonInteractibility(true);
 
-            if(backButton != null) backButton.onClick.AddListener(BackToLastMenu);
+            if (backButton != null)
+            {
+                backButton.onClick.AddListener(BackToLastMenu);
+                InputManager.Instance.gameControls.UI.Cancel.performed += BackToLastMenu;
+            }
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
-            //InputManager.Instance.gameControls.UI.NavigateOption.performed += OnNavigateOptions;
+            InputManager.Instance.EnableActionMap(ActionMapName.UI.ToString());
+
         }
 
         protected virtual void OnDisable()
         {
-            ToggleButtonInteractibility(false);  
+            ToggleButtonInteractibility(false);
 
-            if(backButton != null) backButton.onClick.RemoveListener(BackToLastMenu);
+            if (backButton != null)
+            {
+                backButton.onClick.RemoveListener(BackToLastMenu);
+                InputManager.Instance.gameControls.UI.Cancel.performed -= BackToLastMenu;
+            }
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
-            //InputManager.Instance.gameControls.UI.NavigateOption.performed -= OnNavigateOptions;
         }
 
         protected virtual void ToggleButtonInteractibility(bool toggleOn)
@@ -47,39 +57,33 @@ namespace RobbieWagnerGames.UI
             if(backButton != null) backButton.interactable = toggleOn;
         }
 
+        protected virtual void BackToLastMenu(InputAction.CallbackContext context)
+        {
+            BackToLastMenu();
+        }
+
         protected virtual void BackToLastMenu()
         {
-            if(lastCanvas != null)
+            if(lastMenu != null)
             {
-                StartCoroutine(SwapCanvases(thisCanvas, lastCanvas));
+                StartCoroutine(SwapMenu(this, lastMenu));
             }
         }
 
-        //protected virtual void OnNavigateOptions(InputAction.CallbackContext context)
-        //{
-        //    float direction = context.ReadValue<float>();
-        //    if (direction > 0) 
-        //    {
-                
-        //    }
-        //}
-
-        protected virtual IEnumerator SwapCanvases(Canvas active, Canvas next)
+        protected virtual IEnumerator SwapMenu(Menu active, Menu next, bool setAsLastMenu = true)
         {
             yield return new WaitForSecondsRealtime(.1f);
 
-            Menu activeMenu = active.gameObject.GetComponent<Menu>();
-            Menu nextMenu = next.gameObject.GetComponent<Menu>();
+            next.canvas.enabled = true;
+            next.ToggleButtonInteractibility(true);
+            if(setAsLastMenu)
+                next.lastMenu = active;
+            active.canvas.enabled = false;
 
             active.enabled = false;
             next.enabled = true;
 
-            nextMenu.enabled = true;
-            nextMenu.ToggleButtonInteractibility(true);
-            nextMenu.lastCanvas = activeMenu.thisCanvas;
-            activeMenu.enabled = false;
-        
-            StopCoroutine(SwapCanvases(active, next));
+            StopCoroutine(SwapMenu(active, next));
         }
     }
 }

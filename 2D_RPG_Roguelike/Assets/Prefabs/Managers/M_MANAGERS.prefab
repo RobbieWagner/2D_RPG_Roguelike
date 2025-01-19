@@ -243,7 +243,7 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 29e92b016892f24499f33c0927c61cb1, type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: 0}
   m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -373,16 +373,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82afba4e2e3047944b6f88ede3e52ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisCanvas: {fileID: 6283366634227092683}
+  canvas: {fileID: 6283366634227092683}
   backButton: {fileID: 0}
-  lastCanvas: {fileID: 0}
+  lastMenu: {fileID: 0}
   defaultSelection: {fileID: 3819544315513186627}
   resumeButton: {fileID: 6975316636060320177}
   settingsButton: {fileID: 6844822138747436317}
   controlsButton: {fileID: 0}
   saveButton: {fileID: 6511989296201554743}
   quitButton: {fileID: 7838946041821082290}
-  settings: {fileID: 7773339795294710900}
+  settings: {fileID: 6755513777246450859}
   controls: {fileID: 0}
   canPause: 0
   paused: 0
@@ -2023,8 +2023,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4427283414277215613, guid: b53b37f89f1786d43b57c167bc0d7271, type: 3}
   m_PrefabInstance: {fileID: 8691476777692222997}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &7773339795294710900 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 1404603356509649505, guid: b53b37f89f1786d43b57c167bc0d7271, type: 3}
+--- !u!114 &6755513777246450859 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2692646701087253182, guid: b53b37f89f1786d43b57c167bc0d7271, type: 3}
   m_PrefabInstance: {fileID: 8691476777692222997}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f311923dfe7cfa44994e3cd946baae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

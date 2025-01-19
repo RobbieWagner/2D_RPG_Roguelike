@@ -18,8 +18,8 @@ namespace RobbieWagnerGames.UI
         [SerializeField] private Button saveButton;
         [SerializeField] private Button quitButton;
 
-        [SerializeField] private Canvas settings;
-        [SerializeField] private Canvas controls;
+        [SerializeField] private Menu settings;
+        [SerializeField] private Menu controls;
 
         [HideInInspector] public bool canPause;
         [HideInInspector] public bool paused;
@@ -58,11 +58,15 @@ namespace RobbieWagnerGames.UI
             saveButton.onClick.AddListener(SaveGame);
             quitButton.onClick.AddListener(QuitToMainMenu);
 
-            thisCanvas.enabled = true;
+            InputManager.Instance.gameControls.PAUSE.UnpauseGame.performed += PauseMenuWatch.Instance.DisablePauseMenu;
+            InputManager.Instance.gameControls.PAUSE.PauseGame.performed += PauseMenuWatch.Instance.DisablePauseMenu;
+            InputManager.Instance.EnableActionMap(ActionMapName.PAUSE.ToString());
+
+            canvas.enabled = true;
 
             foreach (InputActionMap actionMap in InputManager.Instance.gameControls.asset.actionMaps)
             {
-                if (actionMap.enabled && !actionMap.name.Equals(ActionMapName.UI.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                if (actionMap.enabled && !actionMap.name.Equals(ActionMapName.PAUSE.ToString(), StringComparison.CurrentCultureIgnoreCase) && !actionMap.name.Equals(ActionMapName.UI.ToString(), StringComparison.CurrentCultureIgnoreCase))
                 {
                     pausedActionMaps.Add(InputManager.Instance.actionMaps[actionMap.name].name);
                     InputManager.Instance.DisableActionMap(actionMap.name);
@@ -92,11 +96,17 @@ namespace RobbieWagnerGames.UI
             saveButton.onClick.RemoveListener(SaveGame);
             quitButton.onClick.RemoveListener(QuitToMainMenu);
 
+            InputManager.Instance.gameControls.PAUSE.UnpauseGame.performed -= PauseMenuWatch.Instance.DisablePauseMenu;
+            InputManager.Instance.gameControls.PAUSE.PauseGame.performed -= PauseMenuWatch.Instance.DisablePauseMenu;
+
             foreach (string map in pausedActionMaps)
-                InputManager.Instance.EnableActionMap(map);
+            {
+                if(!map.Equals(ActionMapName.PAUSE.ToString()))
+                    InputManager.Instance.EnableActionMap(map);
+            }
             pausedActionMaps.Clear();
 
-            thisCanvas.enabled = false;
+            canvas.enabled = false;
         }
 
         public delegate void OnGameUnpausedDelegate();
@@ -110,12 +120,12 @@ namespace RobbieWagnerGames.UI
 
         private void OpenSettings()
         {
-            StartCoroutine(SwapCanvases(thisCanvas, settings));
+            StartCoroutine(SwapMenu(this, settings));
         }
 
         private void OpenControls()
         {
-            StartCoroutine(SwapCanvases(thisCanvas, controls));
+            StartCoroutine(SwapMenu(this, controls));
         }
 
         protected virtual void SaveGame()
@@ -155,11 +165,13 @@ namespace RobbieWagnerGames.UI
             StopCoroutine(QuitToMainMenuCo());
         }
 
-        protected override IEnumerator SwapCanvases(Canvas active, Canvas next)
+        protected override IEnumerator SwapMenu(Menu active, Menu next, bool setAsLastMenu = true)
         {
-            yield return StartCoroutine(base.SwapCanvases(active, next));
+            InputManager.Instance.DisableActionMap(ActionMapName.PAUSE.ToString());
 
-            StopCoroutine(SwapCanvases(active, next));
+            yield return StartCoroutine(base.SwapMenu(active, next));
+
+            StopCoroutine(SwapMenu(active, next));
         }
     }
 }

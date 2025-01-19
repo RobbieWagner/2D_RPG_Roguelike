@@ -11,7 +11,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         EXPLORATION,
         COMBAT,
         DIALOGUE,
-        UI
+        UI,
+        PAUSE
     }
 
     public class InputManager : MonoBehaviour
