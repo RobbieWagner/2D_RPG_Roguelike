@@ -35,8 +35,7 @@ namespace RobbieWagnerGames.StrategyCombat
         [SerializeField] protected SpriteRenderer spriteRenderer;
         [HideInInspector] public int unitCombatPos = 0; // units position in combat. Determines order of options in UI for target selection
 
-        [SerializeField] protected int unitBaseHP;
-        protected int maxHP;
+        public int maxHP;
         protected int hp;
         public int HP
         {
@@ -109,7 +108,7 @@ namespace RobbieWagnerGames.StrategyCombat
         {
             InitializeStats();
 
-            InitializeMaxHP();
+            //InitializeMaxHP();
         }
 
         public virtual void InitializeStats()
@@ -204,11 +203,11 @@ namespace RobbieWagnerGames.StrategyCombat
         #region statGetters
         #region base stat getters
         public int GetDamageBoost() {return stats[StatType.BRAWN].CurrentValue;}
-        public int InitializeMaxHP()
-        {
-            maxHP = unitBaseHP + stats[StatType.HEART].BaseValue;
-            return maxHP;
-        }
+        //public int InitializeMaxHP()
+        //{
+        //    maxHP = unitBaseHP;// + stats[StatType.HEART].BaseValue;
+        //    return maxHP;
+        //}
         public int GetMaxHP() {return maxHP;}
         public int GetBaseStatValue(StatType stat)
         {

@@ -12,7 +12,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
         protected override void Awake()
         {
-            unitBaseHP = difficultyClass * 10 + UnityEngine.Random.Range(difficultyClass + 1, (difficultyClass + 1) * 10);
+            maxHP = difficultyClass * 10 + UnityEngine.Random.Range(difficultyClass + 1, (difficultyClass + 1) * 10);
             SetupUnit();
             HP = maxHP;
 

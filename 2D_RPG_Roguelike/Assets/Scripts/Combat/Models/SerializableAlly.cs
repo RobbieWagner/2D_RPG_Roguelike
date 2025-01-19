@@ -10,6 +10,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
     {
         public string UnitName;
         public int HP;
+        public int MaxHP;
 
         List<UnitStat> stats = new List<UnitStat>();
 
@@ -25,6 +26,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         {
             UnitName = unit.unitName;
             HP = unit.HP;
+            MaxHP = unit.maxHP;
 
             stats = unit.Stats.Select(x => x.Value).ToList();
 
@@ -40,7 +42,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         {
             allyInstance.InitializeStats(stats);
             allyInstance.unitName = UnitName;
-            allyInstance.InitializeMaxHP();
+            //allyInstance.InitializeMaxHP();
             allyInstance.HP = HP;
 
             allyInstance.unitActions = LoadActions(actionFilePaths);
