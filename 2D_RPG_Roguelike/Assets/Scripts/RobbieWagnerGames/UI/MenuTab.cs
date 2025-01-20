@@ -22,15 +22,9 @@ namespace RobbieWagnerGames.UI
 
         }
 
-        public virtual void ToggleTab(bool on)
+        public virtual void OnOpenTab()
         {
-            foreach(Transform child in transform)
-                child.gameObject.SetActive(on);
-
-            if (on)
-            {
-                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
-            }
+            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
         }
 
         protected string AddSpacesToString(string text, bool preserveAcronyms)

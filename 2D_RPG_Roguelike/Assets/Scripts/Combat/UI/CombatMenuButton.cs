@@ -1,60 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
-    public class CombatMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class CombatMenuButton : MonoBehaviour
     {
-        public Action<int> selectionAction = (int index) => { };
+        public Action<CombatMenuButton> selectionAction = (CombatMenuButton button) => { };
         [HideInInspector] public int buttonIndex;
 
-        [SerializeField] private Button button;
+        public Button button;
         public TextMeshProUGUI buttonText;
-
-        //TODO: Define requirements for switching between mouse and keyboard controls
 
         private void Awake()
         {
             button.onClick.AddListener(() => SelectButton());
         }
 
-        public void CheckForConsideration(int curIndex)
+        public void SelectButton()
         {
-            if (curIndex == buttonIndex)
-            {
-                //Debug.Log(buttonText?.text);
-                EventSystemManager.Instance.SetSelectedGameObject(gameObject);
-            }
-        }
-
-        public void StopConsideringButton()
-        {
-            if(EventSystemManager.Instance.eventSystem.currentSelectedGameObject == gameObject)
-                EventSystemManager.Instance.SetSelectedGameObject(null);
-        }
-
-        public void SelectButton(bool stopConsidering = true)
-        {
-            selectionAction?.Invoke(buttonIndex);
-            if(stopConsidering)
-                StopConsideringButton();
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            CheckForConsideration(buttonIndex);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            StopConsideringButton();
+            selectionAction?.Invoke(this);
         }
     }
 }

@@ -21,6 +21,8 @@ namespace RobbieWagnerGames.UI
 
         [SerializeField] private GameObject defaultSelection;
 
+        public Coroutine menuCoroutine = null;
+
         protected virtual void Awake()
         {
             
@@ -37,7 +39,6 @@ namespace RobbieWagnerGames.UI
             }
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
             InputManager.Instance.EnableActionMap(ActionMapName.UI.ToString());
-
         }
 
         protected virtual void OnDisable()
@@ -49,7 +50,8 @@ namespace RobbieWagnerGames.UI
                 backButton.onClick.RemoveListener(BackToLastMenu);
                 InputManager.Instance.gameControls.UI.Cancel.performed -= BackToLastMenu;
             }
-            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
+            if(EventSystemManager.Instance != null)
+                EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
         }
 
         protected virtual void ToggleButtonInteractibility(bool toggleOn)

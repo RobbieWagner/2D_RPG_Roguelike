@@ -42,12 +42,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             if (actionMaps.TryGetValue(actionMapName, out var actionMap))
                 actionMap.Enable();
+            else
+                Debug.LogWarning($"Could not enable action map {actionMapName}: action map with the given name could not be found");
         }
 
         public void DisableActionMap(string actionMapName)
         {
             if (actionMaps.TryGetValue(actionMapName, out var actionMap))
                 actionMap.Disable();
+            else
+                Debug.LogWarning($"Could not disable action map {actionMapName}: action map with the given name could not be found");
         }
     }
 }

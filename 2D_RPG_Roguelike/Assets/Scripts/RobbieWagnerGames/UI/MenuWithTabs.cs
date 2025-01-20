@@ -104,6 +104,7 @@ namespace RobbieWagnerGames.UI
                 text.color = inactiveColor;
 
             menus[tab].gameObject.SetActive(true);
+            menus[tab].OnOpenTab();
             tabBarTextObjects[tab].color = activeColor;
         }
 

@@ -20,6 +20,19 @@ namespace RobbieWagnerGames.UI
                 Instance = this;
         }
 
+        public void ToggleScreenCover(bool on)
+        {
+            if(on)
+            {
+                canvas.enabled = true;
+                screenCover.color = Color.black;
+            }
+            else
+            {
+                canvas.enabled = false;
+            }
+        }
+
         public IEnumerator FadeCoverIn(float time = 1f)
         {
             if (!canvas.enabled)
@@ -33,7 +46,6 @@ namespace RobbieWagnerGames.UI
 
         public IEnumerator FadeCoverOut(float time = 1f)
         {
-            Debug.Log("fade out");
             if (canvas.enabled)
             {
                 screenCover.color = Color.black;

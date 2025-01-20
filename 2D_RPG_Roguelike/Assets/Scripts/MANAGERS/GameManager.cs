@@ -121,7 +121,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return StartCoroutine(ExplorationManager.Instance.StartExploration(explorationConfiguration));
             CurrentGameMode = GameMode.EXPLORATION;
             
-            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut(.35f));
         }
 
         public void TriggerPreviousGameMode()

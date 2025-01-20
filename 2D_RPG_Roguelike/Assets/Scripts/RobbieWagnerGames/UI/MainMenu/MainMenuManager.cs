@@ -44,6 +44,8 @@ namespace RobbieWagnerGames.UI
             //creditsButton.onClick.AddListener(OpenCredits);
             quitButton.onClick.AddListener(QuitGame);
 
+            //if(JsonDataService.Instance.LoadData())
+
             base.OnEnable();
         }
 
@@ -60,14 +62,33 @@ namespace RobbieWagnerGames.UI
         }
 
         private void StartNewGame()
-        {
-            JsonDataService.Instance.PurgeData();
-            StartGame();
+        {    
+            if(TryStartGame())
+                JsonDataService.Instance.PurgeData();
         }
 
         public void StartGame()
         {
+            if (menuCoroutine == null)
+                menuCoroutine = StartCoroutine(StartGameCo());
+        }
+
+        public bool TryStartGame()
+        {
+            if (menuCoroutine == null)
+            {
+                menuCoroutine = StartCoroutine(StartGameCo());
+                return true;
+            }
+            return false;
+        }
+
+        public IEnumerator StartGameCo()
+        {
             ToggleButtonInteractibility(false);
+
+            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+            menuCoroutine = null;
 
             SceneManager.LoadScene(sceneToGoTo);
         }
