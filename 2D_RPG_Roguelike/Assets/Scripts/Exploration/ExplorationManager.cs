@@ -1,20 +1,31 @@
+using RobbieWagnerGames.Utilities;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames.TurnBasedCombat
 {
-    public class ExplorationManager : MonoBehaviour
+    public class ExplorationManager : MonoBehaviourSingleton<ExplorationManager>
     {
         public ExplorationConfiguration currentExplorationConfiguration;
+        public ExplorationMenu explorationMenu;
 
-        public static ExplorationManager Instance { get; private set; }
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance != null && Instance != this)
-                Destroy(gameObject);
+            base.Awake();
+
+            InputManager.Instance.gameControls.EXPLORATION.ExplorationMenu.performed += ToggleExplorationMenu;
+        }
+
+        public void ToggleExplorationMenu(InputAction.CallbackContext context)
+        {
+            explorationMenu.enabled = !explorationMenu.enabled;
+            explorationMenu.canvas.enabled = explorationMenu.enabled;
+
+            if (explorationMenu.enabled)
+                InputManager.Instance.DisableActionMap(ActionMapName.PAUSE.ToString());
             else
-                Instance = this;
+                InputManager.Instance.EnableActionMap(ActionMapName.PAUSE.ToString());
         }
 
         public IEnumerator StartExploration(ExplorationConfiguration explorationConfiguration)
@@ -22,19 +33,17 @@ namespace RobbieWagnerGames.TurnBasedCombat
             currentExplorationConfiguration = explorationConfiguration; 
 
             yield return null;
+            yield return StartCoroutine(SetupPlayerMovement(explorationConfiguration));
+
+            InputManager.Instance.EnableActionMap(ActionMapName.EXPLORATION.ToString());
+        }
+
+        private IEnumerator SetupPlayerMovement(ExplorationConfiguration explorationConfiguration)
+        {
+            yield return null;
             PlayerMovement.Instance.CanMove = true;
-            if(explorationConfiguration != null)
+            if (explorationConfiguration != null)
                 PlayerMovement.Instance.Warp(new Vector3(explorationConfiguration.playerPositionX, explorationConfiguration.playerPositionY, explorationConfiguration.playerPositionZ));
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
-
-        private void OnDisable()
-        {
-            Instance = null;
         }
     }
 }

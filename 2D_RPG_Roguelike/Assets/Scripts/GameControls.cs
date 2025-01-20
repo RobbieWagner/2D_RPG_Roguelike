@@ -71,6 +71,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EscapeMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""899a503b-c479-443e-8f22-3b967e60124d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +267,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ExplorationMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ba8d95d-b4b8-4ce3-a726-9482351d95e5"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1271,6 +1291,39 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""action"": ""NavigateVertical"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""adb9e4fc-e1c9-4a1f-a406-c884971b0a09"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateVertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7da6e93f-e74c-4d19-8be5-359ceb7a84c8"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""2c883a35-ab4a-4905-a0c7-d1e703a5b560"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1343,6 +1396,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_EXPLORATION_MouseLook = m_EXPLORATION.FindAction("MouseLook", throwIfNotFound: true);
         m_EXPLORATION_ControllerLook = m_EXPLORATION.FindAction("ControllerLook", throwIfNotFound: true);
         m_EXPLORATION_ExplorationMenu = m_EXPLORATION.FindAction("ExplorationMenu", throwIfNotFound: true);
+        m_EXPLORATION_EscapeMenu = m_EXPLORATION.FindAction("EscapeMenu", throwIfNotFound: true);
         // COMBAT
         m_COMBAT = asset.FindActionMap("COMBAT", throwIfNotFound: true);
         m_COMBAT_Select = m_COMBAT.FindAction("Select", throwIfNotFound: true);
@@ -1437,6 +1491,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_EXPLORATION_MouseLook;
     private readonly InputAction m_EXPLORATION_ControllerLook;
     private readonly InputAction m_EXPLORATION_ExplorationMenu;
+    private readonly InputAction m_EXPLORATION_EscapeMenu;
     public struct EXPLORATIONActions
     {
         private @GameControls m_Wrapper;
@@ -1446,6 +1501,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         public InputAction @MouseLook => m_Wrapper.m_EXPLORATION_MouseLook;
         public InputAction @ControllerLook => m_Wrapper.m_EXPLORATION_ControllerLook;
         public InputAction @ExplorationMenu => m_Wrapper.m_EXPLORATION_ExplorationMenu;
+        public InputAction @EscapeMenu => m_Wrapper.m_EXPLORATION_EscapeMenu;
         public InputActionMap Get() { return m_Wrapper.m_EXPLORATION; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1470,6 +1526,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ExplorationMenu.started += instance.OnExplorationMenu;
             @ExplorationMenu.performed += instance.OnExplorationMenu;
             @ExplorationMenu.canceled += instance.OnExplorationMenu;
+            @EscapeMenu.started += instance.OnEscapeMenu;
+            @EscapeMenu.performed += instance.OnEscapeMenu;
+            @EscapeMenu.canceled += instance.OnEscapeMenu;
         }
 
         private void UnregisterCallbacks(IEXPLORATIONActions instance)
@@ -1489,6 +1548,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ExplorationMenu.started -= instance.OnExplorationMenu;
             @ExplorationMenu.performed -= instance.OnExplorationMenu;
             @ExplorationMenu.canceled -= instance.OnExplorationMenu;
+            @EscapeMenu.started -= instance.OnEscapeMenu;
+            @EscapeMenu.performed -= instance.OnEscapeMenu;
+            @EscapeMenu.canceled -= instance.OnEscapeMenu;
         }
 
         public void RemoveCallbacks(IEXPLORATIONActions instance)
@@ -1825,6 +1887,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         void OnMouseLook(InputAction.CallbackContext context);
         void OnControllerLook(InputAction.CallbackContext context);
         void OnExplorationMenu(InputAction.CallbackContext context);
+        void OnEscapeMenu(InputAction.CallbackContext context);
     }
     public interface ICOMBATActions
     {

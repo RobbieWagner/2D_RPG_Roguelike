@@ -22,6 +22,9 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected Color activeColor;
         [SerializeField] protected bool horizontalTabs = true;
 
+        [Tooltip("Determines whether the menu should go to the first tab when the menu is enabled")]
+        [SerializeField] protected bool resetOnEnable = true;
+
         private int activeTab = -1;
         public int ActiveTab
         {
@@ -57,7 +60,8 @@ namespace RobbieWagnerGames.UI
         {
             BuildMenu();
             base.OnEnable();
-            ActiveTab = 0;
+            if(resetOnEnable || ActiveTab < 0 || ActiveTab >= menus.Count)
+                ActiveTab = 0;
             EnableTab(ActiveTab);
 
             if (horizontalTabs) 

@@ -22,7 +22,7 @@ namespace RobbieWagnerGames.UI
             volumeSlider.minValue = -41;
             volumeSlider.maxValue = 20;
             LoadVolume();
-            volumeText.text = exposedParameterName;
+            volumeText.text = exposedParameterName + " Volume";
         }
 
         public void AdjustVolume(float value)

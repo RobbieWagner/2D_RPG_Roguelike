@@ -86,8 +86,6 @@ namespace RobbieWagnerGames.FirstPerson
             InputManager.Instance.gameControls.EXPLORATION.Move.performed += OnMove;
             InputManager.Instance.gameControls.EXPLORATION.Move.canceled += OnStop;
             OnToggleMovement += ToggleMovement;
-            if (CanMove)
-                InputManager.Instance.EnableActionMap(ActionMapName.EXPLORATION.ToString());
         }
 
         private void ToggleMovement(bool on)
