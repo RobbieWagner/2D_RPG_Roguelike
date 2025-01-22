@@ -653,16 +653,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "NavigateVertical",
-                    "type": "Value",
-                    "id": "133ba078-cf81-41c2-b8be-5b322694aac1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "NavigateHorizontal",
+                    "name": "NavigateTabs",
                     "type": "Value",
                     "id": "36506b7a-ea62-4d8e-8a40-592eeaba0a59",
                     "expectedControlType": "Axis",
@@ -1178,7 +1169,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
+                    "action": "NavigateTabs",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1189,7 +1180,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
+                    "action": "NavigateTabs",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1200,7 +1191,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
+                    "action": "NavigateTabs",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1211,7 +1202,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
+                    "action": "NavigateTabs",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1222,7 +1213,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
+                    "action": "NavigateTabs",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1233,73 +1224,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateHorizontal",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "5b099f1d-732b-402d-8490-ad8f0ce4ec6b",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "977ab668-6176-433e-ac4a-4c09a2c54378",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "2ff52152-e44f-4476-ac60-ea8210f4b2e0",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "adb9e4fc-e1c9-4a1f-a406-c884971b0a09",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "7da6e93f-e74c-4d19-8be5-359ceb7a84c8",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "2c883a35-ab4a-4905-a0c7-d1e703a5b560",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NavigateVertical",
+                    "action": "NavigateTabs",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

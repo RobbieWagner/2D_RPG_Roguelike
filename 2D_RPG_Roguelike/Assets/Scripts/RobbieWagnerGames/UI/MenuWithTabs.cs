@@ -20,7 +20,6 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected List<MenuTab> menus;
         [SerializeField] protected Color inactiveColor;
         [SerializeField] protected Color activeColor;
-        [SerializeField] protected bool horizontalTabs = true;
 
         [Tooltip("Determines whether the menu should go to the first tab when the menu is enabled")]
         [SerializeField] protected bool resetOnEnable = true;
@@ -64,20 +63,14 @@ namespace RobbieWagnerGames.UI
                 ActiveTab = 0;
             EnableTab(ActiveTab);
 
-            if (horizontalTabs) 
-                InputManager.Instance.gameControls.UI.NavigateHorizontal.performed += NavigateTab;
-            else 
-                InputManager.Instance.gameControls.UI.NavigateVertical.performed += NavigateTab;
+            InputManager.Instance.gameControls.UI.NavigateTabs.performed += NavigateTab;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            if (horizontalTabs) 
-                InputManager.Instance.gameControls.UI.NavigateHorizontal.performed -= NavigateTab;
-            else 
-                InputManager.Instance.gameControls.UI.NavigateVertical.performed -= NavigateTab;
+            InputManager.Instance.gameControls.UI.NavigateTabs.performed -= NavigateTab;
         }
 
         protected virtual void BuildMenu()

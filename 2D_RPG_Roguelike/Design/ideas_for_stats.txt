@@ -1,0 +1,71 @@
+1. Docility
+Low Value (Positive): Increases damage dealt in combat.
+High Value (Negative): Decreases damage dealt and makes the character more likely to passively accept attacks.
+
+2. Complacency
+Low Value (Positive): Increases defense or armor rating, making it harder to be hurt.
+High Value (Negative): Lowers defense, as the character is more vulnerable to external threats or pressures.
+
+3. Vulnerability
+Low Value (Positive): Increases maximum HP (health), representing resilience and the ability to withstand hardship.
+High Value (Negative): Reduces maximum HP, symbolizing fragility or being broken by the system.
+
+4. Obedience
+Low Value (Positive): Increases critical hit chance, representing the character’s ability to act freely and decisively.
+High Value (Negative): Lowers critical hit chance, as the character is more prone to hesitation or following orders without thinking.
+
+5. Apathy
+Low Value (Positive): Boosts resistances to secondary effects (e.g., poison, burn, freeze), reflecting emotional and mental fortitude.
+High Value (Negative): Decreases resistance to secondary effects, symbolizing a lack of awareness or an inability to resist manipulation and suffering.
+
+6. Compliance
+Low Value (Positive): Increases movement speed or agility, as the character moves freely without fear of restriction.
+High Value (Negative): Reduces movement speed, as the character is slowed down by societal constraints and fear of punishment.
+
+7. Conformity
+Low Value (Positive): Increases the effectiveness of healing items or abilities, symbolizing a rejection of the rigid system and a more fluid approach to survival.
+High Value (Negative): Reduces healing efficiency, as conformity to the system can limit personal growth and healing opportunities.
+
+8. Loyalty
+Low Value (Positive): Increases damage dealt to enemies or improves the effectiveness of special abilities (reflecting independence and personal drive).
+High Value (Negative): Lowers damage output or effectiveness of abilities, as loyalty may hold back true potential in favor of blindly serving the regime.
+
+9. Zeal
+Low Value (Positive): Increases resource regeneration (e.g., mana, energy, or stamina), as the character is able to tap into their inner strength without being driven by a false sense of devotion.
+High Value (Negative): Slows resource regeneration, as excessive zeal leads to exhaustion and emotional burnout under the regime’s demands.
+
+10. Indifference
+Low Value (Positive): Increases stealth or critical strike damage, as the character can act with subtlety and precision.
+High Value (Negative): Reduces stealth or critical strike effectiveness, as the character becomes distracted or emotionally involved with the world around them.
+
+11. Pride
+Low Value (Positive): Increases overall resistance to damage or status effects (e.g., stun, fear), as the character's humility and self-awareness lead to adaptability.
+High Value (Negative): Decreases resistances, as excessive pride makes the character vulnerable to attacks on their ego or belief system.
+
+12. Self-Sacrifice
+Low Value (Positive): Increases damage reduction for allies, making the character more effective in protecting others.
+High Value (Negative): Lowers damage reduction or makes the character more selfish, as self-sacrifice leads to overextension or taking unnecessary risks.
+
+13. Resilience
+Low Value (Positive): Boosts healing effects received and decreases incoming damage.
+High Value (Negative): Increases incoming damage, as the character becomes more broken or easily manipulated by the system.
+
+14. Concentration
+Low Value (Positive): Increases evasion or dodge rate, as the character’s awareness and willpower allow them to avoid attacks more easily.
+High Value (Negative): Decreases evasion or dodge rate, as the character becomes mentally distracted or fixated on irrelevant distractions.
+
+15. Manipulativeness
+Low Value (Positive): Increases the effectiveness of support or healing abilities, as the character values cooperation over control.
+High Value (Negative): Boosts damage or power for manipulation and control, reflecting the character’s tendency to exploit others for personal gain.
+
+16. Ambition
+Low Value (Positive): Increases the effectiveness of defensive skills, like shields or armor, symbolizing a humble and defensive mindset.
+High Value (Negative): Increases attack power or offensive abilities, as ambition drives the character to seek power, often at the cost of safety.
+
+17. Independence
+Low Value (Positive): Increases critical defense or counterattack ability, reflecting the character’s ability to stand their ground against oppression.
+High Value (Negative): Increases damage output at the cost of leaving oneself vulnerable, representing an over-reliance on self-reliance rather than defense.
+
+18. Fear
+Low Value (Positive): Increases attack speed or combat precision, as the character can act without hesitation or fear of consequences.
+High Value (Negative): Increases vulnerability to debuffs or status effects, as fear makes the character susceptible to manipulation or paralysis.

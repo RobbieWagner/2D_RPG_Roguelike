@@ -675,16 +675,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""NavigateVertical"",
-                    ""type"": ""Value"",
-                    ""id"": ""133ba078-cf81-41c2-b8be-5b322694aac1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""NavigateHorizontal"",
+                    ""name"": ""NavigateTabs"",
                     ""type"": ""Value"",
                     ""id"": ""36506b7a-ea62-4d8e-8a40-592eeaba0a59"",
                     ""expectedControlType"": ""Axis"",
@@ -1200,7 +1191,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1211,7 +1202,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1222,7 +1213,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1233,7 +1224,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1244,7 +1235,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1255,73 +1246,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateHorizontal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""5b099f1d-732b-402d-8490-ad8f0ce4ec6b"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""977ab668-6176-433e-ac4a-4c09a2c54378"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""2ff52152-e44f-4476-ac60-ea8210f4b2e0"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""adb9e4fc-e1c9-4a1f-a406-c884971b0a09"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""7da6e93f-e74c-4d19-8be5-359ceb7a84c8"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""2c883a35-ab4a-4905-a0c7-d1e703a5b560"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""NavigateTabs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -1410,8 +1335,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
-        m_UI_NavigateVertical = m_UI.FindAction("NavigateVertical", throwIfNotFound: true);
-        m_UI_NavigateHorizontal = m_UI.FindAction("NavigateHorizontal", throwIfNotFound: true);
+        m_UI_NavigateTabs = m_UI.FindAction("NavigateTabs", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -1697,8 +1621,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Navigate;
-    private readonly InputAction m_UI_NavigateVertical;
-    private readonly InputAction m_UI_NavigateHorizontal;
+    private readonly InputAction m_UI_NavigateTabs;
     private readonly InputAction m_UI_Submit;
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_Point;
@@ -1713,8 +1636,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         private @GameControls m_Wrapper;
         public UIActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
-        public InputAction @NavigateVertical => m_Wrapper.m_UI_NavigateVertical;
-        public InputAction @NavigateHorizontal => m_Wrapper.m_UI_NavigateHorizontal;
+        public InputAction @NavigateTabs => m_Wrapper.m_UI_NavigateTabs;
         public InputAction @Submit => m_Wrapper.m_UI_Submit;
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
         public InputAction @Point => m_Wrapper.m_UI_Point;
@@ -1736,12 +1658,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
-            @NavigateVertical.started += instance.OnNavigateVertical;
-            @NavigateVertical.performed += instance.OnNavigateVertical;
-            @NavigateVertical.canceled += instance.OnNavigateVertical;
-            @NavigateHorizontal.started += instance.OnNavigateHorizontal;
-            @NavigateHorizontal.performed += instance.OnNavigateHorizontal;
-            @NavigateHorizontal.canceled += instance.OnNavigateHorizontal;
+            @NavigateTabs.started += instance.OnNavigateTabs;
+            @NavigateTabs.performed += instance.OnNavigateTabs;
+            @NavigateTabs.canceled += instance.OnNavigateTabs;
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
@@ -1776,12 +1695,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
-            @NavigateVertical.started -= instance.OnNavigateVertical;
-            @NavigateVertical.performed -= instance.OnNavigateVertical;
-            @NavigateVertical.canceled -= instance.OnNavigateVertical;
-            @NavigateHorizontal.started -= instance.OnNavigateHorizontal;
-            @NavigateHorizontal.performed -= instance.OnNavigateHorizontal;
-            @NavigateHorizontal.canceled -= instance.OnNavigateHorizontal;
+            @NavigateTabs.started -= instance.OnNavigateTabs;
+            @NavigateTabs.performed -= instance.OnNavigateTabs;
+            @NavigateTabs.canceled -= instance.OnNavigateTabs;
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
@@ -1904,8 +1820,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         void OnNavigate(InputAction.CallbackContext context);
-        void OnNavigateVertical(InputAction.CallbackContext context);
-        void OnNavigateHorizontal(InputAction.CallbackContext context);
+        void OnNavigateTabs(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
