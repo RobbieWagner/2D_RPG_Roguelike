@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Inf Revive
   itemIcon: {fileID: 0}
   filePath: Items/COMBAT/HEALING/DebugRevivify
+  description: Revives a fainted ally (Can be used an infinite amount of times)
   reusable: 1
   combatItemType: 0
   effects:

@@ -17,6 +17,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public string itemName;
         public Sprite itemIcon;
         public string filePath;
+        [TextArea]
         public string description;
         public bool reusable = false;
 

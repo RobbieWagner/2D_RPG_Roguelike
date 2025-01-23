@@ -13,6 +13,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI quantityText;
         [SerializeField] private TextMeshProUGUI descriptionText;
+        public ButtonListener OnSelectButton;
 
         private GameItem gameItem = null;
         public GameItem GameItem
@@ -23,7 +24,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             } 
             set 
             {
-                if (gameItem == value && value != null)
+                if (gameItem == value && value)
                     return;
 
                 gameItem = value;
@@ -33,10 +34,29 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void OnSetNewGameItem(GameItem gameItem)
         {
-            if (itemIconView != null) itemIconView.sprite = gameItem.itemIcon;
-            if (itemNameText != null) itemNameText.text = gameItem.name;
-            if (quantityText != null) quantityText.text = Inventory.inventory[gameItem].ToString();
-            if (descriptionText != null) descriptionText.text = gameItem.description;
+            if(gameItem != null)
+            {
+                if (itemIconView != null)
+                {
+                    itemIconView.enabled = true;
+                    itemIconView.sprite = gameItem.itemIcon;
+                }
+                if (itemNameText != null) itemNameText.text = gameItem.itemName;
+                if (quantityText != null) quantityText.text = Inventory.inventory[gameItem].ToString();
+                if (descriptionText != null) descriptionText.text = gameItem.description;
+            }
+            else
+            {
+                if (itemIconView != null)
+                {
+                    itemIconView.enabled = false;
+                    itemIconView.sprite = null;
+                }
+                if (itemNameText != null) itemNameText.text = string.Empty;
+                if (quantityText != null) quantityText.text = string.Empty;
+                if (descriptionText != null) descriptionText.text = string.Empty;
+            }
+            
         }
     }
 }
