@@ -27,6 +27,11 @@ namespace RobbieWagnerGames.UI
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(defaultSelection);
         }
 
+        public virtual void OnCloseTab() 
+        {
+
+        }
+
         protected string AddSpacesToString(string text, bool preserveAcronyms)
         {
             if (string.IsNullOrWhiteSpace(text))

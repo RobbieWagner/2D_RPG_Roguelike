@@ -1,4 +1,5 @@
 using RobbieWagnerGames.Utilities;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,18 +15,31 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             base.Awake();
 
-            InputManager.Instance.gameControls.EXPLORATION.ExplorationMenu.performed += ToggleExplorationMenu;
+            InputManager.Instance.gameControls.EXPLORATION.ExplorationMenu.performed += EnableExplorationMenu;
         }
 
-        public void ToggleExplorationMenu(InputAction.CallbackContext context)
+        public void EnableExplorationMenu(InputAction.CallbackContext context)
         {
-            explorationMenu.enabled = !explorationMenu.enabled;
-            explorationMenu.canvas.enabled = explorationMenu.enabled;
+            if(!explorationMenu.enabled)
+            {
+                explorationMenu.enabled = true;
+                explorationMenu.canvas.enabled = true;
 
+                if (explorationMenu.enabled)
+                    InputManager.Instance.DisableActionMap(ActionMapName.PAUSE.ToString());
+            }
+        }
+
+        public void DisableExplorationMenu(InputAction.CallbackContext context)
+        {
             if (explorationMenu.enabled)
-                InputManager.Instance.DisableActionMap(ActionMapName.PAUSE.ToString());
-            else
-                InputManager.Instance.EnableActionMap(ActionMapName.PAUSE.ToString());
+            {
+                explorationMenu.enabled = false;
+                explorationMenu.canvas.enabled = false;
+
+                if (explorationMenu.enabled)
+                    InputManager.Instance.EnableActionMap(ActionMapName.PAUSE.ToString());
+            }
         }
 
         public IEnumerator StartExploration(ExplorationConfiguration explorationConfiguration)

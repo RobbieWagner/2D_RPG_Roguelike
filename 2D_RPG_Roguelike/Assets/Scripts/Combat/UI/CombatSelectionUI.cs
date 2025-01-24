@@ -148,7 +148,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
             catch (NotImplementedException e)
             {
-                Debug.LogWarning($"Error thrown while executing main combatInfo menu option selection: {e}");
+                Debug.LogWarning($"Error thrown while executing main combatInfo explorationMenu option selection: {e}");
                 return;
             }
 

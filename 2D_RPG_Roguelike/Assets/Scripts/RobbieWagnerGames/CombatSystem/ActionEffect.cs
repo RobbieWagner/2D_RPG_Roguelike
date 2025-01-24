@@ -1,3 +1,4 @@
+using RobbieWagnerGames.StrategyCombat.Units;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,12 @@ namespace RobbieWagnerGames.StrategyCombat
         }
 
         public virtual bool AttemptActionEffect(Unit user, Unit target)
+        {
+            return true;
+        }
+
+        // Optional effect for some actions to be applied as items, out of combat actions, etc.
+        public virtual bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
         {
             return true;
         }
@@ -48,6 +55,16 @@ namespace RobbieWagnerGames.StrategyCombat
                 target.DealDamage(CalculateDamage(user, target));
 
             return hit;
+        }
+
+        public override bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
+        {
+            if (unit.HP == 1)
+                return false;
+
+            unit.HP = Math.Clamp(unit.HP - power, 0, unit.MaxHP);
+
+            return true;
         }
     }
 
@@ -83,6 +100,16 @@ namespace RobbieWagnerGames.StrategyCombat
 
             return success;
         }
+
+        public override bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
+        {
+            if (unit.HP == unit.MaxHP || unit.HP == 0)
+                return false;
+
+            unit.HP = Math.Clamp(unit.HP + power, 0, unit.MaxHP);
+
+            return true;
+        }
     }
 
     [Serializable]
@@ -110,6 +137,11 @@ namespace RobbieWagnerGames.StrategyCombat
                 target.ChangeStatValue(stat, CalculateStatChange(user, target));
 
             return success;
+        }
+
+        public override bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
+        {
+            return false;
         }
     }
 
@@ -140,6 +172,11 @@ namespace RobbieWagnerGames.StrategyCombat
 
             return success;
         }
+
+        public override bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
+        {
+            return false;
+        }
     }
 
     [Serializable]
@@ -150,7 +187,6 @@ namespace RobbieWagnerGames.StrategyCombat
 
         public override bool AttemptActionEffect(Unit user, Unit target)
         {
-            Debug.Log("revive");
             bool success = false;
             if (accuracy > 100)
                 success = true;
@@ -164,6 +200,16 @@ namespace RobbieWagnerGames.StrategyCombat
             }
 
             return success;
+        }
+
+        public override bool ApplyEffectOutsideOfCombat(SerializableAlly unit)
+        {
+            if (unit.HP > 0)
+                return false;
+
+            unit.HP = Math.Clamp(unit.HP + healAmount, 0, unit.MaxHP);
+
+            return true;
         }
     }
 

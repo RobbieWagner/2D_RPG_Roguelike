@@ -21,7 +21,7 @@ namespace RobbieWagnerGames.UI
         [SerializeField] protected Color inactiveColor;
         [SerializeField] protected Color activeColor;
 
-        [Tooltip("Determines whether the menu should go to the first tab when the menu is enabled")]
+        [Tooltip("Determines whether the explorationMenu should go to the first tab when the explorationMenu is enabled")]
         [SerializeField] protected bool resetOnEnable = true;
 
         private int activeTab = -1;
@@ -110,8 +110,17 @@ namespace RobbieWagnerGames.UI
             if(ActiveTab > -1 && ActiveTab < menus.Count)
             {
                 menus[ActiveTab].gameObject.SetActive(false);
+                menus[ActiveTab].OnCloseTab();
                 tabBarTextObjects[ActiveTab].color = inactiveColor;
             }
+        }
+
+        public virtual void ToggleTabNavigation(bool on)
+        {
+            if(on)
+                InputManager.Instance.gameControls.UI.NavigateTabs.Enable();
+            else
+                InputManager.Instance.gameControls.UI.NavigateTabs.Disable();
         }
     }
 }
