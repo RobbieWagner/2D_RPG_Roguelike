@@ -17,6 +17,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         public List<string> actionFilePaths;
         //public string animatorFilePath;
         public string headSpriteRelativePath;
+        public string dialogueSpriteRelativePath;
 
         //public string mentality = MentalityType.FINE.ToString();
 
@@ -45,14 +46,14 @@ namespace RobbieWagnerGames.StrategyCombat.Units
             //allyInstance.InitializeMaxHP();
             allyInstance.HP = HP;
 
-            allyInstance.unitActions = LoadActions(actionFilePaths);
+            allyInstance.unitActions = LoadActions();
         }
 
-        private List<CombatAction> LoadActions(List<string> files)
+        public List<CombatAction> LoadActions()
         {
             List<CombatAction> actions = new List<CombatAction>();
 
-            foreach(string file in files)
+            foreach(string file in actionFilePaths)
                 actions.Add(Resources.Load<CombatAction>(file));
 
             return actions;

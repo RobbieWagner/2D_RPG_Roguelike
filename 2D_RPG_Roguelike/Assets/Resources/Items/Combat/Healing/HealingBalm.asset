@@ -34,5 +34,5 @@ MonoBehaviour:
       data:
         accuracy: 101
         failureStopsActionExecution: 0
-        power: 20
+        power: 5
         healsSelf: 0

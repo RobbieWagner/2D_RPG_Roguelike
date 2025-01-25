@@ -34,4 +34,4 @@ MonoBehaviour:
       data:
         accuracy: 101
         failureStopsActionExecution: 0
-        healAmount: 1000
+        healAmount: 1

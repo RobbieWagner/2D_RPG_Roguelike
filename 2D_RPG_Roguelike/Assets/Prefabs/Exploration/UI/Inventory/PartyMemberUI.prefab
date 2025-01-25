@@ -430,6 +430,7 @@ MonoBehaviour:
   inventoryMenu: {fileID: 0}
   unitNameText: {fileID: 940109137976371116}
   hpSlider: {fileID: 5055319336126058945}
+  hpText: {fileID: 8538824287239400905}
 --- !u!1 &6033591806532564073
 GameObject:
   m_ObjectHideFlags: 0
