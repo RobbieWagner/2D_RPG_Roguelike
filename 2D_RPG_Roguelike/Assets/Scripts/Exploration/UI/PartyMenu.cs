@@ -2,6 +2,7 @@ using RobbieWagnerGames.StrategyCombat;
 using RobbieWagnerGames.StrategyCombat.Units;
 using RobbieWagnerGames.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,11 +13,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public class PartyMenu : MenuTab
     {
         [SerializeField] private ButtonListener characterButton;
-        [SerializeField] private Image characterVisual;
 
         [SerializeField] private ScrollRect actionListScrollRect;
         [SerializeField] private Transform actionListParent;
         [SerializeField] private PartyMenuActionUI actionUIPrefab;
+        [SerializeField] private PartyMenuUnitUI unitUI;
         private List<PartyMenuActionUI> actionUIInstances = new List<PartyMenuActionUI>();
 
         private SerializableAlly currentAlly;
@@ -45,6 +46,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void Awake()
         {
+            actionListScrollRect.enabled = false;
             characterButton.onClick.AddListener(EnterActionList);
         }
 
@@ -52,14 +54,25 @@ namespace RobbieWagnerGames.TurnBasedCombat
         {
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
             CurrentAllyIndex = 0;
-            characterVisual.enabled = true;
+            //characterVisual.enabled = true;
+            actionListScrollRect.enabled = true;
+            StartCoroutine(FixScrollRect());
             base.OnOpenTab();
+        }
+
+        //TODO: fix issues with scroll rect. Shouldn't have to wait a frame
+        public IEnumerator FixScrollRect()
+        {
+            yield return null;
+
+            actionListScrollRect.verticalNormalizedPosition = 1;
         }
 
         public override void OnCloseTab()
         {
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
-            characterVisual.enabled = false;    
+            //characterVisual.enabled = false;
+            actionListScrollRect.enabled = false;
             base.OnCloseTab();
         }
 
@@ -71,8 +84,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void ConsiderCharacter(SerializableAlly ally)
         {
-            characterVisual.sprite = Resources.Load<Sprite>(StaticGameStats.characterSpriteFilePath + ally.dialogueSpriteRelativePath);
-
+            unitUI.Unit = ally;
             ClearActionsList();
             CreateActionList(ally);
         }
@@ -104,7 +116,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
 
             SetupActionListNavigation();
-            actionListScrollRect.verticalNormalizedPosition = 1;
         }
 
         private void SetupActionListNavigation()

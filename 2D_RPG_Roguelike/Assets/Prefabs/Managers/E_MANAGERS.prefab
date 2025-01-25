@@ -488,7 +488,11 @@ MonoBehaviour:
   tabContentParent: {fileID: 0}
   contentTextPrefab: {fileID: 0}
   defaultSelection: {fileID: 0}
+  explorationMenu: {fileID: 0}
   gameItemUIPrefab: {fileID: 0}
+  partyMemberUIPrefab: {fileID: 0}
+  partyMemberUIParent: {fileID: 0}
+  inventoryUI: {fileID: 0}
   inventoryListParent: {fileID: 0}
   detailsDisplay: {fileID: 0}
 --- !u!1 &3490970916487508510
@@ -788,6 +792,11 @@ MonoBehaviour:
   tabContentParent: {fileID: 0}
   contentTextPrefab: {fileID: 0}
   defaultSelection: {fileID: 0}
+  characterButton: {fileID: 0}
+  characterVisual: {fileID: 0}
+  actionListScrollRect: {fileID: 0}
+  actionListParent: {fileID: 0}
+  actionUIPrefab: {fileID: 0}
 --- !u!1 &4998056909852265662
 GameObject:
   m_ObjectHideFlags: 0

@@ -65,5 +65,13 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
             return $"-----\n{UnitName}:\nHP:{HP}\n{statsString}\nActions:{string.Join(",", actionFilePaths)}\n-----";
         }
+
+        public int GetStatValue(StatType stat)
+        {
+            var statsOfType = stats.Where(s => s.UnitStatType.Equals(stat));
+            if (statsOfType.Any())
+                return statsOfType.First().BaseValue;
+            return 0;
+        }
     }
 }
