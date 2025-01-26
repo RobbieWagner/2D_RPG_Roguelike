@@ -170,7 +170,32 @@ MonoBehaviour:
   unitClass: 0
   unitAnimator: {fileID: 5764620439581286082}
   stats:
-    _serializedList: []
+    _serializedList:
+    - Key: 0
+      Value:
+        unitStatType: 0
+        baseValue: 10
+        currentValue: 10
+    - Key: 1
+      Value:
+        unitStatType: 1
+        baseValue: 10
+        currentValue: 10
+    - Key: 2
+      Value:
+        unitStatType: 2
+        baseValue: 10
+        currentValue: 10
+    - Key: 3
+      Value:
+        unitStatType: 3
+        baseValue: 10
+        currentValue: 10
+    - Key: 4
+      Value:
+        unitStatType: 4
+        baseValue: 10
+        currentValue: 10
   isUnitFighting: 1
   unitActions:
   - {fileID: 11400000, guid: c48d362c0d235d747809b545ecfdeabf, type: 2}
@@ -181,4 +206,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4794937257987412894}
   unitCombatPos: 0
   maxHP: 10
+  headSpriteRelativePath: 
+  dialogueSpriteRelativePath: TestMage(Whorl)
   currentActionIndex: 0

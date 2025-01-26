@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
         public int HP;
         public int MaxHP;
 
-        List<UnitStat> stats = new List<UnitStat>();
+        public List<UnitStat> stats = new List<UnitStat>();
 
         public List<string> actionFilePaths;
         //public string animatorFilePath;
@@ -23,7 +24,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
         //TODO: add refs for unitanimator.
 
-        public SerializableAlly(Unit unit)
+        public SerializableAlly(Ally unit)
         {
             UnitName = unit.unitName;
             HP = unit.HP;
@@ -32,9 +33,12 @@ namespace RobbieWagnerGames.StrategyCombat.Units
             stats = unit.Stats.Select(x => x.Value).ToList();
 
             actionFilePaths = unit.unitActions.Select(a => StaticGameStats.GetCombatActionResourcePath(a)).ToList();
+
+            dialogueSpriteRelativePath = unit.dialogueSpriteRelativePath;
+            headSpriteRelativePath = unit.headSpriteRelativePath;
             //animatorFilePath = unit.GetAnimatorResourcePath();
 
-            //Debug.Log($"new serializable unit: {ToString()}");
+            Debug.Log($"new serializable unit: {ToString()}");
         }
 
         public SerializableAlly() {}
@@ -45,6 +49,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
             allyInstance.unitName = UnitName;
             //allyInstance.InitializeMaxHP();
             allyInstance.HP = HP;
+            allyInstance.spriteRenderer.sprite = Resources.Load<Sprite>(StaticGameStats.characterSpriteFilePath+dialogueSpriteRelativePath);
 
             allyInstance.unitActions = LoadActions();
         }
@@ -61,9 +66,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 
         public override string ToString()
         {
-            string statsString = JsonUtility.ToJson(stats);
-
-            return $"-----\n{UnitName}:\nHP:{HP}\n{statsString}\nActions:{string.Join(",", actionFilePaths)}\n-----";
+            return JsonConvert.SerializeObject(this);
         }
 
         public int GetStatValue(StatType stat)

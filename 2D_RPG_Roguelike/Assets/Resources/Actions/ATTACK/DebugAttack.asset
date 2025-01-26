@@ -15,6 +15,7 @@ MonoBehaviour:
   actionName: Debug Attack
   actionIcon: {fileID: 0}
   actionType: 1
+  description: Basic attack used for testing purposes.
   targetsAllOpposition: 0
   targetsAllAllies: 0
   canTargetSelf: 0

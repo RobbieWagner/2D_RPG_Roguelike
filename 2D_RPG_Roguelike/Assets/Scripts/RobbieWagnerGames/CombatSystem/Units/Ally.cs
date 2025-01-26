@@ -8,7 +8,10 @@ namespace RobbieWagnerGames.StrategyCombat.Units
 {
     public class Ally : Unit
     {
-        
+
+        public string headSpriteRelativePath;
+        public string dialogueSpriteRelativePath;
+
         [HideInInspector] public int currentActionIndex;
 
         protected override void Awake()

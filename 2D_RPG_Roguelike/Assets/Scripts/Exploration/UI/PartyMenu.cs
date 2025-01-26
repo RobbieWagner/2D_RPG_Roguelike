@@ -16,6 +16,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         [SerializeField] private ScrollRect actionListScrollRect;
         [SerializeField] private Transform actionListParent;
+        [SerializeField] private ExplorationMenu explorationMenu;
         [SerializeField] private PartyMenuActionUI actionUIPrefab;
         [SerializeField] private PartyMenuUnitUI unitUI;
         private List<PartyMenuActionUI> actionUIInstances = new List<PartyMenuActionUI>();
@@ -52,12 +53,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public override void OnOpenTab()
         {
-            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
+            base.OnOpenTab();
             CurrentAllyIndex = 0;
             //characterVisual.enabled = true;
             actionListScrollRect.enabled = true;
             StartCoroutine(FixScrollRect());
-            base.OnOpenTab();
+            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(characterButton.gameObject);
         }
 
         //TODO: fix issues with scroll rect. Shouldn't have to wait a frame
@@ -73,6 +74,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(null);
             //characterVisual.enabled = false;
             actionListScrollRect.enabled = false;
+            ExitActionList();
             base.OnCloseTab();
         }
 
@@ -136,12 +138,24 @@ namespace RobbieWagnerGames.TurnBasedCombat
         private void EnterActionList()
         {
             InputManager.Instance.gameControls.UI.Cancel.performed += ExitActionList;
+            InputManager.Instance.gameControls.EXPLORATION.CancelCharacterSelection.performed += ExitActionList;
+            ToggleCharacterSelectionControls(false);
+            explorationMenu.CanCloseMenu = false;
             EventSystemManager.Instance.eventSystem.SetSelectedGameObject(actionUIInstances.First().gameObject);
         }
 
-        private void ExitActionList(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        private void ExitActionList(UnityEngine.InputSystem.InputAction.CallbackContext context) 
         {
+            ExitActionList();
+            EventSystemManager.Instance.eventSystem.SetSelectedGameObject(characterButton.gameObject);
+        }
+       
+        private void ExitActionList()
+        {
+            explorationMenu.CanCloseMenu = true;
+            ToggleCharacterSelectionControls(true);
             InputManager.Instance.gameControls.UI.Cancel.performed -= ExitActionList;
+            InputManager.Instance.gameControls.EXPLORATION.CancelCharacterSelection.performed -= ExitActionList;
         }
     }
 }

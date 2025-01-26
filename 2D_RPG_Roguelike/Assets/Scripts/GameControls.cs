@@ -80,6 +80,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CancelCharacterSelection"",
+                    ""type"": ""Button"",
+                    ""id"": ""94be83a8-2a3b-4780-8b78-48635e6dd104"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -278,6 +287,28 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""EscapeMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72aeb679-0870-4ed6-b302-8dcd7b5b4878"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelCharacterSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe0b9d6e-383d-4a6f-a391-ee5d0edeeb64"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelCharacterSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1322,6 +1353,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_EXPLORATION_ControllerLook = m_EXPLORATION.FindAction("ControllerLook", throwIfNotFound: true);
         m_EXPLORATION_ExplorationMenu = m_EXPLORATION.FindAction("ExplorationMenu", throwIfNotFound: true);
         m_EXPLORATION_EscapeMenu = m_EXPLORATION.FindAction("EscapeMenu", throwIfNotFound: true);
+        m_EXPLORATION_CancelCharacterSelection = m_EXPLORATION.FindAction("CancelCharacterSelection", throwIfNotFound: true);
         // COMBAT
         m_COMBAT = asset.FindActionMap("COMBAT", throwIfNotFound: true);
         m_COMBAT_Select = m_COMBAT.FindAction("Select", throwIfNotFound: true);
@@ -1416,6 +1448,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_EXPLORATION_ControllerLook;
     private readonly InputAction m_EXPLORATION_ExplorationMenu;
     private readonly InputAction m_EXPLORATION_EscapeMenu;
+    private readonly InputAction m_EXPLORATION_CancelCharacterSelection;
     public struct EXPLORATIONActions
     {
         private @GameControls m_Wrapper;
@@ -1426,6 +1459,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         public InputAction @ControllerLook => m_Wrapper.m_EXPLORATION_ControllerLook;
         public InputAction @ExplorationMenu => m_Wrapper.m_EXPLORATION_ExplorationMenu;
         public InputAction @EscapeMenu => m_Wrapper.m_EXPLORATION_EscapeMenu;
+        public InputAction @CancelCharacterSelection => m_Wrapper.m_EXPLORATION_CancelCharacterSelection;
         public InputActionMap Get() { return m_Wrapper.m_EXPLORATION; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1453,6 +1487,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @EscapeMenu.started += instance.OnEscapeMenu;
             @EscapeMenu.performed += instance.OnEscapeMenu;
             @EscapeMenu.canceled += instance.OnEscapeMenu;
+            @CancelCharacterSelection.started += instance.OnCancelCharacterSelection;
+            @CancelCharacterSelection.performed += instance.OnCancelCharacterSelection;
+            @CancelCharacterSelection.canceled += instance.OnCancelCharacterSelection;
         }
 
         private void UnregisterCallbacks(IEXPLORATIONActions instance)
@@ -1475,6 +1512,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @EscapeMenu.started -= instance.OnEscapeMenu;
             @EscapeMenu.performed -= instance.OnEscapeMenu;
             @EscapeMenu.canceled -= instance.OnEscapeMenu;
+            @CancelCharacterSelection.started -= instance.OnCancelCharacterSelection;
+            @CancelCharacterSelection.performed -= instance.OnCancelCharacterSelection;
+            @CancelCharacterSelection.canceled -= instance.OnCancelCharacterSelection;
         }
 
         public void RemoveCallbacks(IEXPLORATIONActions instance)
@@ -1804,6 +1844,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         void OnControllerLook(InputAction.CallbackContext context);
         void OnExplorationMenu(InputAction.CallbackContext context);
         void OnEscapeMenu(InputAction.CallbackContext context);
+        void OnCancelCharacterSelection(InputAction.CallbackContext context);
     }
     public interface ICOMBATActions
     {

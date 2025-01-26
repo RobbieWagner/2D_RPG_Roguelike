@@ -15,6 +15,7 @@ MonoBehaviour:
   actionName: Debug Heal
   actionIcon: {fileID: 0}
   actionType: 2
+  description: Basic healing used for testing purposes.
   targetsAllOpposition: 0
   targetsAllAllies: 0
   canTargetSelf: 1
@@ -31,3 +32,4 @@ MonoBehaviour:
         accuracy: 101
         failureStopsActionExecution: 0
         power: 10
+        healsSelf: 0

@@ -1,9 +1,12 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using UnityEngine;
 
 namespace RobbieWagnerGames.StrategyCombat
 {
     [Serializable]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum StatType
     {
         NONE = -1,
@@ -21,9 +24,9 @@ namespace RobbieWagnerGames.StrategyCombat
         [SerializeField] private int baseValue;
         [SerializeField] private int currentValue;
 
-        public Action<UnitStat> OnStatSet = (UnitStat changedStat) => { };
+        [JsonIgnore] public Action<UnitStat> OnStatSet = (UnitStat changedStat) => { };
 
-        public StatType UnitStatType { get => unitStatType; protected set { unitStatType = value; } }
+        public StatType UnitStatType;
 
         public int CurrentValue
         {
@@ -40,7 +43,12 @@ namespace RobbieWagnerGames.StrategyCombat
         public int BaseValue
         {
             get => baseValue;
-            private set { }
+            set 
+            {
+                if (value == baseValue) return;
+
+                baseValue = value;
+            }
         }
 
 

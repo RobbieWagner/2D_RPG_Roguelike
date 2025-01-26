@@ -15,6 +15,7 @@ MonoBehaviour:
   actionName: Leech
   actionIcon: {fileID: 0}
   actionType: 1
+  description: Makes an attack. On a hit, heal the user.
   targetsAllOpposition: 0
   targetsAllAllies: 0
   canTargetSelf: 0

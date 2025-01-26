@@ -37,7 +37,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 explorationMenu.enabled = false;
                 explorationMenu.canvas.enabled = false;
 
-                if (explorationMenu.enabled)
+                if (!explorationMenu.enabled)
                     InputManager.Instance.EnableActionMap(ActionMapName.PAUSE.ToString());
             }
         }

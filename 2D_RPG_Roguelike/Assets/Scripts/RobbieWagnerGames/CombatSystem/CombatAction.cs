@@ -21,7 +21,7 @@ namespace RobbieWagnerGames.StrategyCombat
         public string actionName;
         public Sprite actionIcon;
         public ActionType actionType;
-        public string description;
+        [TextArea] public string description;
 
         public bool targetsAllOpposition;
         public bool targetsAllAllies;
