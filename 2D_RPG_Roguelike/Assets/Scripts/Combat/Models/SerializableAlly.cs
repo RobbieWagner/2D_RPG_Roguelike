@@ -38,7 +38,7 @@ namespace RobbieWagnerGames.StrategyCombat.Units
             headSpriteRelativePath = unit.headSpriteRelativePath;
             //animatorFilePath = unit.GetAnimatorResourcePath();
 
-            Debug.Log($"new serializable unit: {ToString()}");
+            //Debug.Log($"new serializable unit: {ToString()}");
         }
 
         public SerializableAlly() {}

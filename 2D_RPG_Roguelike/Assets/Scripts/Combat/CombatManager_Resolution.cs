@@ -46,7 +46,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator HandleWinState()
         {
-            Debug.Log("Handle Win State");
+            //Debug.Log("Handle Win State");
             yield return new WaitForSeconds(2f);
 
             StartCoroutine(EndCombat());
@@ -54,7 +54,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         protected virtual IEnumerator HandleLoseState()
         {
-            Debug.Log("Handle Lose State");
+            //Debug.Log("Handle Lose State");
             yield return new WaitForSeconds(2f);
 
             StartCoroutine(EndCombat());

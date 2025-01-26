@@ -20,7 +20,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public void EnableExplorationMenu(InputAction.CallbackContext context)
         {
-            if(!explorationMenu.enabled)
+            if(!explorationMenu.enabled && GameManager.Instance.CurrentGameMode == GameMode.EXPLORATION)
             {
                 explorationMenu.enabled = true;
                 explorationMenu.canvas.enabled = true;
