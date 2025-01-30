@@ -1,3 +1,4 @@
+using RobbieWagnerGames.TurnBasedCombat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,30 +6,26 @@ using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames
 {
-    public class IInteractable : MonoBehaviour
+    public class Interactable : MonoBehaviour
     {
 
         [HideInInspector] public bool canInteract;
-        [HideInInspector] protected PlayerInputActions playerControls;
 
-        [Header("Visual Cue")]
-        [SerializeField] protected SpriteRenderer visualCuePrefab;
-        [SerializeField] protected Vector3 VISUAL_CUE_OFFSET; 
-        protected SpriteRenderer currentVisualCue;
+        [SerializeField] protected SpriteRenderer visualCue;
 
         protected virtual void Awake()
         {
             canInteract = false;
-            playerControls = new PlayerInputActions();
+            if (visualCue != null) visualCue.enabled = false;
+            InputManager.Instance.gameControls.EXPLORATION.Interact.performed += OnInteract;
         }
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.CompareTag("Player")) 
+            if(other.gameObject.CompareTag("Player") && ExplorationManager.Instance.IsObjectInteractionEnabled) 
             {
                 canInteract = true;
-                currentVisualCue = Instantiate(visualCuePrefab, this.transform).GetComponent<SpriteRenderer>();
-                currentVisualCue.transform.position += VISUAL_CUE_OFFSET;
+                if (visualCue != null) visualCue.enabled = true;
             }
         }
 
@@ -37,19 +34,15 @@ namespace RobbieWagnerGames
             if(other.gameObject.CompareTag("Player")) 
             {
                 canInteract = false;
-                if(currentVisualCue != null) 
-                {
-                    Destroy(currentVisualCue);
-                    currentVisualCue = null;
-                }
+                if (visualCue != null) visualCue.enabled = false;
             }
         }
 
-        protected virtual void OnInteract(InputValue inputValue)
+        protected virtual void OnInteract(InputAction.CallbackContext context)
         {
-            if(canInteract) //&& ExplorationManager.Instance.currentInteractable == null)
+            if(canInteract && ExplorationManager.Instance.CurrentInteractable == null && ExplorationManager.Instance.IsObjectInteractionEnabled)
             {
-                //ExplorationManager.Instance.currentInteractable = this;
+                ExplorationManager.Instance.CurrentInteractable = this;
                 if(PlayerMovement.Instance != null) PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(Interact());
             }
@@ -57,7 +50,7 @@ namespace RobbieWagnerGames
 
         protected virtual void OnUninteract()
         {
-            //ExplorationManager.Instance.currentInteractable = null;
+            ExplorationManager.Instance.CurrentInteractable = null;
             canInteract = true;
             if(PlayerMovement.Instance != null) 
                 PlayerMovement.Instance.CanMove = true;
@@ -66,6 +59,7 @@ namespace RobbieWagnerGames
         protected virtual IEnumerator Interact()
         {
             yield return null;
+            //Debug.Log("Interact");
 
             OnUninteract();
             StopCoroutine(Interact());

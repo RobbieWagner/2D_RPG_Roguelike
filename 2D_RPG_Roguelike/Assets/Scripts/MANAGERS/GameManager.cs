@@ -82,10 +82,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 PlayerMovement.Instance.CeasePlayerMovement();
                 PlayerMovement.Instance.spriteRenderer.enabled = false;
+                ExplorationManager.Instance.IsObjectInteractionEnabled = false;
             }
             else if (mode == GameMode.COMBAT)
             {
-
+                InputManager.Instance.gameControls.COMBAT.Disable();
             }
         }
 
@@ -120,7 +121,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             yield return StartCoroutine(ExplorationManager.Instance.StartExploration(explorationConfiguration));
             CurrentGameMode = GameMode.EXPLORATION;
-            
+
+            ExplorationManager.Instance.IsObjectInteractionEnabled = true;
+
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut(.35f));
         }
 

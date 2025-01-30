@@ -11,6 +11,36 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public ExplorationConfiguration currentExplorationConfiguration;
         public ExplorationMenu explorationMenu;
 
+        private bool isObjectInteractionEnabled = false;
+        public bool IsObjectInteractionEnabled
+        {
+            get
+            {
+                return isObjectInteractionEnabled;
+            }
+            set
+            {
+                if (isObjectInteractionEnabled == value)
+                    return;
+                isObjectInteractionEnabled = value;
+            }
+        }
+
+        private Interactable currentInteractable = null;
+        public Interactable CurrentInteractable
+        {
+            get 
+            {
+                return currentInteractable;
+            }
+            set 
+            {
+                if (currentInteractable == value) 
+                    return;
+                currentInteractable = value;
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -59,5 +89,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (explorationConfiguration != null)
                 PlayerMovement.Instance.Warp(new Vector3(explorationConfiguration.playerPositionX, explorationConfiguration.playerPositionY, explorationConfiguration.playerPositionZ));
         }
+
+        public void ToggleInteractability(bool on)
+        {
+            if (on)
+                InputManager.Instance.gameControls.EXPLORATION.Interact.Enable();
+            else
+                InputManager.Instance.gameControls.EXPLORATION.Interact.Disable();
+        }
+
     }
 }

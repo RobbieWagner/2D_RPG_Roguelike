@@ -6,7 +6,7 @@ using Ink.Runtime;
 
 namespace RobbieWagnerGames
 {
-    public class DialogueInteractable : IInteractable
+    public class DialogueInteractable : Interactable
     {
         [SerializeField] private string npcName;
         private string saveDataName;
