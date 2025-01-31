@@ -11,6 +11,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public float playerPositionX;
         public float playerPositionY;
         public float playerPositionZ;
+
+        public List<OverworldEnemy> enemyPrefabs;
     }
 
     public static class ExplorationData

@@ -13,7 +13,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         Chasing = 2,
     }
     
-    public class RandomEncounterEnemy : MonoBehaviour
+    public class OverworldEnemy : MonoBehaviour
     {
         public Collider trigger;
         public static bool isCombatTriggered = false;
@@ -45,6 +45,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 StartCoroutine(GameManager.Instance.TriggerCombat(combatInfo));
                 trigger.enabled = false;
                 isCombatTriggered = true;
+            }
+            else
+            {
+
             }
         }
         #endregion

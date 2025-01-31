@@ -12,6 +12,7 @@ namespace RobbieWagnerGames
         private string saveDataName;
         [SerializeField] protected TextAsset dialogueText;
         private int interactions;
+        [SerializeField] private bool countsInteractions = false;
 
         protected override void Awake()
         {
@@ -23,7 +24,7 @@ namespace RobbieWagnerGames
         private Story ConfigureStory()
         {
             Story configuredStory = new Story(dialogueText.text);
-            configuredStory.variablesState["interactions"] = interactions;
+            if (countsInteractions) configuredStory.variablesState["interactions"] = interactions;
 
             return configuredStory;
         }
@@ -31,7 +32,7 @@ namespace RobbieWagnerGames
         protected override IEnumerator Interact()
         {
             Story story = ConfigureStory();
-            yield return StartCoroutine(SimpleDialogueManager.Instance.EnterDialogueModeCo(story));
+            yield return StartCoroutine(DialogueManager.Instance.EnterDialogueModeCo(story));
 
             yield return base.Interact();
 
@@ -42,7 +43,7 @@ namespace RobbieWagnerGames
         {
             base.OnUninteract();
 
-            interactions++;
+            if (countsInteractions) interactions++;
 
             SaveInteractionData();
         }

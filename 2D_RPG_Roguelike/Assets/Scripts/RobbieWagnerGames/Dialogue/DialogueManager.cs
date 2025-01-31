@@ -9,6 +9,7 @@ using TMPro;
 using Ink.Runtime;
 using System.Text.RegularExpressions;
 using RobbieWagnerGames.TurnBasedCombat;
+using System.Linq;
 
 namespace RobbieWagnerGames
 {
@@ -30,23 +31,9 @@ namespace RobbieWagnerGames
         private const string PLAYER_NAME_PATH = "/Player/name";
 
         [Header("Choices")]
-        [SerializeField] private DialogueChoice choicePrefab;
+        [SerializeField] private Button choicePrefab;
         [SerializeField] private LayoutGroup choiceParent;
-        private List<DialogueChoice> choices;
-        private int currentChoice;
-        public int CurrentChoice
-        {
-            get { return currentChoice; }
-            set 
-            {    
-                if(choices.Count == 0) return;
-                if(currentChoice >= 0 && currentChoice < choices.Count)choices[currentChoice].SetInactive();
-                currentChoice = value;
-                if(currentChoice < 0) currentChoice = choices.Count - 1;
-                else if(currentChoice >= choices.Count) currentChoice = 0;
-                choices[currentChoice].SetActive();
-            }
-        }
+        private List<Button> choiceButtons = new List<Button>();
 
         private bool canContinue;
         public bool CanContinue
@@ -78,7 +65,6 @@ namespace RobbieWagnerGames
             dialogueCanvas.enabled = canvasEnabledOnStart;
             CanContinue = false;
             continueIcon.enabled = false;
-            InputManager.Instance.gameControls.DIALOGUE.Navigate.performed += OnNavigateDialogueMenu;
             InputManager.Instance.gameControls.DIALOGUE.Select.performed += OnNextDialogueLine;
         }
 
@@ -149,18 +135,32 @@ namespace RobbieWagnerGames
         {
             if(DialogueHasChoices())
             {
-                List<Choice> choiceOptions = currentStory.currentChoices;
+                List<Choice> choices = currentStory.currentChoices;
 
-                for(int i = 0; i < choiceOptions.Count; i++)
+                for(int i = 0; i < choices.Count; i++)
                 {
-                    Choice choice = choiceOptions[i];
-                    DialogueChoice choiceObject = Instantiate(choicePrefab, choiceParent.transform).GetComponent<DialogueChoice>();
-                    choiceObject.choice = choice;
-                    choiceObject.Initialize(choice);
-                    choices.Add(choiceObject);
+                    Choice choice = choices[i];
+                    Button newButton = Instantiate(choicePrefab, choiceParent.transform);
+                    newButton.onClick.AddListener(() => OnChoiceButtonConfirmed(choice.index));
+                    newButton.GetComponentInChildren<TextMeshProUGUI>().text = choice.text;
+                    choiceButtons.Add(newButton);
                 }
 
-                CurrentChoice = 0;
+                for (int i = 0; i < choiceButtons.Count; i++)
+                {
+                    Button button = choiceButtons[i];
+
+                    Navigation navigation = new Navigation
+                    {
+                        mode = Navigation.Mode.Explicit,
+                        selectOnUp = i == choiceButtons.Count - 1 ? choiceButtons[0] : choiceButtons[i + 1],
+                        selectOnDown = i == 0 ? choiceButtons[choiceButtons.Count - 1] : choiceButtons[i - 1]
+                    };
+
+                    button.navigation = navigation;
+                }
+
+                EventSystemManager.Instance.SetSelectedGameObject(choiceButtons.First().gameObject);
             }
             else
             {
@@ -168,35 +168,25 @@ namespace RobbieWagnerGames
             }
         }
 
-        private void OnNavigateDialogueMenu(InputAction.CallbackContext context)
+        private void OnChoiceButtonConfirmed(int index)
         {
-            if(DialogueHasChoices())
-            {
-                float value = context.ReadValue<float>();
-                if(value > 0f) 
-                {
-                    CurrentChoice--;
-                }
-                else if(value < 0f)
-                {
-                    CurrentChoice++;
-                }
-            }
+            currentStory.ChooseChoiceIndex(index);
+            continueIcon.enabled = false;
+
+            StartCoroutine(ReadNextSentence());
         }
 
         private void RemoveChoiceGameObjects()
         {
-            if(choices != null)
+            if(choiceButtons != null)
             {
-                foreach(DialogueChoice choice in choices)
+                foreach(Button button in choiceButtons)
                 {
-                    Destroy(choice.gameObject);
+                    Destroy(button.gameObject);
                 }
 
-                choices.Clear();
+                choiceButtons.Clear();
             }
-
-            choices = null;
         }
         #endregion
     }

@@ -20,13 +20,8 @@ namespace RobbieWagnerGames
 
         private void OnNextDialogueLine(InputAction.CallbackContext context)
         {
-            if(CanContinue)
+            if (CanContinue && !DialogueHasChoices())
             {
-                if(DialogueHasChoices())
-                {
-                    currentStory.ChooseChoiceIndex(CurrentChoice);
-                }
-
                 continueIcon.enabled = false;
 
                 StartCoroutine(ReadNextSentence());
@@ -41,7 +36,6 @@ namespace RobbieWagnerGames
         {
             CanContinue = false;
             RemoveChoiceGameObjects();
-            choices = new List<DialogueChoice>();
 
             yield return null;
             if(currentStory.canContinue)
@@ -191,7 +185,8 @@ namespace RobbieWagnerGames
                     tag = tag.Remove(tag.IndexOf("PLAYSOUND"), 9).ToLower();
                     string filePath = StaticGameStats.soundFilePath + tag;
                     AudioClip soundClip = Resources.Load<AudioClip>(filePath);
-                    if(soundClip == null) Debug.LogWarning($"sound name provided \"{tag}\" is not a sound sprite name, please reconfigure this tag");
+                    if(soundClip == null) 
+                        Debug.LogWarning($"sound name provided \"{tag}\" is not a sound sprite name, please reconfigure this tag");
                     else
                     {
                         dialogueSound.clip = soundClip;
