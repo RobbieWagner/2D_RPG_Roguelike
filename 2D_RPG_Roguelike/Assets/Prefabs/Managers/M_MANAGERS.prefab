@@ -778,6 +778,10 @@ MonoBehaviour:
     playerPositionX: 0
     playerPositionY: 0
     playerPositionZ: 0
+    spawnEnemies: 1
+    enemyCountRange: {x: 3, y: 4}
+    enemyPrefabs:
+    - {fileID: 2371486503665171989, guid: e4ee24a6ddaf3d24fa8fc00edf31327d, type: 3}
   initialGameData:
     triggeredEvents: []
 --- !u!1 &5277315189218242050

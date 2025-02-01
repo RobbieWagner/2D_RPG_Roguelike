@@ -1,6 +1,7 @@
 using RobbieWagnerGames.Utilities;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
 {
     public class ExplorationManager : MonoBehaviourSingleton<ExplorationManager>
     {
-        public ExplorationConfiguration currentExplorationConfiguration;
         public ExplorationMenu explorationMenu;
 
         private bool isObjectInteractionEnabled = false;
@@ -74,10 +74,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         public IEnumerator StartExploration(ExplorationConfiguration explorationConfiguration)
         {
-            currentExplorationConfiguration = explorationConfiguration; 
+            ExplorationData.explorationConfiguration = explorationConfiguration; 
 
             yield return null;
             yield return StartCoroutine(SetupPlayerMovement(explorationConfiguration));
+            if (explorationConfiguration != null)
+            {
+                if (explorationConfiguration.spawnEnemies && explorationConfiguration.enemyPrefabs.Any())
+                    StartCoroutine(OverworldEnemyManager.Instance.SpawnLevelEnemies());
+            }
 
             InputManager.Instance.EnableActionMap(ActionMapName.EXPLORATION.ToString());
         }

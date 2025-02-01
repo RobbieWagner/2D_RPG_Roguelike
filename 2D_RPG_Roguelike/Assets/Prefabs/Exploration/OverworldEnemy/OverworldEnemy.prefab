@@ -151,10 +151,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 7942014884552569717}
   combatInfo:
-    pullAlliesFromSave: 0
+    pullAlliesFromSave: 1
     allyPrefabs: []
-    enemyPrefabs: []
-    combatSceneRef: 
+    enemyPrefabs:
+    - {fileID: 2435873788988366986, guid: 2bc9a12df5f249b418de777ca3350ab9, type: 3}
+    - {fileID: 2435873788988366986, guid: 2bc9a12df5f249b418de777ca3350ab9, type: 3}
+    combatSceneRef: _TestCombat
     isBossFight: 0
   combatScene:
     m_Handle: 0
