@@ -20,7 +20,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
     public class GameManager : MonoBehaviour
     {
         public static Action<GameMode> OnGameModeChanged = (GameMode gameMode) => { };
-        public static Action<GameMode> OnGameModeEnded = (GameMode gameMode) => { };
+        public static Action<GameMode, GameMode> OnGameModeEnded = (GameMode gameMode, GameMode nextGameMode) => { };
         private GameMode currentGameMode = GameMode.EXPLORATION; //GameMode.NONE //TODO: HAVE GAMEMODE INITIALIZED TO NONE
         private GameMode previousGameMode = GameMode.NONE;
 
@@ -39,7 +39,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             {
                 if (value == currentGameMode)
                     return;
-                OnGameModeEnded?.Invoke(currentGameMode);
+                OnGameModeEnded?.Invoke(currentGameMode, value);
                 previousGameMode = currentGameMode;
                 currentGameMode = value;
                 OnGameModeChanged?.Invoke(currentGameMode);
@@ -76,13 +76,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
         }
 
         #region Game Modes
-        private void OnEndGameMode(GameMode mode)
+        private void OnEndGameMode(GameMode mode, GameMode nextGameMode)
         {
             if (mode == GameMode.EXPLORATION)
             {
                 PlayerMovement.Instance.CeasePlayerMovement();
-                PlayerMovement.Instance.spriteRenderer.enabled = false;
                 ExplorationManager.Instance.IsObjectInteractionEnabled = false;
+                
+                if(nextGameMode != GameMode.EVENT)
+                    PlayerMovement.Instance.spriteRenderer.enabled = false;
             }
             else if (mode == GameMode.COMBAT)
             {
@@ -107,10 +109,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
-        public IEnumerator TriggerExploration(ExplorationConfiguration explorationConfiguration)
+        public IEnumerator TriggerExploration(ExplorationConfiguration explorationConfiguration, bool coverScreen = true)
         {
             yield return null;
-            yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
+            if(coverScreen)
+                yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
 
             if(explorationConfiguration != null)
             {
@@ -124,13 +127,19 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             ExplorationManager.Instance.IsObjectInteractionEnabled = true;
 
-            yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut(.35f));
+            if(coverScreen)
+                yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut(.35f));
         }
 
         public void TriggerPreviousGameMode()
         {
             if (previousGameMode == GameMode.EXPLORATION)
-                StartCoroutine(TriggerExploration(null));
+            {
+                if (currentGameMode == GameMode.COMBAT)
+                    StartCoroutine(TriggerExploration(null));
+                else if(currentGameMode == GameMode.EVENT)
+                    StartCoroutine(TriggerExploration(null, false));
+            }
         }
 
         #endregion

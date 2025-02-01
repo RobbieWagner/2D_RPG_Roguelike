@@ -81,7 +81,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
         private void CheckGameMode(GameMode mode)
         {
-            if (mode != GameMode.EXPLORATION)
+            if (mode == GameMode.EVENT)
+                PauseAgent(false);
+            else if (mode != GameMode.EXPLORATION)
                 PauseAgent(true);
             else if (mode == GameMode.EXPLORATION)
                 ResumeAgent();
@@ -226,14 +228,15 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return new WaitForSeconds(noticeTime);
 
             navMeshAgent.isStopped = false;
-            while (true)
+            while (NavMesh.SamplePosition(PlayerMovement.Instance.transform.position, out NavMeshHit hit, 1, NavMesh.AllAreas))
             {
-                if (Vector3.Distance(PlayerMovement.Instance.transform.position, transform.position) > 10)
-                    ChangeMovementState(MovementState.Idle);
+                if (Vector3.Distance(hit.position, transform.position) > 10)
+                    break;
 
                 yield return null;
-                navMeshAgent.SetDestination(PlayerMovement.Instance.transform.position);
+                navMeshAgent.SetDestination(hit.position);
             }
+            ChangeMovementState(MovementState.Idle);
         }
 
         private Vector3 FindSpotOnNavMesh()
