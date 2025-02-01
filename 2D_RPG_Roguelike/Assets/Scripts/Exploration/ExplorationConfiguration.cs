@@ -1,3 +1,4 @@
+using RobbieWagnerGames.Utilities.SaveData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,23 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
     public static class ExplorationData
     {
-        public static ExplorationConfiguration explorationConfiguration;
+        private static ExplorationConfiguration explorationConfiguration = null;
+        public static ExplorationConfiguration ExplorationConfiguration
+        {
+            get
+            {
+                if(explorationConfiguration == null)
+                    explorationConfiguration = JsonDataService.Instance.LoadDataRelative<ExplorationConfiguration>(StaticGameStats.explorationDataSavePath, null);
+
+                if(explorationConfiguration == null)
+                    explorationConfiguration = GameManager.Instance.initialExplorationConfiguration;
+
+                return explorationConfiguration;
+            }
+            set 
+            {
+                explorationConfiguration = value;
+            }
+        }
     }
 }

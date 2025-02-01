@@ -71,8 +71,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 StartCoroutine(TriggerExploration(null));
             else if (GeneralGameData.gameData == null)
                 StartCoroutine(StartNewGame());
-            else if (ExplorationData.explorationConfiguration != null)
-                StartCoroutine(TriggerExploration(ExplorationData.explorationConfiguration));
+            else if (ExplorationData.ExplorationConfiguration != null)
+                StartCoroutine(TriggerExploration(ExplorationData.ExplorationConfiguration));
         }
 
         #region Game Modes
@@ -109,25 +109,26 @@ namespace RobbieWagnerGames.TurnBasedCombat
             yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut());
         }
 
-        public IEnumerator TriggerExploration(ExplorationConfiguration explorationConfiguration, bool coverScreen = true)
+        public IEnumerator TriggerExploration(ExplorationConfiguration explorationConfiguration, bool fromPreviousScene = true)
         {
             yield return null;
-            if(coverScreen)
+            if (fromPreviousScene)
+            {
                 yield return StartCoroutine(ScreenCover.Instance.FadeCoverIn());
 
-            if(explorationConfiguration != null)
-            {
-                SceneManager.LoadScene(explorationConfiguration.explorationSceneRef, LoadSceneMode.Additive);
-                while (ExplorationManager.Instance == null)
-                    yield return null;
+                if (explorationConfiguration != null)
+                {
+                    SceneManager.LoadScene(explorationConfiguration.explorationSceneRef, LoadSceneMode.Additive);
+                    while (ExplorationManager.Instance == null)
+                        yield return null;
+                }
             }
 
-            yield return StartCoroutine(ExplorationManager.Instance.StartExploration(explorationConfiguration));
             CurrentGameMode = GameMode.EXPLORATION;
-
             ExplorationManager.Instance.IsObjectInteractionEnabled = true;
+            yield return StartCoroutine(ExplorationManager.Instance.StartExploration(explorationConfiguration));
 
-            if(coverScreen)
+            if (fromPreviousScene)
                 yield return StartCoroutine(ScreenCover.Instance.FadeCoverOut(.35f));
         }
 
@@ -202,7 +203,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         private void LoadPlayerExplorationData()
         {
             ExplorationConfiguration explorationData = JsonDataService.Instance.LoadDataRelative<ExplorationConfiguration>(StaticGameStats.explorationDataSavePath, null);
-            ExplorationData.explorationConfiguration = explorationData;
+            ExplorationData.ExplorationConfiguration = explorationData;
         }
 
         private void LoadPlayerInventory()

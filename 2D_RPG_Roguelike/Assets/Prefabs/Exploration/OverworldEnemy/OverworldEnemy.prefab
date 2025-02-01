@@ -164,11 +164,12 @@ MonoBehaviour:
   movementState: 0
   unitAnimator: {fileID: 0}
   navMeshAgent: {fileID: 4854867684377469482}
+  noticeRange: 4
+  noticeTrigger: {fileID: 7942014884552569717}
   noticeTime: 0.65
   idleTimeRange: {x: 2, y: 4}
   walkRadius: 25
   walkDistanceRange: {x: 7, y: 10}
-  disableDistance: 10
 --- !u!195 &4854867684377469482
 NavMeshAgent:
   m_ObjectHideFlags: 0

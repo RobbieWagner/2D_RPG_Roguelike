@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explorationMenu: {fileID: 7212745300977319422}
+  refreshInterval: 25
 --- !u!1 &1719366115319158291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,9 +1045,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0310cfa04d05ad74ea2ae27e284e137a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDistanceRange: {x: 15, y: 25}
-  spawnedEnemies:
-  - {fileID: 2371486503665171989, guid: e4ee24a6ddaf3d24fa8fc00edf31327d, type: 3}
+  spawnDistanceRange: {x: 25, y: 35}
+  maxEnemyDistance: 40
 --- !u!1 &5829326600410976605
 GameObject:
   m_ObjectHideFlags: 0

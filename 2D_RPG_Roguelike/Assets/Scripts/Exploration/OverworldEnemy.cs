@@ -1,3 +1,4 @@
+using RobbieWagnerGames.Utilities;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,12 +29,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private NavMeshAgent navMeshAgent;
 
+        [SerializeField] private float noticeRange = 4;
+        [SerializeField] private SphereCollider noticeTrigger;
         [SerializeField] private float noticeTime = .65f;
         [SerializeField] private Vector2 idleTimeRange;
         [SerializeField] private float walkRadius = 25f;
         [SerializeField] private Vector2 walkDistanceRange;
-
-        [SerializeField] private float disableDistance = 10;
 
         #region combat
         private void OnCollisionEnter(Collision other)
@@ -43,12 +44,9 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 ChangeMovementState(MovementState.Idle);
                 PlayerMovement.Instance.CeasePlayerMovement();
                 StartCoroutine(GameManager.Instance.TriggerCombat(combatInfo));
-                trigger.enabled = false;
                 isCombatTriggered = true;
-            }
-            else
-            {
 
+                StartCoroutine(DelayDestroy());
             }
         }
         #endregion
@@ -56,20 +54,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
         #region ai navigation
         private void Awake()
         {
-            if (Vector3.Distance(PlayerMovement.Instance.transform.position, transform.position) < disableDistance)
-                DisableOverworldEnemy();
-
             //unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
 
+            noticeTrigger.radius = noticeRange;
             currentMovementStateCoroutine = null;
             GameManager.OnGameModeChanged += CheckGameMode;
-        }
-
-        private void DisableOverworldEnemy()
-        {
-            GameManager.OnGameModeChanged -= CheckGameMode;
-            navMeshAgent.enabled = false;
-            Destroy(parentGameObject);
+            CheckGameMode(GameManager.Instance.CurrentGameMode);
         }
 
         private void ResumeAgent()
@@ -92,12 +82,12 @@ namespace RobbieWagnerGames.TurnBasedCombat
         private void PauseAgent(bool deleteifClose = false)
         {
             movementState = MovementState.Idle;
-            if(currentMovementStateCoroutine != null)
+            if (currentMovementStateCoroutine != null)
                 StopCoroutine(currentMovementStateCoroutine);
             navMeshAgent.SetDestination(transform.position);
 
-            if (deleteifClose && Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position) < disableDistance)
-                DisableOverworldEnemy();
+            if (deleteifClose && Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position) < noticeRange)
+                OverworldEnemyManager.Instance.RemoveEnemy(this);
         }
 
         public void ChangeMovementState(MovementState state)
@@ -268,6 +258,27 @@ namespace RobbieWagnerGames.TurnBasedCombat
 
             return distance;
         }
+        #endregion
+
+        #region destruction
+
+        private IEnumerator DelayDestroy()
+        {
+            yield return new WaitUntil(() => GameManager.Instance.CurrentGameMode == GameMode.COMBAT);
+
+            OverworldEnemyManager.Instance.RemoveEnemy(this);
+        }
+
+        private void OnDestroy() 
+        {
+            if (currentMovementStateCoroutine != null)
+            {
+                StopCoroutine(currentMovementStateCoroutine);
+                currentMovementStateCoroutine = null;
+            }
+            GameManager.OnGameModeChanged -= CheckGameMode;
+        }
+
         #endregion
     }
 }
