@@ -16,16 +16,16 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 TryAddItemToInventory(item);
         }
 
-        public static bool TryAddItemToInventory(GameItem item)
+        public static bool TryAddItemToInventory(GameItem item, int amount = 1)
         {
             if(item == null)
                 return false;
 
             if(inventory.TryGetValue(item, out int count))
             {
-                if(count >= 99)
+                if(count >= 99 - amount)
                     return false;
-                inventory[item]++;
+                inventory[item] += amount;
                 return true;
             }
             inventory.Add(item, 1);
