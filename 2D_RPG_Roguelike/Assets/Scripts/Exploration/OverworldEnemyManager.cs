@@ -13,6 +13,14 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public Coroutine spawnCoroutine = null;
         private List<OverworldEnemy> spawnedEnemies = new List<OverworldEnemy>();
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            ExplorationManager.Instance.OnSetCurrentInteractable += HandlePlayerInteraction;
+        }
+
+        #region Spawning
         public IEnumerator SpawnLevelEnemies(int maxTries = 1000)
         {
             int minEnemiesToSpawn = ExplorationData.ExplorationConfiguration.enemyCountRange.x - spawnedEnemies.Count;
@@ -101,5 +109,28 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 spawnedEnemies.Remove(enemy);
             }
         }
+        #endregion
+
+        #region Instance Updates
+        private void HandlePlayerInteraction(Interactable interactable)
+        {
+            if (interactable != null)
+                PauseAllAgents();
+            else
+                ResumeAllAgents();
+        }
+
+        private void PauseAllAgents()
+        {
+            foreach (OverworldEnemy enemy in spawnedEnemies)
+                enemy.PauseAgent();
+        }
+
+        public void ResumeAllAgents()
+        {
+            foreach (OverworldEnemy enemy in spawnedEnemies)
+                enemy.ResumeAgent();
+        }
+        #endregion
     }
 }

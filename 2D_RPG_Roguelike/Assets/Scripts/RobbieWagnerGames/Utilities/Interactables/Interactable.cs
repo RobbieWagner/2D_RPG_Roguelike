@@ -62,7 +62,6 @@ namespace RobbieWagnerGames
             //Debug.Log("Interact");
 
             OnUninteract();
-            StopCoroutine(Interact());
         }
     }
 }

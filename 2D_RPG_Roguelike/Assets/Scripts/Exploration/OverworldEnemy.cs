@@ -11,7 +11,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
         None = -1,
         Idle = 0,
         Moving = 1,
-        Chasing = 2,
+        Noticing = 2,
+        Chasing = 3,
     }
     
     public class OverworldEnemy : MonoBehaviour
@@ -21,9 +22,11 @@ namespace RobbieWagnerGames.TurnBasedCombat
         public CombatConfiguration combatInfo;
         public Scene combatScene;
 
+        private bool doUpdate = true;
+
         public GameObject parentGameObject;
 
-        [HideInInspector] public MovementState movementState = MovementState.Idle;
+        [HideInInspector] public MovementState movementState = MovementState.None;
         private IEnumerator currentMovementStateCoroutine;
 
         [SerializeField] private UnitAnimator unitAnimator;
@@ -33,10 +36,22 @@ namespace RobbieWagnerGames.TurnBasedCombat
         [SerializeField] private SphereCollider noticeTrigger;
         [SerializeField] private float noticeTime = .65f;
         [SerializeField] private Vector2 idleTimeRange;
+        private float idleTime = 0;
+        private float currentIdleTimer = 0;
         [SerializeField] private float walkRadius = 25f;
+        [SerializeField] private float maxWalkTime = 10f;
+        private float currentWalkTimer = 0;
         [SerializeField] private Vector2 walkDistanceRange;
 
-        #region combat
+        #region collision
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                ChangeMovementState(MovementState.Noticing);
+            }
+        }
+
         private void OnCollisionEnter(Collision other)
         {
             if (other.collider.CompareTag("Player") && !isCombatTriggered && GameManager.Instance.CurrentGameMode == GameMode.EXPLORATION)
@@ -51,7 +66,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
         }
         #endregion
 
-        #region ai navigation
+        #region agent
         private void Awake()
         {
             //unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
@@ -60,13 +75,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             currentMovementStateCoroutine = null;
             GameManager.OnGameModeChanged += CheckGameMode;
             CheckGameMode(GameManager.Instance.CurrentGameMode);
-        }
-
-        private void ResumeAgent()
-        {
-            movementState = MovementState.Idle;
-            ChangeMovementCoroutine(Standby(Random.Range(idleTimeRange.x, idleTimeRange.y)));
-            navMeshAgent.updateRotation = false;
         }
 
         private void CheckGameMode(GameMode mode)
@@ -79,95 +87,73 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 ResumeAgent();
         }
 
-        private void PauseAgent(bool deleteifClose = false)
+        public void PauseAgent(bool deleteifClose = false)
         {
-            movementState = MovementState.Idle;
-            if (currentMovementStateCoroutine != null)
-                StopCoroutine(currentMovementStateCoroutine);
-            navMeshAgent.SetDestination(transform.position);
+            navMeshAgent.isStopped = true;
+            doUpdate = false;
 
             if (deleteifClose && Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position) < noticeRange)
                 OverworldEnemyManager.Instance.RemoveEnemy(this);
         }
 
+        public void ResumeAgent()
+        {
+            navMeshAgent.isStopped = false;
+            navMeshAgent.updateRotation = false;
+            doUpdate = true;
+
+            if(movementState == MovementState.None)
+                ChangeMovementState(MovementState.Idle);
+        }
+        #endregion
+
+        #region movement states
         public void ChangeMovementState(MovementState state)
         {
             if (movementState != state)
             {
-                switch (state)
-                {
-                    case MovementState.Idle:
-                        //UnitAnimationState animationState = unitAnimator.GetAnimationState();
-                        //if (animationState == UnitAnimationState.WalkForward)
-                        //{
-                        //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
-                        //}
-                        //else if (animationState == UnitAnimationState.WalkBack)
-                        //{
-                        //    unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
-                        //}
-                        //else if (animationState == UnitAnimationState.WalkLeft)
-                        //{
-                        //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
-                        //}
-                        //else if (animationState == UnitAnimationState.WalkRight)
-                        //{
-                        //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
-                        //}
-                        ChangeMovementCoroutine(Standby(Random.Range(idleTimeRange.x, idleTimeRange.y)));
-                        break;
-                    case MovementState.Moving:
-                        ChangeMovementCoroutine(MoveToNewSpot());
-                        break;
-                    case MovementState.Chasing:
-                        ChangeMovementCoroutine(ChasePlayer());
-                        break;
-                }
-
                 movementState = state;
-
                 OnMovementStateChange?.Invoke(movementState);
             }
+
+            switch(movementState)
+            {
+                case MovementState.Idle:
+                    StandIdle();
+                    break;
+                case MovementState.Moving:
+                    StartMoving();
+                    break;
+                case MovementState.Noticing:
+                    StartCoroutine(NoticePlayer());
+                    break;
+                case MovementState.Chasing:
+                    StartChase();
+                    break;
+                case MovementState.None:
+                    break;
+                default:
+                    break;
+            }
+                
         }
 
         public delegate void OnMovementStateChangeDelegate(MovementState state);
         public event OnMovementStateChangeDelegate OnMovementStateChange;
 
-        private void ChangeMovementCoroutine(IEnumerator newCoroutine)
+        private void StandIdle()
         {
-            if (newCoroutine != currentMovementStateCoroutine)
-            {
-                if (currentMovementStateCoroutine != null) 
-                    StopCoroutine(currentMovementStateCoroutine);
-                if (newCoroutine != null)
-                {
-                    currentMovementStateCoroutine = newCoroutine;
-                    StartCoroutine(currentMovementStateCoroutine);
-                }
-            }
+            idleTime = Random.Range(idleTimeRange.x, idleTimeRange.y);
+            currentIdleTimer = 0;
+            navMeshAgent.isStopped = true;
         }
 
-        private IEnumerator Standby(float idleTime)
+        private void StartMoving()
         {
-            //Debug.Log("idle");
             if (navMeshAgent.enabled)
-            {
-                navMeshAgent.isStopped = true;
-                navMeshAgent.ResetPath();
-            }
-
-            yield return new WaitForSeconds(idleTime);
-
-            ChangeMovementState(MovementState.Moving);
-        }
-
-        private IEnumerator MoveToNewSpot()
-        {
-            //Debug.Log("moving");
-            if (navMeshAgent.enabled)
-            {
                 navMeshAgent.isStopped = false;
-            }
+
+            currentWalkTimer = 0;
 
             Vector3 targetPos = FindSpotOnNavMesh();
 
@@ -185,50 +171,30 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
 
             if (limit == 10)
-            {
-                targetPos = transform.position;
-            }
+                ChangeMovementState(MovementState.Idle);
 
             navMeshAgent.SetDestination(targetPos);
-            yield return new WaitForSeconds(1f);
-            while (Vector3.Distance(navMeshAgent.destination, transform.position) > .75f && (Mathf.Abs(navMeshAgent.velocity.x) > .5f || Mathf.Abs(navMeshAgent.velocity.z) > .5f))
-            {
-                yield return null;
-            }
-
-            ChangeMovementState(MovementState.Idle);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private IEnumerator NoticePlayer()
         {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                ChangeMovementState(MovementState.Chasing);
-            }
-        }
-
-        private IEnumerator ChasePlayer()
-        {
-            //Debug.Log("chasing");
             if (navMeshAgent.enabled)
             {
                 navMeshAgent.isStopped = true;
                 navMeshAgent.ResetPath();
             }
+
             yield return new WaitForSeconds(noticeTime);
-
-            navMeshAgent.isStopped = false;
-            while (NavMesh.SamplePosition(PlayerMovement.Instance.transform.position, out NavMeshHit hit, 1, NavMesh.AllAreas))
-            {
-                if (Vector3.Distance(hit.position, transform.position) > 10)
-                    break;
-
-                yield return null;
-                navMeshAgent.SetDestination(hit.position);
-            }
-            ChangeMovementState(MovementState.Idle);
+            ChangeMovementState(MovementState.Chasing);
         }
 
+        private void StartChase()
+        {
+            navMeshAgent.isStopped = false;
+        }
+        #endregion
+
+        #region ai navigation
         private Vector3 FindSpotOnNavMesh()
         {
             Vector3 position = transform.position;
@@ -260,6 +226,75 @@ namespace RobbieWagnerGames.TurnBasedCombat
         }
         #endregion
 
+        #region movement state updates
+        private void Update()
+        {
+            if (doUpdate)
+            { 
+                switch (movementState)
+                {
+                    case MovementState.Idle:
+                        UpdateStandby();
+                        break;
+                    case MovementState.Moving:
+                        UpdateMovement();
+                        break;
+                    case MovementState.Chasing:
+                        UpdateChase();
+                        break;
+                    default: break;
+                }
+            }
+        }
+
+        private void UpdateStandby()
+        {
+            currentIdleTimer += Time.deltaTime;
+
+            if(currentIdleTimer >= idleTime)
+                ChangeMovementState(MovementState.Moving);
+        }
+
+        private void UpdateMovement()
+        {
+            currentWalkTimer += Time.deltaTime;
+
+            if (Vector3.Distance(navMeshAgent.destination, transform.position) < .75f || currentWalkTimer >= maxWalkTime) //&& (Mathf.Abs(navMeshAgent.velocity.x) > .5f || Mathf.Abs(navMeshAgent.velocity.z) > .5f))
+            {
+                ChangeMovementState(MovementState.Idle);
+            }
+        }
+
+        private void UpdateChase()
+        {
+            if(NavMesh.SamplePosition(PlayerMovement.Instance.transform.position, out NavMeshHit hit, 1, NavMesh.AllAreas) && Vector3.Distance(hit.position, transform.position) < 10)
+                navMeshAgent.SetDestination(hit.position);
+            else
+                ChangeMovementState(MovementState.Idle);
+        }
+
+        private void UpdateAnimation()
+        {
+            //UnitAnimationState animationState = unitAnimator.GetAnimationState();
+            //if (animationState == UnitAnimationState.WalkForward)
+            //{
+            //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
+            //}
+            //else if (animationState == UnitAnimationState.WalkBack)
+            //{
+            //    unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
+            //}
+            //else if (animationState == UnitAnimationState.WalkLeft)
+            //{
+            //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
+            //}
+            //else if (animationState == UnitAnimationState.WalkRight)
+            //{
+            //    unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
+            //}
+        }
+        #endregion
+
         #region destruction
 
         private IEnumerator DelayDestroy()
@@ -278,7 +313,6 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
             GameManager.OnGameModeChanged -= CheckGameMode;
         }
-
         #endregion
     }
 }

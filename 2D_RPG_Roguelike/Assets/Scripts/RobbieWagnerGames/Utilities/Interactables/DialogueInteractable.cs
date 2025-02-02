@@ -35,8 +35,6 @@ namespace RobbieWagnerGames
             yield return StartCoroutine(DialogueManager.Instance.EnterDialogueModeCo(story));
 
             yield return base.Interact();
-
-            StopCoroutine(Interact());
         }
 
         protected override void OnUninteract()

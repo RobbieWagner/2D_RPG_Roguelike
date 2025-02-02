@@ -29,6 +29,7 @@ namespace RobbieWagnerGames.TurnBasedCombat
             }
         }
 
+        public Action<Interactable> OnSetCurrentInteractable = (Interactable i) => { };
         private Interactable currentInteractable = null;
         public Interactable CurrentInteractable
         {
@@ -41,6 +42,8 @@ namespace RobbieWagnerGames.TurnBasedCombat
                 if (currentInteractable == value) 
                     return;
                 currentInteractable = value;
+
+                OnSetCurrentInteractable?.Invoke(value);
             }
         }
 
@@ -62,7 +65,10 @@ namespace RobbieWagnerGames.TurnBasedCombat
             if (explorationConfiguration != null)
             {
                 if (explorationConfiguration.spawnEnemies && explorationConfiguration.enemyPrefabs.Any())
-                    StartCoroutine(OverworldEnemyManager.Instance.SpawnLevelEnemies());
+                {
+                    yield return null;
+                    StartCoroutine(OverworldEnemyManager.Instance.SpawnLevelEnemies()); 
+                }
             }
             else
             {
